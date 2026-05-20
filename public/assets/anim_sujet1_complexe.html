@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation : Géométrie et Nombres Complexes (Sujet 1)</title>
+    <style>
+        :root {
+            --primary: #2563eb; /* Bleu */
+            --accent: #e11d48; /* Rose/Rouge */
+            --bg: #f8fafc;
+            --text: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 900px;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .step {
+            opacity: 0.3;
+            transition: all 0.5s ease;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            transform: translateX(-10px);
+        }
+        .step.active {
+            opacity: 1;
+            transform: translateX(0);
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+        }
+        .step.done {
+            opacity: 0.7;
+            transform: translateX(0);
+            border-left: 4px solid #cbd5e1;
+        }
+        .step-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        .step-desc {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .math {
+            font-family: 'Cambria Math', serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .controls {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding-top: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #btn-prev {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        #btn-prev:hover:not(:disabled) {
+            background: #cbd5e1;
+        }
+        #btn-next {
+            background: var(--primary);
+            color: white;
+        }
+        #btn-next:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: 40%;
+                overflow-y: auto;
+            }
+            .canvas-container {
+                height: 60%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="canvas-container">
+        <canvas id="animCanvas"></canvas>
+    </div>
+    <div class="sidebar">
+        <h2>Figure du Sujet 1</h2>
+        
+        <div class="step active" id="step-0">
+            <div class="step-title">1. Placement des points</div>
+            <div class="step-desc">On place les points à partir de leurs affixes :<br>
+            <span class="math">z_A = -2i ⟹ A(0, -2)</span><br>
+            <span class="math">z_B = 1+i ⟹ B(1, 1)</span><br>
+            <span class="math">z_C = 4+2i ⟹ C(4, 2)</span><br>
+            <span class="math">z_I = 2 ⟹ I(2, 0)</span></div>
+        </div>
+        
+        <div class="step" id="step-1">
+            <div class="step-title">2. Milieu de [AC]</div>
+            <div class="step-desc">On trace le segment <span class="math">[AC]</span>.<br>
+            On remarque que <span class="math">I</span> est le milieu exact de <span class="math">[AC]</span> car :<br>
+            <span class="math">(z_A + z_C)/2 = 2 = z_I</span>.</div>
+        </div>
+        
+        <div class="step" id="step-2">
+            <div class="step-title">3. Triangle isocèle</div>
+            <div class="step-desc">On trace les côtés <span class="math">[AB]</span> et <span class="math">[BC]</span>.<br>
+            On observe que <span class="math">AB = BC = √10</span>.<br>
+            Le triangle <span class="math">ABC</span> est isocèle en <span class="math">B</span>.</div>
+        </div>
+        
+        <div class="step" id="step-3">
+            <div class="step-title">4. Symétrique D</div>
+            <div class="step-desc">Soit <span class="math">D</span> le symétrique de <span class="math">B</span> par rapport à <span class="math">I</span>.<br>
+            <span class="math">I</span> est le milieu de <span class="math">[BD]</span>.<br>
+            <span class="math">z_D = 2z_I - z_B = 3 - i</span>.</div>
+        </div>
+        
+        <div class="step" id="step-4">
+            <div class="step-title">5. Le losange ABCD</div>
+            <div class="step-desc">Les diagonales <span class="math">[AC]</span> et <span class="math">[BD]</span> se coupent en leur milieu <span class="math">I</span> : c'est un parallélogramme.<br>
+            Deux côtés consécutifs sont égaux (<span class="math">AB = BC</span>) : c'est un <strong>losange</strong>.</div>
+        </div>
+
+        <div class="controls">
+            <button id="btn-prev" disabled>Précédent</button>
+            <button id="btn-next">Suivant</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Virtual coordinates: X in [-1, 5], Y in [-3, 3]
+    const view = { xMin: -1.5, xMax: 5.5, yMin: -3.5, yMax: 3.5 };
+    
+    function resize() {
+        const parent = canvas.parentElement;
+        canvas.width = parent.clientWidth * window.devicePixelRatio;
+        canvas.height = parent.clientHeight * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        draw();
+    }
+    window.addEventListener('resize', resize);
+    
+    // Animation state
+    let currentStep = 0;
+    let animProgress = 0;
+    let animRequest = null;
+    
+    const pts = {
+        A: { x: 0, y: -2, name: 'A', color: '#1e293b' },
+        B: { x: 1, y: 1, name: 'B', color: '#e11d48' },
+        C: { x: 4, y: 2, name: 'C', color: '#1e293b' },
+        I: { x: 2, y: 0, name: 'I', color: '#10b981' },
+        D: { x: 3, y: -1, name: 'D', color: '#2563eb' }
+    };
+    
+    function mapX(x) {
+        const w = canvas.clientWidth;
+        return ((x - view.xMin) / (view.xMax - view.xMin)) * w;
+    }
+    
+    function mapY(y) {
+        const h = canvas.clientHeight;
+        // Invert Y axis
+        return h - ((y - view.yMin) / (view.yMax - view.yMin)) * h;
+    }
+    
+    function drawGrid() {
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+        
+        // Vertical lines
+        for (let x = Math.ceil(view.xMin); x <= Math.floor(view.xMax); x++) {
+            ctx.beginPath(); ctx.moveTo(mapX(x), 0); ctx.lineTo(mapX(x), h); ctx.stroke();
+        }
+        // Horizontal lines
+        for (let y = Math.ceil(view.yMin); y <= Math.floor(view.yMax); y++) {
+            ctx.beginPath(); ctx.moveTo(0, mapY(y)); ctx.lineTo(w, mapY(y)); ctx.stroke();
+        }
+        
+        // Axes
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2;
+        // X axis
+        if (view.yMin <= 0 && view.yMax >= 0) {
+            ctx.beginPath(); ctx.moveTo(0, mapY(0)); ctx.lineTo(w, mapY(0)); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(w-10, mapY(0)-5); ctx.lineTo(w, mapY(0)); ctx.lineTo(w-10, mapY(0)+5); ctx.stroke();
+            ctx.fillStyle = '#475569'; ctx.font = '14px sans-serif'; ctx.fillText('Re(z)', w - 40, mapY(0) - 10);
+        }
+        // Y axis
+        if (view.xMin <= 0 && view.xMax >= 0) {
+            ctx.beginPath(); ctx.moveTo(mapX(0), 0); ctx.lineTo(mapX(0), h); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(mapX(0)-5, 10); ctx.lineTo(mapX(0), 0); ctx.lineTo(mapX(0)+5, 10); ctx.stroke();
+            ctx.fillStyle = '#475569'; ctx.font = '14px sans-serif'; ctx.fillText('Im(z)', mapX(0) + 10, 20);
+        }
+        
+        // Origin
+        ctx.fillText('O', mapX(0) - 15, mapY(0) + 15);
+        
+        // Vector u, v
+        ctx.strokeStyle = '#1e3a8a';
+        ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(mapX(0), mapY(0)); ctx.lineTo(mapX(1), mapY(0)); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(mapX(1)-8, mapY(0)-4); ctx.lineTo(mapX(1), mapY(0)); ctx.lineTo(mapX(1)-8, mapY(0)+4); ctx.stroke();
+        
+        ctx.beginPath(); ctx.moveTo(mapX(0), mapY(0)); ctx.lineTo(mapX(0), mapY(1)); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(mapX(0)-4, mapY(1)+8); ctx.lineTo(mapX(0), mapY(1)); ctx.lineTo(mapX(0)+4, mapY(1)+8); ctx.stroke();
+    }
+    
+    function drawPoint(p, alpha = 1) {
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(mapX(p.x), mapY(p.y), 6, 0, 2*Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        ctx.fillStyle = p.color;
+        ctx.font = 'bold 16px "Cambria Math", serif';
+        // Offset text based on position
+        let tx = 10, ty = -10;
+        if (p.name === 'I') { tx = 10; ty = 20; }
+        if (p.name === 'D') { tx = 10; ty = 15; }
+        ctx.fillText(p.name, mapX(p.x) + tx, mapY(p.y) + ty);
+        
+        // Dashed projections
+        ctx.beginPath();
+        ctx.moveTo(mapX(p.x), mapY(p.y)); ctx.lineTo(mapX(p.x), mapY(0));
+        ctx.moveTo(mapX(p.x), mapY(p.y)); ctx.lineTo(mapX(0), mapY(p.y));
+        ctx.strokeStyle = p.color;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.globalAlpha = 1;
+    }
+    
+    function drawSegment(p1, p2, color, alpha = 1, dashed = false) {
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.moveTo(mapX(p1.x), mapY(p1.y));
+        ctx.lineTo(mapX(p2.x), mapY(p2.y));
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        if (dashed) ctx.setLineDash([6, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+    }
+
+    function drawMark(p1, p2, color, type='single') {
+        const mx = (mapX(p1.x) + mapX(p2.x))/2;
+        const my = (mapY(p1.y) + mapY(p2.y))/2;
+        const dx = mapX(p2.x) - mapX(p1.x);
+        const dy = mapY(p2.y) - mapY(p1.y);
+        const len = Math.sqrt(dx*dx + dy*dy);
+        const nx = -dy/len * 8; // Normal vector
+        const ny = dx/len * 8;
+        
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        
+        if (type === 'single') {
+            ctx.beginPath(); ctx.moveTo(mx - nx, my - ny); ctx.lineTo(mx + nx, my + ny); ctx.stroke();
+        } else if (type === 'double') {
+            ctx.beginPath(); ctx.moveTo(mx - nx - dx/len*3, my - ny - dy/len*3); ctx.lineTo(mx + nx - dx/len*3, my + ny - dy/len*3); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(mx - nx + dx/len*3, my - ny + dy/len*3); ctx.lineTo(mx + nx + dx/len*3, my + ny + dy/len*3); ctx.stroke();
+        }
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        drawGrid();
+        
+        // Step 0: Place A, B, C, I
+        if (currentStep >= 0) {
+            const alpha = currentStep === 0 ? animProgress : 1;
+            drawPoint(pts.A, alpha);
+            drawPoint(pts.B, alpha);
+            drawPoint(pts.C, alpha);
+            drawPoint(pts.I, alpha);
+        }
+        
+        // Step 1: AC and I midpoint
+        if (currentStep >= 1) {
+            const alpha = currentStep === 1 ? animProgress : 1;
+            // Draw AC
+            drawSegment(pts.A, pts.C, '#1e293b', alpha);
+            if (currentStep > 1 || animProgress > 0.5) {
+                drawMark(pts.A, pts.I, '#1e293b', 'single');
+                drawMark(pts.I, pts.C, '#1e293b', 'single');
+            }
+        }
+        
+        // Step 2: AB, BC (Isosceles)
+        if (currentStep >= 2) {
+            const alpha = currentStep === 2 ? animProgress : 1;
+            drawSegment(pts.A, pts.B, '#e11d48', alpha);
+            drawSegment(pts.B, pts.C, '#e11d48', alpha);
+            if (currentStep > 2 || animProgress > 0.5) {
+                drawMark(pts.A, pts.B, '#e11d48', 'double');
+                drawMark(pts.B, pts.C, '#e11d48', 'double');
+            }
+        }
+        
+        // Step 3: D symmetric
+        if (currentStep >= 3) {
+            const alpha = currentStep === 3 ? animProgress : 1;
+            drawSegment(pts.B, pts.I, '#2563eb', alpha, true);
+            drawSegment(pts.I, pts.D, '#2563eb', alpha, true);
+            drawPoint(pts.D, alpha);
+        }
+        
+        // Step 4: Rhombus
+        if (currentStep >= 4) {
+            const alpha = currentStep === 4 ? animProgress : 1;
+            drawSegment(pts.A, pts.D, '#8b5cf6', alpha);
+            drawSegment(pts.D, pts.C, '#8b5cf6', alpha);
+            
+            if (animProgress > 0.5) {
+                drawMark(pts.A, pts.D, '#8b5cf6', 'double');
+                drawMark(pts.D, pts.C, '#8b5cf6', 'double');
+                
+                // Shade area
+                ctx.globalAlpha = 0.1 * alpha;
+                ctx.fillStyle = '#8b5cf6';
+                ctx.beginPath();
+                ctx.moveTo(mapX(pts.A.x), mapY(pts.A.y));
+                ctx.lineTo(mapX(pts.B.x), mapY(pts.B.y));
+                ctx.lineTo(mapX(pts.C.x), mapY(pts.C.y));
+                ctx.lineTo(mapX(pts.D.x), mapY(pts.D.y));
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+    }
+    
+    function animate() {
+        if (animProgress < 1) {
+            animProgress += 0.03;
+            if (animProgress > 1) animProgress = 1;
+            draw();
+            animRequest = requestAnimationFrame(animate);
+        }
+    }
+    
+    function updateUI() {
+        document.querySelectorAll('.step').forEach((el, idx) => {
+            el.classList.remove('active', 'done');
+            if (idx === currentStep) el.classList.add('active');
+            else if (idx < currentStep) el.classList.add('done');
+        });
+        
+        document.getElementById('btn-prev').disabled = currentStep === 0;
+        document.getElementById('btn-next').disabled = currentStep === 4;
+        
+        animProgress = 0;
+        cancelAnimationFrame(animRequest);
+        animate();
+    }
+    
+    document.getElementById('btn-prev').addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            updateUI();
+        }
+    });
+    
+    document.getElementById('btn-next').addEventListener('click', () => {
+        if (currentStep < 4) {
+            currentStep++;
+            updateUI();
+        }
+    });
+    
+    // Init
+    setTimeout(() => {
+        resize();
+        updateUI();
+    }, 100);
+</script>
+</body>
+</html>

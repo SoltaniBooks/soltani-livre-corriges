@@ -110,389 +110,397 @@ function Rec({ prop, verif, suppo, demo }) {
   )
 }
 
-// ── T1-E1 ─────────────────────────────────────────────────────────────────────
-function T1E1() { return (<>
-  <Step index={0} title={<>Déterminant de <IM t={T.A} /></>}>
-    <p>On a <IM t={T.matA} /></p>
-    <IB label="Méthode">Développement 1ère ligne</IB>
-    <BM t={T.detL} /><BM t={T.detC1} /><BM t={T.detC2} />
-    <RB><IM t={T.detNeq} /> ⟹ <IM t={T.A} /> <strong>inversible</strong> ✓</RB>
-  </Step>
-  <Step index={1} title={<>Calcul de <IM t={T.A2} /></>}>
-    <p>On calcule <IM t={T.A2P} /> :</p><BM t={T.A2Pm} />
-    <IB label="Détail 1ère ligne"><CR label="col 1" fkey="A2R1a" /><CR label="col 2" fkey="A2R1b" /><CR label="col 3" fkey="A2R1c" /></IB>
-    <RB><BM t={T.A2R} /></RB>
-  </Step>
-  <Step index={2} title={<>Calcul de <IM t={T.BdefT} /></>}>
-    <BM t={T.Bsub} /><RB><BM t={T.Bres} /></RB>
-  </Step>
-  <Step index={3} title={<>Montrer que <IM t={T.A3eq} /></>}>
-    <p>On a <IM t={T.A3f} /></p><BM t={T.ABP} />
-    <IB label="Détail 1ère ligne"><CR label="(1,1)" fkey="ABR1a" /><CR label="(1,2)" fkey="ABR1b" /><CR label="(1,3)" fkey="ABR1c" /></IB>
-    <RB><BM t={T.ABR} /></RB>
-  </Step>
-  <Step index={4} title={<>Déduire <IM t={T.Ainv} /></>}>
-    <p>On a <IM t={T.AXB} /> :</p><BM t={T.AiFr} /><RB><BM t={T.AiR} /></RB>
-  </Step>
-  <Step index={5} title={<>Résolution de <IM t={T.S} /></>}>
-    <p>Forme <IM t={T.AXY} /> avec <IM t={T.Ymat} /></p><BM t={T.Xc} />
-    <IB label="Détail x"><BM t={T.Xc1} /></IB>
-    <RB><BM t={T.XR} /></RB>
-  </Step>
-  <Step index={6} title={<>Déduction pour <IM t={T.Sp} /></>}>
-    <IB label="Astuce">Poser <IM t={T.lnSub} /></IB>
-    <BM t={T.lnSys} />
-    <p>Même solution. Exponentielle :</p><BM t={T.lnF} />
-    <RB><IM t={T.solSet} /></RB>
-  </Step>
-</>)}
 
-// ── T1-E2 ─────────────────────────────────────────────────────────────────────
-function T1E2() { return (<>
-  <Step index={0} title={<>Calcul de <IM t="U_1, U_2, U_3" /></>}>
-    <IB label="Formule"><IM t="U_{n+1}=\dfrac{1}{U_n}+\dfrac{U_n}{2}" /></IB>
-    <BM t={T.T1E2_U0} /><BM t={T.T1E2_U2} /><BM t={T.T1E2_U3} />
-    <IB label="Test arithmétique — condition a+c=2b">
-      <BM t={T.T1E2_arith} />
-    </IB>
-    <IB label="Test géométrique — condition a×c=b²">
-      <BM t={T.T1E2_geom} />
-    </IB>
-    <RB>La suite n'est <strong>ni arithmétique ni géométrique</strong> ✓</RB>
-  </Step>
-  <Step index={1} title={<>Identité <IM t="U_{n+1}-\sqrt{2}=\frac{(U_n-\sqrt{2})^2}{2U_n}" /></>}>
-    <BM t={T.T1E2_rec} /><RB>Identité vérifiée ✓</RB>
-  </Step>
-  <Step index={2} title={<>Montrer que <IM t="U_n\geq\sqrt{2}" /> pour tout <IM t="n\in\mathbb{N}" /></>}>
-    <Rec
-      prop={<><IM t="P(n)" /> : <IM t="U_n\geq\sqrt{2}" /></>}
-      verif={<><p><strong>n = 0 :</strong></p><BM t="U_0=2\geq\sqrt{2}\approx1{,}41" /><p>✓ vrai au rang 0</p></>}
-      suppo={<><p>Supposons <IM t="U_n\geq\sqrt{2}" /> pour un <IM t="n" /> fixé.</p><p>On veut montrer <IM t="U_{n+1}\geq\sqrt{2}" />.</p></>}
-      demo={<><p>D'après l'identité démontrée à l'étape précédente :</p><BM t={T.T1E2_pos} /><p>Donc <IM t="U_{n+1}\geq\sqrt{2}" /> ✓</p></>}
-    />
-    <RB>Par récurrence : <IM t="U_n\geq\sqrt{2}" /> pour tout <IM t="n\in\mathbb{N}" /> ✓</RB>
-  </Step>
-  <Step index={3} title="Suite décroissante et convergente">
-    <p>On calcule <IM t="U_{n+1}-U_n" /> :</p>
-    <BM t={T.T1E2_dec} /><BM t={T.T1E2_dec2} /><BM t={T.T1E2_lim} />
-    <RB>Suite <strong>minorée</strong> par <IM t="\sqrt{2}" /> et <strong>décroissante</strong> ⟹ <strong>convergente</strong> d'après le théorème des suites monotones bornées ✓</RB>
-  </Step>
-  <Step index={4} title={<>Limite <IM t="\ell" /></>}>
-    <p>À la limite <IM t="f(\ell)=\ell" /> :</p>
-    <BM t={T.T1E2_fL} /><RB><IM t="\ell=\sqrt{2}" /></RB>
-  </Step>
-</>)}
-
-// ── T1-E3 ─────────────────────────────────────────────────────────────────────
-const STATS_PTS = [[0,398],[1,451],[2,423],[3,501],[4,673],[5,956],[6,1077],[7,1255],[8,1427],[9,1500]]
-function T1E3() { return (<>
-  <Step index={0} title="Calcul de U̅ et V̅">
-    <IB label="Données">Rangs xi ∈ [0;9], dépenses yi (millions DT)</IB>
-    <StatTable data={[
-      { label: "Moyennes", f: "\\bar{x}, \\bar{y}", r: "\\bar{x}=4{,}5,\\quad \\bar{y}=766{,}1" },
-      { label: "Droite de Mayer", f: "y = ax + b", r: "y=150{,}76x+187{,}68" }
-    ]} />
-    <div className="section-label">Nuage de points</div>
-    <ScatterPlot
-      points={STATS_PTS}
-      xLabel="Rang xi" yLabel="yi (M DT)"
-      xmin={-0.5} xmax={9.5} ymin={200} ymax={1600}
-      xticks={[0,1,2,3,4,5,6,7,8,9]}
-      yticks={[400,600,800,1000,1200,1400,1600]}
-      lines={[{ a: 150.76, b: 187.68, color: '#e0296e' }]}
-      title="Nuage de points + Droite de Mayer (en rose)"
-    />
-    <RB>Estimation 2025 (rang 10) : <BM t={T.T1E3_est2025} /></RB>
-  </Step>
-  <Step index={1} title="Ajustement exponentiel — Z = ln(Y)">
-    <StatTable data={[
-      { label: "Corrélation r", f: "r(X,Z)", r: "\\approx 0{,}97" },
-      { label: "Droite de Z en X", f: "Z = aX + b", r: "Z=0{,}263x+5{,}68" }
-    ]} />
-    <RB>Estimation 2025 : <BM t={T.T1E3_Y2025} /></RB>
-  </Step>
-  <Step index={2} title="Quel ajustement choisir ?">
-    <IB label="Réalité 2023">68,9 × 0,028 ≈ 1929 M DT (rang 8)</IB>
-    <IB label="Affine (rang 8)"><IM t="150{,}76\times8+187{,}68=1393{,}76" /></IB>
-    <IB label="Exponentiel (rang 8)"><IM t="e^{0{,}263\times8+5{,}68}\approx2398" /></IB>
-    <RB>L'ajustement <strong>affine</strong> est le plus proche ✓</RB>
-  </Step>
-</>)}
-
-// ── T1-E4 ─────────────────────────────────────────────────────────────────────
-function T1E4() {
-  const f14 = x => x - Math.E * Math.log(x)
-  const delta = x => x
+// ── R1-E1 ─────────────────────────────────────────────────────────────────────
+function R1E1() {
   return (<>
-    <Step index={0} title="Limites et comportement">
-      <BM t={T.T1E4_f} />
-      <IB label="En 0⁺"><BM t={T.T1E4_lim0} /> → asymptote verticale en x=0</IB>
-      <IB label="En +∞"><BM t={T.T1E4_liminf} /> → pas d'asymptote horizontale</IB>
-      <IB label="Pente à l'infini"><IM t="\lim_{x\to+\infty}\frac{f(x)}{x}=1" /> → la droite Δ: y=x est asymptote oblique</IB>
+    <Step index={0} title="Question 1 : Figure géométrique">
+      <div style={{width: '100%', height: '550px', margin: '20px 0'}}>
+        <iframe src="/assets/anim_sujet1_complexe.html" width="100%" height="100%" style={{border: 'none', borderRadius: '12px'}}></iframe>
+      </div>
+      <RB>L'animation ci-dessus montre le placement de A, B, C, I et la construction du losange ABCD étape par étape.</RB>
+      <IB label="Question 1.b - Milieu de [AC]">
+        <BM t={T.R1E1_1b} />
+      </IB>
+      <RB>I est bien le milieu du segment [AC].</RB>
     </Step>
-    <Step index={1} title="Dérivée et tableau de variation">
-      <BM t={T.T1E4_fp} />
-      <IB label="Signe de f'(x)"><BM t={T.T1E4_tab} /></IB>
-      <div className="section-label">Tableau de variation</div>
-      <VariationTable
-        xVals={[{ tex: '0^+' }, { tex: 'e' }, { tex: '+\\infty' }]}
-        signs={['-', '+']}
-        arrows={['down', 'up']}
-        fVals={[{ tex: '+\\infty', pos: 'top' }, { tex: '0', pos: 'bot' }, { tex: '+\\infty', pos: 'top' }]}
-      />
-      <RB>Minimum en <IM t="x=e" /> : <BM t={T.T1E4_min} /></RB>
+
+    <Step index={1} title="Question 2 : Triangle ABC">
+      <IB label="2.a - Calcul des affixes u et u'">
+        <BM t={T.R1E1_2a_u} />
+        <BM t={T.R1E1_2a_v} />
+      </IB>
+      <IB label="2.b - Nature du triangle ABC">
+        <BM t={T.R1E1_2b_AB} />
+        <BM t={T.R1E1_2b_BC} />
+      </IB>
+      <RB>Comme AB = BC, le triangle ABC est isocèle de sommet principal B.</RB>
     </Step>
-    <Step index={2} title="Courbe (C) et droite Δ: y=x">
-      <div className="section-label">Tracé de la courbe</div>
-      <FunctionCurve
-        fn={f14}
-        xmin={0.15} xmax={6} ymin={-0.5} ymax={6}
-        xticks={[1,2,3,4,5]} yticks={[0,1,2,3,4,5]}
-        title="(C): f(x) = x − e·ln(x)  et  Δ: y = x (en pointillé)"
-        extra={[{ type:'fn', fn: delta, color:'#e0296e', dash: true }]}
-      />
-      <IB label="Position de (C) et Δ">Pour <IM t="x>0" /> : <IM t="f(x)-x=-e\ln x" />. Signe = signe de <IM t="-\ln x" /></IB>
-      <IB label="Conclusion"><IM t="(C)" /> au-dessus de Δ pour <IM t="x\in]0;1[" />, en dessous pour <IM t="x>1" /></IB>
+
+    <Step index={2} title="Question 3 : Quadrilatère ABCD">
+      <IB label="3.a - Affixe du point D">
+        <BM t={T.R1E1_3a_D} />
+      </IB>
+      <IB label="3.b - Nature de ABCD">
+        <BM t={T.R1E1_3b_diag} />
+        <BM t={T.R1E1_3b_cotes} />
+      </IB>
+      <RB>ABCD est un losange.</RB>
     </Step>
-    <Step index={3} title="Primitive F et intégrale">
-      <p>On vérifie <IM t="g'(x)=e\ln x" /> :</p>
-      <BM t={T.T1E4_gp} />
-      <IB label="Primitive de f s'annulant en 1"><BM t={T.T1E4_F} /></IB>
-      <div className="section-label">Calcul de l'intégrale</div>
-      <BM t={T.T1E4_I} />
-      <BM t={T.T1E4_I2} />
-      <RB><BM t={T.T1E4_Ires} /></RB>
+
+    <Step index={3} title="Question 4.a : Vérification de la solution">
+      <BM t={T.R1E1_E} />
+      <IB label="Calcul avec (-2i)">
+        <BM t={T.R1E1_4a_sub1} />
+        <BM t={T.R1E1_4a_sub2} />
+        <BM t={T.R1E1_4a_sub3} />
+        <BM t={T.R1E1_4a_sum} />
+      </IB>
+      <RB>(-2i) est bien solution de l'équation (E).</RB>
+    </Step>
+
+    <Step index={4} title="Question 4.b : Détermination de a, b et c">
+      <IB label="Développement et Identification">
+        <BM t={T.R1E1_dev} />
+        <BM t={T.R1E1_sys} />
+      </IB>
+      <RB>On obtient : <BM t={T.R1E1_abc} /></RB>
+    </Step>
+
+    <Step index={5} title="Question 4.c : Résolution de l'équation">
+      <IB label="Équation du second degré">
+        <BM t={T.R1E1_E2} />
+      </IB>
+      <IB label="Calcul du discriminant">
+        <BM t={T.R1E1_delta} />
+        <BM t={T.R1E1_rac} />
+      </IB>
+      <IB label="Solutions de l'équation du second degré">
+        <BM t={T.R1E1_z1} />
+        <BM t={T.R1E1_z2} />
+      </IB>
+      <RB>L'ensemble des solutions est : <BM t={T.R1E1_sol} /></RB>
     </Step>
   </>)
 }
 
+// ── R1-E2 ─────────────────────────────────────────────────────────────────────
+function R1E2() {
+  return (<>
+    <Step index={0} title="Partie A : Puissances de 2">
+      <IB label="Question 1.a"><BM t={T.R1E2_A1} /></IB>
+      <IB label="Question 1.b"><BM t={T.R1E2_A2} /></IB>
+      <IB label="Question 2.a"><BM t={T.R1E2_A3} /></IB>
+      <IB label="Question 2.b"><BM t={T.R1E2_A4} /></IB>
+    </Step>
+    <Step index={1} title="Partie B : Puissances de 3">
+      <IB label="Question 1.a"><BM t={T.R1E2_B1} /></IB>
+      <IB label="Question 2.a"><BM t={T.R1E2_B3} /></IB>
+      <IB label="Question 2.b"><BM t={T.R1E2_B4} /></IB>
+    </Step>
+    <Step index={2} title="Partie C : Divisibilité de A_n">
+      <IB label="Question 1"><BM t={T.R1E2_C1} /></IB>
+      <IB label="Question 2"><BM t={T.R1E2_C2} /></IB>
+      <RB>Somme globale : <BM t={T.R1E2_C3} /> (divisible par 7).</RB>
+    </Step>
+  </>)
+}
+
+// ── R1-E3 ─────────────────────────────────────────────────────────────────────
+function R1E3() {
+  return (<>
+    <Step index={0} title="Nuage de points et Ajustement">
+      <IB label="Coefficient de corrélation affine"><BM t={T.R1E3_r} /></IB>
+      <IB label="Coefficient de corrélation exponentiel (Z=ln(y))"><BM t={T.R1E3_rZ} /></IB>
+      <RB>L'ajustement exponentiel est plus pertinent (r plus proche de 1).</RB>
+    </Step>
+    <Step index={1} title="Droite de régression">
+      <IB label="Équation de Z en x"><BM t={T.R1E3_Z} /></IB>
+      <IB label="Expression de y en x"><BM t={T.R1E3_y} /></IB>
+    </Step>
+    <Step index={2} title="Estimations">
+      <IB label="Pour 2026 (x=10)"><BM t={T.R1E3_2026} /></IB>
+      <IB label="Dépassement de 1000 M DT"><BM t={T.R1E3_1000} /></IB>
+      <RB>Le chiffre d'affaires dépassera 1000 M DT à partir de l'année 2027.</RB>
+    </Step>
+  </>)
+}
+
+// ── R1-E4 ─────────────────────────────────────────────────────────────────────
+function R1E4() {
+  return (<>
+    <Step index={0} title="Limites et Asymptotes">
+      <BM t={T.R1E4_f} />
+      <IB label="Limite en 0^+"><BM t={T.R1E4_lim0} /> <IM t="\\implies" /> Asymptote verticale d'équation <IM t="x=0" />.</IB>
+      <IB label="Limite en +\infty"><BM t={T.R1E4_liminf} /></IB>
+      <IB label="Branche infinie"><BM t={T.R1E4_limdiv} /> <IM t="\\implies" /> Branche parabolique de direction <IM t="(Oy)" />.</IB>
+    </Step>
+    <Step index={1} title="Dérivée et Variations">
+      <IB label="Calcul de f'(x)"><BM t={T.R1E4_fp} /></IB>
+      <IB label="Signe"><BM t={T.R1E4_sign} /></IB>
+      <RB><IM t="f" /> est croissante sur <IM t="]0, 1]" /> et décroissante sur <IM t="[1, +\\infty[" />, avec un maximum en <IM t="x=1" /> valant <IM t="0" />.</RB>
+    </Step>
+    <Step index={2} title="Aire sous la courbe">
+      <IB label="Intégration par parties">
+        <BM t={T.R1E4_ipp1} />
+        <BM t={T.R1E4_ipp2} />
+        <BM t={T.R1E4_ipp3} />
+      </IB>
+      <RB>L'aire est l'opposée de l'intégrale (car <IM t="f(x) \\le 0" /> sur <IM t="[1, e]" />) : <IM t="\\mathscr{A} = \\frac{2e^3-8}{9}" /> u.a.</RB>
+    </Step>
+  </>)
+}
+
+
 // ── T2-E1 ─────────────────────────────────────────────────────────────────────
-function T2E1() { return (<>
-  <Step index={0} title={<>Déterminant de <IM t="A" /> en fonction de <IM t="\alpha" /></>}>
-    <p>On a <IM t={T.T2E1_matA2} /></p>
-    <BM t={T.T2E1_detA} /><BM t={T.T2E1_detA2} />
-    <RB><IM t="A" /> inversible <IM t="\iff\alpha\neq1" /></RB>
-  </Step>
-  <Step index={1} title={<>Trouver <IM t="\alpha" /> tel que <IM t="A\times B=2I_3" /></>}>
-    <BM t={T.T2E1_AB2I} />
-    <RB><BM t={T.T2E1_Ainv2} /></RB>
-  </Step>
-  <Step index={2} title="Mise en équation du problème du bus">
-    <IB label="Variables"><IM t="x" /> = couples, <IM t="y" /> = femmes seules, <IM t="z" /> = enfants</IB>
-    <BM t={T.T2E1_sys} />
-  </Step>
-  <Step index={3} title="Résolution matricielle">
-    <BM t={T.T2E1_Xsol} />
-    <IB label="Détail 1ère ligne"><CR label="x" fkey="T2E1_XR1a" /><CR label="y" fkey="T2E1_XR1b" /><CR label="z" fkey="T2E1_XR1c" /></IB>
-    <RB><BM t={T.T2E1_sol} /></RB>
-  </Step>
-</>)}
+function T2E1() {
+  return (<>
+    <Step index={0} title={<>Calcul du déterminant pour <IM t="\\alpha=2" /></>}>
+      <IB label="Calcul"><BM t={T.T2E1_detA} /><BM t={T.T2E1_detA2} /></IB>
+      <RB><IM t="\\det(A) = -2 \\neq 0" />, donc <IM t="A" /> est inversible.</RB>
+    </Step>
+    <Step index={1} title="Matrice inverse">
+      <IB label="Produit A x B"><BM t={T.T2E1_AB2I} /></IB>
+      <RB><BM t={T.T2E1_Ainv2} /></RB>
+    </Step>
+    <Step index={2} title="Résolution du système">
+      <IB label="Système et matrice"><BM t={T.T2E1_sys} /><BM t={T.T2E1_Xsol} /></IB>
+      <IB label="Calculs"><BM t={T.T2E1_XR1a} /><BM t={T.T2E1_XR1b} /><BM t={T.T2E1_XR1c} /></IB>
+      <RB><BM t={T.T2E1_sol} /></RB>
+    </Step>
+  </>)
+}
 
 // ── T2-E2 ─────────────────────────────────────────────────────────────────────
-function T2E2() { return (<>
-  <Step index={0} title={<>Calcul de <IM t="U_1, U_2" />, monotonie et convergence</>}>
-    <IB label="Calculs"><BM t="U_1=e^0\cdot1=1" /><BM t="U_2=e^{-1}\cdot1=\tfrac{1}{e}" /></IB>
-    <IB label="Positivité">Si <IM t="U_n>0" />, alors <IM t="U_{n+1}=e^{-n}U_n>0" /> ✓</IB>
-    <IB label="Décroissance"><IM t="e^{-n}\leq1\implies U_{n+1}=e^{-n}U_n\leq U_n" /> ✓</IB>
-    <RB>Suite <strong>minorée</strong> par <IM t="0" /> et <strong>décroissante</strong> ⟹ <strong>convergente</strong> d'après le théorème des suites monotones bornées ✓</RB>
-  </Step>
-  <Step index={1} title={<>Suite <IM t="V_n=\ln(U_n)" /></>}>
-    <p>Relation de récurrence :</p><BM t={T.T2E2_Vrec} />
-    <IB label="Somme téléscopique"><BM t={T.T2E2_Vn_r} /></IB>
-  </Step>
-  <Step index={2} title={<>Formule de <IM t="U_n" /> et limite</>}>
-    <BM t={T.T2E2_Un} />
-    <RB><BM t={T.T2E2_lim} /></RB>
-  </Step>
-</>)}
+function T2E2() {
+  return (<>
+    <Step index={0} title="Relation de récurrence">
+      <IB label="Simplification"><BM t={T.T2E2_Vrec} /></IB>
+      <RB>On en déduit que <IM t="V_{n+1} - V_n = -n" />.</RB>
+    </Step>
+    <Step index={1} title={<>Expression de <IM t="V_n" /></>}>
+      <IB label="Somme (télescopage)"><BM t={T.T2E2_Vn_r} /></IB>
+    </Step>
+    <Step index={2} title={<>Expression et limite de <IM t="U_n" /></>}>
+      <IB label="Expression"><BM t={T.T2E2_Un} /></IB>
+      <RB><BM t={T.T2E2_lim} /></RB>
+    </Step>
+  </>)
+}
 
 // ── T2-E3 ─────────────────────────────────────────────────────────────────────
-const STATS2_PTS = [[1,8.6],[6,9],[11,9.5],[16,9.4],[21,9.5]]
-function T2E3() { return (<>
-  <Step index={0} title="Moyennes et Covariance">
-    <StatTable data={[
-      { label: "Moyenne X", f: "\\overline{X}", r: "11" },
-      { label: "Moyenne Y", f: "\\overline{Y}", r: "9{,}2" },
-      { label: "Écart-type X", f: "\\sigma_X", r: "\\approx 7{,}07" },
-      { label: "Écart-type Y", f: "\\sigma_Y", r: "\\approx 0{,}35" },
-      { label: "Covariance", f: "\\text{Cov}(X,Y)", r: "2{,}3" },
-      { label: "Corrélation r", f: "r = \\frac{\\text{Cov}(X,Y)}{\\sigma_X\\sigma_Y}", r: "\\approx 0{,}92" }
-    ]} />
-    <RB>{T.T2E3_rint}</RB>
-  </Step>
-  <Step index={1} title="Ajustement Affine (Moindres Carrés)">
-    <div className="section-label">Nuage de points</div>
-    <ScatterPlot
-      points={STATS2_PTS}
-      xLabel="Rang Xi" yLabel="Conso Yi (kg)"
-      xmin={0} xmax={22} ymin={8} ymax={10}
-      xticks={[1,6,11,16,21]}
-      yticks={[8,8.5,9,9.5,10]}
-      lines={[{ a: 0.046, b: 8.694, color: '#e0296e' }]}
-      title="Nuage de points + Droite de régression"
-    />
-    <StatTable data={[
-      { label: "Coefficient a", f: "a = \\frac{\\text{Cov}(X,Y)}{V(X)}", r: "0{,}046" },
-      { label: "Coefficient b", f: "b = \\overline{Y} - a\\overline{X}", r: "8{,}694" }
-    ]} />
-    <RB><BM t={T.T2E3_D} /></RB>
-  </Step>
-  <Step index={2} title="Estimations et Calcul de prix">
-    <IB label="Estimation 2024 (rang 30)"><BM t={T.T2E3_est2024} /></IB>
-    <IB label="Total conso 2024 (+20%)"><BM t={T.T2E3_tot2024} /></IB>
-    <IB label="Conso autres viandes"><BM t={T.T2E3_autres} /></IB>
-    <div className="section-label">Calcul du prix du mouton</div>
-    <IB label="Équation de dépense"><BM t={T.T2E3_prix} /></IB>
-    <RB><BM t={T.T2E3_pm} /></RB>
-  </Step>
-</>)}
+function T2E3() {
+  return (<>
+    <Step index={0} title="Ajustement affine">
+      <IB label="Données statistiques"><BM t={T.T2E3_stat} /></IB>
+      <IB label="Corrélation"><BM t={T.T2E3_r} /></IB>
+      <RB><BM t={T.T2E3_rint} /></RB>
+    </Step>
+    <Step index={1} title="Droite de régression">
+      <IB label="Coefficients"><BM t={T.T2E3_a} /><BM t={T.T2E3_b} /></IB>
+      <RB><BM t={T.T2E3_D} /></RB>
+    </Step>
+    <Step index={2} title="Estimation pour 2024">
+      <IB label="Production à x=30"><BM t={T.T2E3_est2024} /></IB>
+      <IB label="Consommation totale"><BM t={T.T2E3_tot2024} /></IB>
+      <IB label="Importation (autres pays)"><BM t={T.T2E3_autres} /></IB>
+      <IB label="Prix"><BM t={T.T2E3_prix} /></IB>
+      <RB><BM t={T.T2E3_pm} /></RB>
+    </Step>
+  </>)
+}
 
 // ── T2-E4 ─────────────────────────────────────────────────────────────────────
-function T2E4() { 
-  const f24 = x => Math.exp(x) - Math.exp(-x) + x
-  const d24 = x => x
+function T2E4() {
   return (<>
-  <Step index={0} title="Parité et Limites">
-    <IB label="Parité"><BM t={T.T2E4_imp} /></IB>
-    <IB label="Limite en +∞"><BM t={T.T2E4_lim} /></IB>
-    <IB label="Direction asymptotique"><BM t={T.T2E4_limx} /></IB>
-    <RB>{T.T2E4_int}</RB>
-  </Step>
-  <Step index={1} title="Dérivée et Variations">
-    <IB label="Dérivée"><BM t={T.T2E4_fp} /></IB>
-    <div className="section-label">Tableau de variation</div>
-    <VariationTable
-      xVals={[{ tex: '-\\infty' }, { tex: '+\\infty' }]}
-      signs={['+']}
-      arrows={['up']}
-      fVals={[{ tex: '-\\infty', pos: 'bot' }, { tex: '+\\infty', pos: 'top' }]}
-    />
-  </Step>
-  <Step index={2} title="Inflexion et Tangente">
-    <IB label="Dérivée seconde"><BM t={T.T2E4_fpp} /></IB>
-    <IB label="Point d'inflexion"><BM t={T.T2E4_inf} /></IB>
-    <RB><BM t={T.T2E4_T} /></RB>
-  </Step>
-  <Step index={3} title="Courbes et Position Relative">
-    <div className="section-label">Tracé de (C) et Δ</div>
-    <FunctionCurve
-      fn={f24}
-      xmin={-2} xmax={2} ymin={-4} ymax={4}
-      xticks={[-2,-1,0,1,2]} yticks={[-4,-2,0,2,4]}
-      title="(C): f(x) et Δ: y = x (en pointillé)"
-      extra={[
-        { type:'fn', fn: d24, color:'#e0296e', dash: true },
-        { type:'fn', fn: x => 3*x, color:'#16803c', dash: true } // Tangente
-      ]}
-    />
-    <IB label="Position (f(x) - x)"><BM t={T.T2E4_pos} /></IB>
-    <RB><BM t={T.T2E4_pos2} /> ⟹ (C) est au-dessus de Δ sur ]0;+∞[ et en-dessous sur ]-∞;0[</RB>
-  </Step>
-  <Step index={4} title="Calcul d'Aire">
-    <IB label="Calcul de I"><BM t={T.T2E4_I} /><BM t={T.T2E4_I2} /></IB>
-    <IB label="Aire totale S"><BM t={T.T2E4_S} /></IB>
-    <RB><BM t={T.T2E4_S2} /></RB>
-  </Step>
-</>)}
+    <Step index={0} title="Parité de f">
+      <IB label="Calcul"><BM t={T.T2E4_imp} /></IB>
+      <RB><IM t="f" /> est impaire, l'origine <IM t="O" /> est centre de symétrie.</RB>
+    </Step>
+    <Step index={1} title="Limites et Asymptotes">
+      <IB label="En +\\infty"><BM t={T.T2E4_lim} /></IB>
+      <IB label="Branche infinie"><BM t={T.T2E4_limx} /></IB>
+      <RB><BM t={T.T2E4_int} /></RB>
+    </Step>
+    <Step index={2} title="Dérivées et variations">
+      <IB label="Dérivée f'(x)"><BM t={T.T2E4_fp} /></IB>
+      <IB label="Dérivée seconde f''(x)"><BM t={T.T2E4_fpp} /></IB>
+      <IB label="Point d'inflexion"><BM t={T.T2E4_inf} /></IB>
+      <RB><BM t={T.T2E4_T} /></RB>
+    </Step>
+    <Step index={3} title="Position relative">
+      <IB label="Signe de f(x)-x"><BM t={T.T2E4_pos} /><BM t={T.T2E4_pos2} /></IB>
+    </Step>
+    <Step index={4} title="Calcul d'aire">
+      <IB label="Calcul de I"><BM t={T.T2E4_I} /><BM t={T.T2E4_I2} /></IB>
+      <IB label="Aire totale S"><BM t={T.T2E4_S} /></IB>
+      <RB><BM t={T.T2E4_S2} /></RB>
+    </Step>
+  </>)
+}
 
-// ── T3-E1 ─────────────────────────────────────────────────────────────────────
-function T3E1() { return (<>
-  <Step index={0} title={<>Déterminant de <IM t="A" /></>}>
-    <p><IM t={T.T3E1_matA3} /></p>
-    <BM t={T.T3E1_detA3} /><RB><BM t={T.T3E1_detA3b} /></RB>
-  </Step>
-  <Step index={1} title={<>Calcul de <IM t="A\times B" /> et <IM t="A^{-1}" /></>}>
-    <BM t={T.T3E1_AB3} /><BM t={T.T3E1_AB3r} />
-    <RB><BM t={T.T3E1_Ainv3} /></RB>
-  </Step>
-  <Step index={2} title="Résolution du système (S)">
-    <BM t={T.T3E1_sysSol} /><BM t={T.T3E1_XR3} />
-    <RB><IM t="x=4,\quad y=12,\quad z=-1" /></RB>
-  </Step>
-  <Step index={3} title={<>Suite <IM t="U_{n+1}=4U_n+12n-1" /></>}>
-    <IB label="Système">On utilise <IM t="U_1=3,\;U_2=13,\;U_3=115" /> et on résout <IM t="(S)" /></IB>
-    <RB><IM t="a=4,\quad b=12,\quad c=-1\implies U_{n+1}=4U_n+12n-1" /></RB>
-  </Step>
-</>)}
-
-// ── T3-E2 ─────────────────────────────────────────────────────────────────────
-function T3E2() { return (<>
-  <Step index={0} title="Graphe et Matrice">
-    <IB label="Graphe orienté"><BM t={T.T3E2_orient} /></IB>
-    <IB label="Arêtes"><BM t={T.T3E2_aretes} /></IB>
-    <RB><BM t={T.T3E2_eul} /></RB>
-  </Step>
-  <Step index={1} title="Chemins et Tournée minimale">
-    <IB label="Chemins de A à A (longueur 6)"><BM t={T.T3E2_M6} /></IB>
-    <IB label="Cycles complets"><BM t={T.T3E2_cyc} /></IB>
-    <RB>Durée minimale : <BM t={T.T3E2_poids} /></RB>
-  </Step>
-</>)}
-
-// ── T3-E3 Probabilités ────────────────────────────────────────────────────────
-function T3E3() { return (<>
-  <Step index={0} title="Arbre de probabilités">
-    <IB label="Données"><IM t="P(S)=0{,}25,\;P(D|S)=0{,}10,\;P(D|\bar{S})=0{,}05" /></IB>
-    <IB label="Structure">Arbre à 2 niveaux : S/S̄ puis D/D̄</IB>
-  </Step>
-  <Step index={1} title="Probabilité totale P(D)">
-    <BM t={T.T3E3_PD} /><BM t={T.T3E3_PDval} />
-    <RB><IM t="P(D)=0{,}0625" /> ✓</RB>
-  </Step>
-  <Step index={2} title="Probabilité conditionnelle P(S|D)">
-    <BM t={T.T3E3_PSD} /><RB><IM t="P(S|D)=0{,}4=40\%" /></RB>
-  </Step>
-  <Step index={3} title="Au moins 1 habitant avec problème de dos (n=3)">
-    <BM t={T.T3E3_Pau3} /><BM t={T.T3E3_Pau3r} />
-    <RB><IM t="P(\text{au moins 1})\approx0{,}176" /></RB>
-  </Step>
-</>)}
-
-// ── T3-E4 ─────────────────────────────────────────────────────────────────────
-function T3E4() { 
-  const f34 = x => Math.log(x) / x
+// ── R2-E1 ─────────────────────────────────────────────────────────────────────
+function R2E1() {
   return (<>
-  <Step index={0} title="Limites et Asymptotes">
-    <BM t={T.T3E4_f} />
-    <IB label="En 0⁺"><BM t={T.T3E4_lim0} /></IB>
-    <IB label="En +∞"><BM t={T.T3E4_liminf} /></IB>
-  </Step>
-  <Step index={1} title="Dérivée et Variations">
-    <IB label="Dérivée"><BM t={T.T3E4_fp} /></IB>
-    <IB label="Signe"><BM t={T.T3E4_signe} /></IB>
-    <div className="section-label">Tableau de variation</div>
-    <VariationTable
-      xVals={[{ tex: '0' }, { tex: 'e' }, { tex: '+\\infty' }]}
-      signs={['+', '-']}
-      arrows={['up', 'down']}
-      fVals={[{ tex: '-\\infty', pos: 'bot' }, { tex: '1/e', pos: 'top' }, { tex: '0', pos: 'bot' }]}
-    />
-  </Step>
-  <Step index={2} title="Racine et Signe">
-    <IB label="Racine de f"><BM t={T.T3E4_zero} /></IB>
-    <RB>f(x) &lt; 0 sur ]0;1[ et f(x) &gt; 0 sur ]1;+∞[ ✓</RB>
-  </Step>
-  <Step index={3} title="Courbe (C)">
-    <div className="section-label">Tracé de f(x)</div>
-    <FunctionCurve
-      fn={f34}
-      xmin={0.1} xmax={6} ymin={-1} ymax={0.5}
-      xticks={[1,2,3,4,5]} yticks={[-1,-0.5,0,0.5]}
-      title="(C): f(x) = ln(x) / x"
-      extra={[
-        { type:'hline', y:0, color:'#94a3b8' },
-        { type:'vline', x:0, color:'#94a3b8' },
-        { type:'point', x:1, y:0, color:'#e0296e' },
-        { type:'point', x:Math.E, y:1/Math.E, color:'#e0296e' }
-      ]}
-    />
-  </Step>
-  <Step index={4} title="Primitive et Aire">
-    <IB label="Primitive g(x)"><BM t={T.T3E4_g} /></IB>
-    <IB label="Intégrale"><BM t={T.T3E4_I} /></IB>
-    <RB>L'aire (f(x) &gt; 0 sur [1;e]) est : <BM t={T.T3E4_S} /></RB>
-  </Step>
-</>)}
+    <Step index={0} title={<>Équation <IM t={"z^2 - (\\sqrt{3} + i)z + 2 + 2i\\sqrt{3} = 0"} /></>}>
+      <IB label="Calcul préliminaire"><BM t={T.R2E1_complex_1a} /></IB>
+      <IB label="Discriminant"><BM t={T.R2E1_complex_1b_delta} /><BM t={T.R2E1_complex_1b_rac} /></IB>
+      <IB label="Racines"><BM t={T.R2E1_complex_1b_z1} /><BM t={T.R2E1_complex_1b_z2} /></IB>
+    </Step>
+    <Step index={1} title="Points sur le cercle">
+      <IB label="Module de z_A et z_B"><BM t={T.R2E1_complex_2a_A} /><BM t={T.R2E1_complex_2a_B} /></IB>
+      <RB><BM t={T.R2E1_complex_2a_concl} /></RB>
+    </Step>
+    <Step index={2} title="Placement des points">
+      <div style={{width: '100%', height: '500px', margin: '20px 0'}}>
+        <iframe src="/assets/anim_sujet2_complexe.html" width="100%" height="100%" style={{border: 'none', borderRadius: '12px'}}></iframe>
+      </div>
+    </Step>
+    <Step index={3} title="Nature du quadrilatère OACB">
+      <IB label="Affixe de C"><BM t={T.R2E1_complex_2c} /></IB>
+      <IB label="Vérification pour C"><BM t={T.R2E1_complex_2d} /></IB>
+      <IB label="Conclusion"><BM t={T.R2E1_complex_2e} /><BM t={T.R2E1_complex_2e_suite} /></IB>
+    </Step>
+  </>)
+}
+
+// ── R2-E2 ─────────────────────────────────────────────────────────────────────
+function R2E2() {
+  return (<>
+    <Step index={0} title="Relation de récurrence">
+      <IB label="Simplification"><BM t={T.R2E2_V} /></IB>
+      <RB>On en déduit que <IM t="V_{n+1} - V_n = -n" />.</RB>
+    </Step>
+    <Step index={1} title="Expression de Vn">
+      <IB label="Télescopage"><BM t={T.R2E2_Vn} /></IB>
+    </Step>
+    <Step index={2} title="Expression et limite de Un">
+      <IB label="Expression"><BM t={T.R2E2_Un} /></IB>
+      <IB label="Limite"><BM t={T.R2E2_lim} /></IB>
+    </Step>
+  </>)
+}
+
+// ── R2-E3 ─────────────────────────────────────────────────────────────────────
+function R2E3() {
+  return (<>
+    <Step index={0} title="Corrélation">
+      <IB label="Calcul"><BM t={T.R2E3_r} /></IB>
+      <RB>Un ajustement affine est justifié car <IM t="r" /> est proche de <IM t="1" />.</RB>
+    </Step>
+    <Step index={1} title="Droite de régression">
+      <IB label="Coefficients"><BM t={T.R2E3_ab} /></IB>
+      <IB label="Équation"><BM t={T.R2E3_D} /></IB>
+    </Step>
+    <Step index={2} title="Estimation">
+      <IB label="Poids à x=30"><BM t={T.R2E3_est} /></IB>
+      <IB label="Calcul du prix"><BM t={T.R2E3_prix} /></IB>
+      <RB>Le prix du kilogramme de viande de mouton est d'environ 44,9 DT.</RB>
+    </Step>
+  </>)
+}
+
+// ── R2-E4 ─────────────────────────────────────────────────────────────────────
+function R2E4() {
+  return (<>
+    <Step index={0} title="Parité">
+      <IB label="Calcul"><BM t={T.R2E4_impaire} /></IB>
+      <RB><IM t="f" /> est impaire, l'origine est centre de symétrie.</RB>
+    </Step>
+    <Step index={1} title="Limites et Asymptotes">
+      <IB label="En +\infty"><BM t={T.R2E4_lim} /></IB>
+      <RB>La courbe admet une branche parabolique de direction <IM t="(Oy)" />.</RB>
+    </Step>
+    <Step index={2} title="Dérivées">
+      <IB label="Dérivée 1"><BM t={T.R2E4_deriv} /></IB>
+      <IB label="Dérivée 2"><BM t={T.R2E4_deriv2} /></IB>
+      <RB><IM t="O(0,0)" /> est un point d'inflexion. Tangente <IM t="(T): y = 3x" />.</RB>
+    </Step>
+    <Step index={3} title="Aire sous la courbe">
+      <IB label="Intégrale sur [-1, 1]"><BM t={T.R2E4_aire} /></IB>
+    </Step>
+  </>)
+}
+
+
+// ── R3-E1 ─────────────────────────────────────────────────────────────────────
+function R3E1() {
+  return (<>
+    <Step index={0} title="Calcul du déterminant">
+      <IB label="Calcul">
+        <BM t={T.R3E1_det} />
+      </IB>
+      <RB><IM t="\\det(A) = -18 \\neq 0" />, la matrice est inversible.</RB>
+    </Step>
+    <Step index={1} title="Produit matriciel et Inversion">
+      <IB label="Produit A x B">
+        <BM t={T.R3E1_prod} />
+      </IB>
+      <IB label="Déduction">
+        <BM t={T.R3E1_inv} />
+      </IB>
+    </Step>
+    <Step index={2} title="Résolution du système">
+      <IB label="Calcul matriciel">
+        <BM t={T.R3E1_sys} />
+      </IB>
+      <RB>La solution est le triplet <IM t="(4, 12, -1)" />.</RB>
+    </Step>
+  </>)
+}
+
+// ── R3-E2 ─────────────────────────────────────────────────────────────────────
+function R3E2() {
+  return (<>
+    <Step index={0} title="Analyse de la matrice">
+      <IB label="Symétrie"><BM t={T.R3E2_sym} /></IB>
+      <RB>Le graphe <IM t="G" /> est orienté.</RB>
+    </Step>
+    <Step index={1} title="Graphe Eulérien">
+      <IB label="Degrés du sommet A"><BM t={T.R3E2_deg} /></IB>
+      <RB>Il n'existe ni cycle eulérien, ni chaîne eulérienne.</RB>
+    </Step>
+    <Step index={2} title="Chemins et circuit court">
+      <IB label="Chemins de longueur 6"><BM t={T.R3E2_m6} /></IB>
+      <IB label="Durée minimale"><BM t={T.R3E2_chem} /></IB>
+      <RB>La durée minimale est de 27 minutes.</RB>
+    </Step>
+  </>)
+}
+
+// ── R3-E3 ─────────────────────────────────────────────────────────────────────
+function R3E3() {
+  return (<>
+    <Step index={0} title="Probabilité totale">
+      <IB label="P(D)"><BM t={T.R3E3_pd} /></IB>
+    </Step>
+    <Step index={1} title="Probabilité conditionnelle">
+      <IB label="Bayes"><BM t={T.R3E3_psd} /></IB>
+    </Step>
+    <Step index={2} title="Événement contraire">
+      <IB label="Au moins 1 défectueux"><BM t={T.R3E3_p3} /></IB>
+    </Step>
+  </>)
+}
+
+// ── R3-E4 ─────────────────────────────────────────────────────────────────────
+function R3E4() {
+  return (<>
+    <Step index={0} title="Limites et Asymptotes">
+      <IB label="Calcul"><BM t={T.R3E4_lim1} /></IB>
+      <RB>Asymptote verticale en <IM t="x=0" />, et horizontale en <IM t="y=0" />.</RB>
+    </Step>
+    <Step index={1} title="Dérivée et Variations">
+      <IB label="f'(x)"><BM t={T.R3E4_deriv} /></IB>
+      <IB label="Signe"><BM t={T.R3E4_signe} /></IB>
+      <RB><IM t="f" /> est croissante sur <IM t="]0, e]" /> et décroissante sur <IM t="[e, +\\infty[" />.</RB>
+    </Step>
+    <Step index={2} title="Primitive et Aire">
+      <IB label="Primitive"><BM t={T.R3E4_prim} /></IB>
+      <IB label="Intégrale sur [1, e]"><BM t={T.R3E4_aire} /></IB>
+    </Step>
+  </>)
+}
 
 // ── T4-E1 ─────────────────────────────────────────────────────────────────────
 function T4E1() { return (<>
@@ -1351,18 +1359,10 @@ function TEST5E5() { return (<>
 </>)}
 
 const DB = {
-  'T1-E1': { title:'Matrices et Systèmes',    badge:'Sujet 1 · Ex.1 · Algèbre',       C:<T1E1/> },
-  'T1-E2': { title:'Suites Numériques',        badge:'Sujet 1 · Ex.2 · Analyse',       C:<T1E2/> },
-  'T1-E3': { title:'Statistiques',             badge:'Sujet 1 · Ex.3 · Stats',         C:<T1E3/> },
-  'T1-E4': { title:'Étude de Fonction — Ln',   badge:'Sujet 1 · Ex.4 · Analyse',       C:<T1E4/> },
-  'T2-E1': { title:'Matrices et Applications', badge:'Sujet 2 · Ex.1 · Algèbre',       C:<T2E1/> },
-  'T2-E2': { title:'Suites Numériques',        badge:'Sujet 2 · Ex.2 · Analyse',       C:<T2E2/> },
-  'T2-E3': { title:'Statistiques',             badge:'Sujet 2 · Ex.3 · Stats',         C:<T2E3/> },
-  'T2-E4': { title:'Étude de Fonction — Exp',  badge:'Sujet 2 · Ex.4 · Analyse',       C:<T2E4/> },
-  'T3-E1': { title:'Matrices et Suites',       badge:'Sujet 3 · Ex.1 · Algèbre',       C:<T3E1/> },
-  'T3-E2': { title:'Théorie des Graphes',      badge:'Sujet 3 · Ex.2 · Graphes',       C:<T3E2/> },
-  'T3-E3': { title:'Probabilités',             badge:'Sujet 3 · Ex.3 · Proba',         C:<T3E3/> },
-  'T3-E4': { title:'Étude de Fonction — Ln',   badge:'Sujet 3 · Ex.4 · Analyse',       C:<T3E4/> },
+  'T2-E1': { title:'Matrices et Systèmes', badge:'Sujet 2 · Ex.1', C:<T2E1/> },
+  'T2-E2': { title:'Suites Numériques', badge:'Sujet 2 · Ex.2', C:<T2E2/> },
+  'T2-E3': { title:'Statistiques', badge:'Sujet 2 · Ex.3', C:<T2E3/> },
+  'T2-E4': { title:'Étude de Fonction', badge:'Sujet 2 · Ex.4', C:<T2E4/> },
   'T4-E1': { title:'Matrices',                 badge:'Sujet 4 · Ex.1 · Algèbre',       C:<T4E1/> },
   'T4-E2': { title:'Suites Numériques',        badge:'Sujet 4 · Ex.2 · Analyse',       C:<T4E2/> },
   'T4-E3': { title:'Statistiques',             badge:'Sujet 4 · Ex.3 · Stats',         C:<T4E3/> },
@@ -1371,58 +1371,58 @@ const DB = {
   'T5-E2': { title:'Statistiques',             badge:'Sujet 5 · Ex.2 · Stats',         C:<T5E2/> },
   'T5-E3': { title:'Théorie des Graphes',      badge:'Sujet 5 · Ex.3 · Graphes',       C:<T5E3/> },
   'T5-E4': { title:'Matrices et Fonction Ln',  badge:'Sujet 5 · Ex.4 · Analyse',       C:<T5E4/> },
-  
-  // Sujet 6 à 10
   'T6-E1': { title:'Matrices et Systèmes', badge:'Sujet 6 · Ex.1', C:<T6E1/> },
   'T6-E2': { title:'Suites numériques', badge:'Sujet 6 · Ex.2', C:<T6E2/> },
   'T6-E3': { title:'Probabilités — Formation', badge:'Sujet 6 · Ex.3', C:<T6E3/> },
   'T6-E4': { title:'Étude de fonction — Exponentielle', badge:'Sujet 6 · Ex.4', C:<T6E4/> },
-
   'T7-E1': { title:'Matrices et Systèmes', badge:'Sujet 7 · Ex.1', C:<T7E1/> },
   'T7-E2': { title:'Graphes orientés — Graphe d\'ordre 7', badge:'Sujet 7 · Ex.2', C:<T7E2/> },
   'T7-E3': { title:'Statistiques — Prix d\'équilibre', badge:'Sujet 7 · Ex.3', C:<T7E3/> },
   'T7-E4': { title:'Étude de fonction — Logarithme', badge:'Sujet 7 · Ex.4', C:<T7E4/> },
-
   'T8-E1': { title:'Matrices et Systèmes', badge:'Sujet 8 · Ex.1', C:<T8E1/> },
   'T8-E2': { title:'Probabilités', badge:'Sujet 8 · Ex.2', C:<T8E2/> },
   'T8-E3': { title:'Suites numériques', badge:'Sujet 8 · Ex.3', C:<T8E3/> },
   'T8-E4': { title:'Étude de fonction — Exponentielle', badge:'Sujet 8 · Ex.4', C:<T8E4/> },
-
   'T9-E1': { title:'Probabilités', badge:'Sujet 9 · Ex.1', C:<T9E1/> },
   'T9-E2': { title:'Matrices et Systèmes', badge:'Sujet 9 · Ex.2', C:<T9E2/> },
   'T9-E3': { title:'Analyse — Lecture Graphique', badge:'Sujet 9 · Ex.3', C:<T9E3/> },
   'T9-E4': { title:'Théorie des Graphes', badge:'Sujet 9 · Ex.4', C:<T9E4/> },
-
   'T10-E1': { title:'Statistiques — Ajustement', badge:'Sujet 10 · Ex.1', C:<T10E1/> },
   'T10-E2': { title:'Matrices et Systèmes', badge:'Sujet 10 · Ex.2', C:<T10E2/> },
   'T10-E3': { title:'Analyse — Fonctions', badge:'Sujet 10 · Ex.3', C:<T10E3/> },
   'T10-E4': { title:'Théorie des Graphes — Non orienté', badge:'Sujet 10 · Ex.4', C:<T10E4/> },
-
-  // Tests 1 à 5
+  'R1-E1': { title:'Nombres Complexes — Équations et Géométrie', badge:'Révision 1 · Ex.1 · Complexes',    C:<R1E1/> },
+  'R1-E2': { title:'Arithmétique — Congruences et Puissances',   badge:'Révision 1 · Ex.2 · Arithmétique', C:<R1E2/> },
+  'R1-E3': { title:'Statistiques — Cloud Computing en Tunisie',  badge:'Révision 1 · Ex.3 · Statistiques', C:<R1E3/> },
+  'R1-E4': { title:'Étude de Fonction — f(x)=(1-x²)ln(x)',      badge:'Révision 1 · Ex.4 · Analyse',      C:<R1E4/> },
+  'R2-E1': { title:'Nombres Complexes — Équations et Géométrie', badge:'Révision 2 · Ex.1', C:<R2E1/> },
+  'R2-E2': { title:'Suites Numériques',        badge:'Révision 2 · Ex.2', C:<R2E2/> },
+  'R2-E3': { title:'Statistiques',             badge:'Révision 2 · Ex.3', C:<R2E3/> },
+  'R2-E4': { title:'Étude de Fonction',        badge:'Révision 2 · Ex.4', C:<R2E4/> },
+  'R3-E1': { title:'Matrices et Suites',       badge:'Révision 3 · Ex.1', C:<R3E1/> },
+  'R3-E2': { title:'Théorie des Graphes',      badge:'Révision 3 · Ex.2', C:<R3E2/> },
+  'R3-E3': { title:'Probabilités',             badge:'Révision 3 · Ex.3', C:<R3E3/> },
+  'R3-E4': { title:'Étude de Fonction',        badge:'Révision 3 · Ex.4', C:<R3E4/> },
   'TEST1-E1': { title:'Fonctions Exponentielles', badge:'Test 1 · Ex.1', C:<TEST1E1/> },
   'TEST1-E2': { title:'Théorie des Graphes et Matrices', badge:'Test 1 · Ex.2', C:<TEST1E2/> },
   'TEST1-E3': { title:'Probabilités et Variables Aléatoires', badge:'Test 1 · Ex.3', C:<TEST1E3/> },
   'TEST1-E4': { title:'Statistiques', badge:'Test 1 · Ex.4', C:<TEST1E4/> },
   'TEST1-E5': { title:'Suites Numériques', badge:'Test 1 · Ex.5', C:<TEST1E5/> },
-
   'TEST2-E1': { title:'Fonctions Logarithmes', badge:'Test 2 · Ex.1', C:<TEST2E1/> },
   'TEST2-E2': { title:'Analyse et Lecture graphique', badge:'Test 2 · Ex.2', C:<TEST2E2/> },
   'TEST2-E3': { title:'Matrices et Systèmes', badge:'Test 2 · Ex.3', C:<TEST2E3/> },
   'TEST2-E4': { title:'Suites numériques', badge:'Test 2 · Ex.4', C:<TEST2E4/> },
   'TEST2-E5': { title:'Graphes Probabilistes', badge:'Test 2 · Ex.5', C:<TEST2E5/> },
-
   'TEST3-E1': { title:'Évaluation QCM - Ex.1', badge:'Test 3 · Ex.1', C:<TEST3E1/> },
   'TEST3-E2': { title:'Évaluation QCM - Ex.2', badge:'Test 3 · Ex.2', C:<TEST3E2/> },
   'TEST3-E3': { title:'Évaluation QCM - Ex.3', badge:'Test 3 · Ex.3', C:<TEST3E3/> },
   'TEST3-E4': { title:'Évaluation QCM - Ex.4', badge:'Test 3 · Ex.4', C:<TEST3E4/> },
   'TEST3-E5': { title:'Évaluation QCM - Ex.5', badge:'Test 3 · Ex.5', C:<TEST3E5/> },
-
   'TEST4-E1': { title:'Évaluation QCM - Ex.1', badge:'Test 4 · Ex.1', C:<TEST4E1/> },
   'TEST4-E2': { title:'Évaluation QCM - Ex.2', badge:'Test 4 · Ex.2', C:<TEST4E2/> },
   'TEST4-E3': { title:'Évaluation QCM - Ex.3', badge:'Test 4 · Ex.3', C:<TEST4E3/> },
   'TEST4-E4': { title:'Évaluation QCM - Ex.4', badge:'Test 4 · Ex.4', C:<TEST4E4/> },
   'TEST4-E5': { title:'Évaluation QCM - Ex.5', badge:'Test 4 · Ex.5', C:<TEST4E5/> },
-
   'TEST5-E1': { title:'Évaluation QCM - Ex.1', badge:'Test 5 · Ex.1', C:<TEST5E1/> },
   'TEST5-E2': { title:'Évaluation QCM - Ex.2', badge:'Test 5 · Ex.2', C:<TEST5E2/> },
   'TEST5-E3': { title:'Évaluation QCM - Ex.3', badge:'Test 5 · Ex.3', C:<TEST5E3/> },
@@ -1431,6 +1431,7 @@ const DB = {
 }
 
 export default function App() {
+  console.log("App component rendering");
   const [exoId, setExoId] = useState('')
   const [input, setInput] = useState('')
   const [correction, setCorrection] = useState(null)

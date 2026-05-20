@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation : Placement d'un point complexe irrationnel</title>
+    <style>
+        :root {
+            --primary: #1e3a8a; /* BleuNuit */
+            --accent: #e11d48; /* Rose/Rouge */
+            --bg: #f8fafc;
+            --text: #334155;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 900px;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .step {
+            opacity: 0.3;
+            transition: all 0.5s ease;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            transform: translateX(-10px);
+        }
+        .step.active {
+            opacity: 1;
+            transform: translateX(0);
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+        }
+        .step.done {
+            opacity: 0.7;
+            transform: translateX(0);
+            border-left: 4px solid #cbd5e1;
+        }
+        .step-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        .step-desc {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .math {
+            font-family: 'Cambria Math', serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .controls {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #btn-prev {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        #btn-prev:hover:not(:disabled) {
+            background: #cbd5e1;
+        }
+        #btn-next {
+            background: var(--primary);
+            color: white;
+        }
+        #btn-next:hover:not(:disabled) {
+            background: #1e40af;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: 40%;
+                overflow-y: auto;
+            }
+            .canvas-container {
+                height: 60%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="canvas-container">
+        <canvas id="animCanvas"></canvas>
+    </div>
+    <div class="sidebar">
+        <h2>Placer <span class="math">B(√3 - i)</span></h2>
+        
+        <div class="step active" id="step-0">
+            <div class="step-title">1. Calcul du module</div>
+            <div class="step-desc">On calcule le module de <span class="math">z_B</span> :<br>
+            <span class="math">r = |z_B| = \sqrt{(√3)² + (-1)²} = 2</span><br>
+            Donc <span class="math">B</span> appartient au cercle de centre <span class="math">O</span> et de rayon <span class="math">2</span>.</div>
+        </div>
+        
+        <div class="step" id="step-1">
+            <div class="step-title">2. Partie entière</div>
+            <div class="step-desc">La partie imaginaire de <span class="math">z_B</span> est entière :<br>
+            <span class="math">Im(z_B) = -1 ∈ ℤ</span><br>
+            Donc <span class="math">B</span> appartient à la droite d'équation <span class="math">y = -1</span>.</div>
+        </div>
+        
+        <div class="step" id="step-2">
+            <div class="step-title">3. Intersections</div>
+            <div class="step-desc">Le cercle et la droite se coupent en deux points. Lequel choisir ?</div>
+        </div>
+        
+        <div class="step" id="step-3">
+            <div class="step-title">4. Signe (Partie irrationnelle)</div>
+            <div class="step-desc">On regarde le signe de la partie réelle :<br>
+            <span class="math">Re(z_B) = √3 > 0</span><br>
+            Le point <span class="math">B</span> est donc situé à <strong>droite</strong> de l'axe des ordonnées.</div>
+        </div>
+        
+        <div class="step" id="step-4">
+            <div class="step-title">5. Point B placé</div>
+            <div class="step-desc">Le point <span class="math">B(√3, -1)</span> est localisé avec précision, sans utiliser de valeur approchée !</div>
+        </div>
+
+        <div class="controls">
+            <button id="btn-prev" disabled>Précédent</button>
+            <button id="btn-next">Suivant</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Resize canvas
+    function resize() {
+        const parent = canvas.parentElement;
+        canvas.width = parent.clientWidth * window.devicePixelRatio;
+        canvas.height = parent.clientHeight * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        draw();
+    }
+    window.addEventListener('resize', resize);
+    
+    // Animation state
+    let currentStep = 0;
+    let animProgress = 0;
+    let animRequest = null;
+    
+    const colors = {
+        grid: '#e2e8f0',
+        axes: '#475569',
+        circle: '#3b82f6',
+        line: '#e11d48',
+        point: '#1e3a8a',
+        highlight: '#10b981'
+    };
+    
+    // Data
+    const r = 2;
+    const yLine = -1;
+    const xPoint = Math.sqrt(3);
+    
+    // Coordinate mapping
+    function mapX(x) {
+        const scale = Math.min(canvas.clientWidth, canvas.clientHeight) / 8;
+        return canvas.clientWidth / 2 + x * scale;
+    }
+    
+    function mapY(y) {
+        const scale = Math.min(canvas.clientWidth, canvas.clientHeight) / 8;
+        return canvas.clientHeight / 2 - y * scale;
+    }
+    
+    function drawGrid() {
+        const scale = Math.min(canvas.clientWidth, canvas.clientHeight) / 8;
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        const cx = w / 2;
+        const cy = h / 2;
+        
+        ctx.strokeStyle = colors.grid;
+        ctx.lineWidth = 1;
+        
+        for (let i = 1; i < 10; i++) {
+            ctx.beginPath(); ctx.moveTo(cx + i*scale, 0); ctx.lineTo(cx + i*scale, h); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx - i*scale, 0); ctx.lineTo(cx - i*scale, h); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, cy + i*scale); ctx.lineTo(w, cy + i*scale); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, cy - i*scale); ctx.lineTo(w, cy - i*scale); ctx.stroke();
+        }
+        
+        // Axes
+        ctx.strokeStyle = colors.axes;
+        ctx.lineWidth = 2;
+        // X axis
+        ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+        // Y axis
+        ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
+        
+        // Vectors u, v
+        ctx.strokeStyle = colors.point;
+        ctx.lineWidth = 3;
+        // u
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + scale, cy); ctx.stroke();
+        // arrow u
+        ctx.beginPath(); ctx.moveTo(cx + scale - 8, cy - 5); ctx.lineTo(cx + scale, cy); ctx.lineTo(cx + scale - 8, cy + 5); ctx.stroke();
+        // v
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy - scale); ctx.stroke();
+        // arrow v
+        ctx.beginPath(); ctx.moveTo(cx - 5, cy - scale + 8); ctx.lineTo(cx, cy - scale); ctx.lineTo(cx + 5, cy - scale + 8); ctx.stroke();
+        
+        // Labels
+        ctx.fillStyle = colors.axes;
+        ctx.font = '16px "Cambria Math", serif';
+        ctx.fillText('O', cx - 15, cy + 20);
+        ctx.fillText('u', cx + scale/2, cy + 20);
+        ctx.fillText('v', cx - 20, cy - scale/2);
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        drawGrid();
+        
+        const scale = Math.min(canvas.clientWidth, canvas.clientHeight) / 8;
+        
+        // Step 0: Circle
+        if (currentStep >= 0) {
+            let currentRadius = r * scale;
+            if (currentStep === 0) currentRadius *= animProgress;
+            
+            if (currentRadius > 0) {
+                ctx.beginPath();
+                ctx.arc(mapX(0), mapY(0), currentRadius, 0, 2*Math.PI);
+                ctx.strokeStyle = colors.circle;
+                ctx.lineWidth = 2;
+                ctx.setLineDash(currentStep === 0 ? [5, 5] : []);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                if (currentStep === 0 && animProgress > 0.5) {
+                    ctx.fillStyle = colors.circle;
+                    ctx.fillText('C(O, 2)', mapX(1.5), mapY(1.5));
+                }
+            }
+        }
+        
+        // Step 1: Horizontal Line
+        if (currentStep >= 1) {
+            let width = canvas.clientWidth;
+            if (currentStep === 1) width *= animProgress;
+            
+            if (width > 0) {
+                const yPos = mapY(yLine);
+                ctx.beginPath();
+                ctx.moveTo(mapX(0) - width/2, yPos);
+                ctx.lineTo(mapX(0) + width/2, yPos);
+                ctx.strokeStyle = colors.line;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                if (currentStep === 1 && animProgress > 0.5) {
+                    ctx.fillStyle = colors.line;
+                    ctx.fillText('y = -1', mapX(-3), yPos - 10);
+                }
+            }
+        }
+        
+        // Step 2: Intersections
+        if (currentStep >= 2) {
+            const alpha = currentStep === 2 ? animProgress : 1;
+            ctx.globalAlpha = alpha;
+            
+            // Left intersection
+            ctx.beginPath();
+            ctx.arc(mapX(-xPoint), mapY(yLine), 5, 0, 2*Math.PI);
+            ctx.fillStyle = 'gray';
+            ctx.fill();
+            
+            // Right intersection
+            ctx.beginPath();
+            ctx.arc(mapX(xPoint), mapY(yLine), 5, 0, 2*Math.PI);
+            ctx.fill();
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        // Step 3: Signe
+        if (currentStep >= 3) {
+            const alpha = currentStep === 3 ? animProgress : 1;
+            
+            // Highlight right side
+            ctx.globalAlpha = alpha * 0.1;
+            ctx.fillStyle = colors.highlight;
+            ctx.fillRect(mapX(0), 0, canvas.clientWidth / 2, canvas.clientHeight);
+            
+            ctx.globalAlpha = alpha;
+            // Cross out left intersection
+            const lx = mapX(-xPoint);
+            const ly = mapY(yLine);
+            ctx.beginPath();
+            ctx.moveTo(lx - 10, ly - 10); ctx.lineTo(lx + 10, ly + 10);
+            ctx.moveTo(lx + 10, ly - 10); ctx.lineTo(lx - 10, ly + 10);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Highlight right intersection
+            ctx.beginPath();
+            ctx.arc(mapX(xPoint), mapY(yLine), 6, 0, 2*Math.PI);
+            ctx.fillStyle = colors.highlight;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        // Step 4: Final Point B
+        if (currentStep >= 4) {
+            const alpha = currentStep === 4 ? animProgress : 1;
+            ctx.globalAlpha = alpha;
+            
+            ctx.beginPath();
+            ctx.arc(mapX(xPoint), mapY(yLine), 7, 0, 2*Math.PI);
+            ctx.fillStyle = colors.point;
+            ctx.fill();
+            
+            ctx.fillStyle = colors.point;
+            ctx.font = 'bold 18px "Cambria Math", serif';
+            ctx.fillText('B', mapX(xPoint) + 10, mapY(yLine) - 10);
+            
+            // Draw vector OB
+            ctx.beginPath();
+            ctx.moveTo(mapX(0), mapY(0));
+            ctx.lineTo(mapX(xPoint), mapY(yLine));
+            ctx.strokeStyle = colors.point;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Projection on X axis
+            ctx.beginPath();
+            ctx.moveTo(mapX(xPoint), mapY(yLine));
+            ctx.lineTo(mapX(xPoint), mapY(0));
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = colors.axes;
+            ctx.font = '14px sans-serif';
+            ctx.fillText('√3', mapX(xPoint) - 10, mapY(0) - 10);
+            
+            ctx.globalAlpha = 1;
+        }
+    }
+    
+    function animate() {
+        if (animProgress < 1) {
+            animProgress += 0.04;
+            if (animProgress > 1) animProgress = 1;
+            draw();
+            animRequest = requestAnimationFrame(animate);
+        }
+    }
+    
+    function updateUI() {
+        document.querySelectorAll('.step').forEach((el, idx) => {
+            el.classList.remove('active', 'done');
+            if (idx === currentStep) el.classList.add('active');
+            else if (idx < currentStep) el.classList.add('done');
+        });
+        
+        document.getElementById('btn-prev').disabled = currentStep === 0;
+        document.getElementById('btn-next').disabled = currentStep === 4;
+        
+        animProgress = 0;
+        cancelAnimationFrame(animRequest);
+        animate();
+    }
+    
+    document.getElementById('btn-prev').addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            updateUI();
+        }
+    });
+    
+    document.getElementById('btn-next').addEventListener('click', () => {
+        if (currentStep < 4) {
+            currentStep++;
+            updateUI();
+        }
+    });
+    
+    // Init
+    setTimeout(() => {
+        resize();
+        updateUI();
+    }, 100);
+</script>
+</body>
+</html>
