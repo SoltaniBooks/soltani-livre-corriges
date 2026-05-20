@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 3 — Exercice 4 : Étude de Fonction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+      line-height: 1.7;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    .page-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #2d4a7a;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+      border-radius: 14px 14px 0 0;
+    }
+    .page-header .ex-label {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #60a5fa; margin-bottom: 0.5rem;
+    }
+    .page-header h1 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700; color: #f1f5f9; margin-bottom: 0.4rem;
+    }
+    .page-header .subtitle { font-size: 0.9rem; color: #94a3b8; }
+    .points-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: #3b82f6; color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 0.3rem 0.8rem; border-radius: 20px;
+    }
+
+    .question-block {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+    .question-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      background: #0f1f35; border-bottom: 1px solid #334155;
+    }
+    .q-badge {
+      background: #3b82f6; color: #fff;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 0.2rem 0.65rem; border-radius: 20px; white-space: nowrap;
+    }
+    .question-header h2 { font-size: 0.95rem; font-weight: 600; color: #bfdbfe; }
+    .question-body { padding: 1.2rem; }
+
+    .step {
+      display: flex; gap: 0.9rem;
+      margin-bottom: 1rem; align-items: flex-start;
+    }
+    .step-num {
+      min-width: 28px; height: 28px;
+      border-radius: 50%; background: #334155; color: #94a3b8;
+      font-size: 0.75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-content { flex: 1; font-size: 0.92rem; color: #cbd5e1; }
+
+    .answer-box {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      margin-top: 0.8rem;
+      display: flex; align-items: flex-start; gap: 0.7rem;
+    }
+    .answer-box .ans-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-box .ans-content { color: #6ee7b7; font-size: 0.92rem; font-weight: 500; }
+
+    .logic-box {
+      background: linear-gradient(135deg, #451a03, #78350f);
+      border: 1.5px solid #f59e0b; border-radius: 10px;
+      padding: 0.85rem 1.1rem; margin-top: 0.8rem;
+    }
+    .logic-box .logic-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fcd34d; margin-bottom: 0.4rem;
+    }
+    .logic-box .logic-content { color: #fde68a; font-size: 0.9rem; }
+
+    .calc-box {
+      background: linear-gradient(135deg, #2e1065, #3b0764);
+      border: 1.5px solid #7c3aed; border-radius: 10px;
+      padding: 0.85rem 1.1rem; margin-top: 0.8rem;
+    }
+    .calc-box .calc-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #c4b5fd; margin-bottom: 0.4rem;
+    }
+    .calc-box .calc-content { color: #ddd6fe; font-size: 0.9rem; }
+
+    .section-title {
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #3b82f6; margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.4rem; border-bottom: 1px solid #1e3a5f;
+    }
+
+    /* Variation table */
+    .var-table {
+      width: 100%; border-collapse: collapse;
+      margin: 0.8rem 0; font-size: 0.85rem;
+      overflow-x: auto; display: block;
+    }
+    .var-table th {
+      background: #0f1f35; color: #60a5fa;
+      padding: 0.5rem 1rem; border: 1px solid #334155;
+      font-weight: 600; text-align: center; white-space: nowrap;
+    }
+    .var-table td {
+      background: #1e293b; color: #cbd5e1;
+      padding: 0.5rem 1rem; border: 1px solid #334155;
+      text-align: center; white-space: nowrap;
+    }
+    .var-table .sign-pos { color: #34d399; font-weight: 700; font-size: 1rem; }
+    .var-table .sign-neg { color: #f87171; font-weight: 700; font-size: 1rem; }
+    .var-table .arrow-up { color: #34d399; font-size: 1.2rem; }
+    .var-table .neg-inf { color: #f87171; }
+    .var-table .pos-inf { color: #34d399; }
+
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #cbd5e1; }
+    .check { color: #34d399; font-weight: 700; }
+    .important { color: #fbbf24; font-weight: 600; }
+
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .page-header { padding: 1.3rem 1rem; }
+      .question-body { padding: 0.9rem; }
+      .points-badge { position: static; display: inline-block; margin-top: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <a href="../index.html" class="back-btn">&#8592; Retour</a>
+    <div class="breadcrumb">
+      <span>🏠</span>
+      <span class="sep">›</span>
+      <span>Sujet 3</span>
+      <span class="sep">›</span>
+      <span>Exercice 4</span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="ex-label">4ème Informatique — Révision N°3</div>
+    <h1>Exercice 4 : Étude de Fonction</h1>
+    <p class="subtitle">$f(x) = \dfrac{1}{2}x^2 + \dfrac{1}{2} + \ln x$ sur $]0\,;+\infty[$</p>
+    <div class="points-badge">5 pts</div>
+  </div>
+
+  <!-- PARTIE 1 -->
+  <div class="section-title">Partie 1 — Limites et comportement asymptotique</div>
+
+  <!-- Q1a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1a</span>
+      <h2>Limite en $0^+$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $\lim_{x \to 0^+} \left(\dfrac{1}{2}x^2 + \dfrac{1}{2}\right) = \dfrac{1}{2}$ (terme fini)
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          $\lim_{x \to 0^+} \ln x = -\infty$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Par somme : $\lim_{x \to 0^+} f(x) = \dfrac{1}{2} + (-\infty) = -\infty$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $\lim_{x \to 0^+} f(x) = -\infty$<br>
+          La droite $x = 0$ est une <strong>asymptote verticale</strong> à la courbe $(C)$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1b</span>
+      <h2>Limite en $+\infty$ — Branche infinie</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $\lim_{x \to +\infty} f(x) = +\infty$ (car $\frac{1}{2}x^2 \to +\infty$)
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Nature de la branche infinie :</strong> On étudie $\dfrac{f(x)}{x}$ :
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Calcul</div>
+            <div class="calc-content">
+              $\dfrac{f(x)}{x} = \dfrac{\frac{1}{2}x^2 + \frac{1}{2} + \ln x}{x} = \dfrac{1}{2}x + \dfrac{1}{2x} + \dfrac{\ln x}{x}$<br><br>
+              Or $\lim_{x \to +\infty} \dfrac{\ln x}{x} = 0$ et $\dfrac{1}{2}x \to +\infty$<br><br>
+              Donc $\lim_{x \to +\infty} \dfrac{f(x)}{x} = +\infty$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $\lim_{x \to +\infty} f(x) = +\infty$ et $\lim_{x \to +\infty} \dfrac{f(x)}{x} = +\infty$<br>
+          La courbe $(C)$ admet une <strong>branche parabolique de direction $(Oy)$</strong> en $+\infty$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 2 -->
+  <div class="section-title">Partie 2 — Dérivée et variations</div>
+
+  <!-- Q2a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2a</span>
+      <h2>Signe de $f'(x)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On calcule $f'(x)$ :
+          $$f'(x) = x + \frac{1}{x} = \frac{x^2 + 1}{x}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Pour $x \in \,]0\,;+\infty[$ : $x^2 + 1 > 0$ et $x > 0$, donc $f'(x) > 0$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $f'(x) > 0$ sur $]0\,;+\infty[$. La fonction $f$ est <strong>strictement croissante</strong> sur $]0\,;+\infty[$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2b</span>
+      <h2>Tableau de variations</h2>
+    </div>
+    <div class="question-body">
+      <div style="overflow-x:auto;">
+        <table class="var-table">
+          <thead>
+            <tr>
+              <th>$x$</th>
+              <th>$0^+$</th>
+              <th style="width:40%"></th>
+              <th>$+\infty$</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>$f'(x)$</strong></td>
+              <td></td>
+              <td class="sign-pos">$+$</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>$f(x)$</strong></td>
+              <td class="neg-inf">$-\infty$</td>
+              <td class="arrow-up">↗</td>
+              <td class="pos-inf">$+\infty$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$f$ est strictement croissante de $-\infty$ vers $+\infty$ sur $]0\,;+\infty[$.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2c</span>
+      <h2>Existence et encadrement de la solution $\alpha$ de $f(x) = 0$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Existence et unicité :</strong> $f$ est continue et strictement croissante sur $]0\,;+\infty[$, avec $\lim_{0^+}f = -\infty$ et $\lim_{+\infty}f = +\infty$. D'après le TVI, l'équation $f(x) = 0$ admet une <strong>unique solution</strong> $\alpha$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Encadrement :</strong>
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Calcul des valeurs</div>
+            <div class="calc-content">
+              $f(0{,}5) = \dfrac{1}{2}(0{,}25) + \dfrac{1}{2} + \ln(0{,}5) = 0{,}125 + 0{,}5 - 0{,}693 \approx -0{,}068 < 0$<br><br>
+              $f(0{,}6) = \dfrac{1}{2}(0{,}36) + \dfrac{1}{2} + \ln(0{,}6) = 0{,}18 + 0{,}5 - 0{,}511 \approx 0{,}169 > 0$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Comme $f(0{,}5) < 0 < f(0{,}6)$ et $f$ est continue et strictement croissante, le TVI garantit que $\alpha \in ]0{,}5\,;\,0{,}6[$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">D'après le TVI : $0{,}5 < \alpha < 0{,}6$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 3 -->
+  <div class="section-title">Partie 3 — Dérivée seconde et point d'inflexion</div>
+
+  <!-- Q3a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q3a</span>
+      <h2>Calcul de $f''(x)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $f'(x) = x + x^{-1}$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          $$f''(x) = 1 - \frac{1}{x^2} = \frac{x^2 - 1}{x^2}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$f''(x) = 1 - \dfrac{1}{x^2} = \dfrac{x^2-1}{x^2}$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q3b</span>
+      <h2>Point d'inflexion $G(1\,;\,1)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Annulation :</strong> $f''(1) = 1 - 1 = 0$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Changement de signe :</strong>
+          <ul style="margin-left:1rem; margin-top:0.3rem;">
+            <li>Pour $0 < x < 1$ : $x^2 < 1$, donc $x^2 - 1 < 0$, donc $f''(x) < 0$ (concave)</li>
+            <li>Pour $x > 1$ : $x^2 > 1$, donc $x^2 - 1 > 0$, donc $f''(x) > 0$ (convexe)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Ordonnée du point :</strong> $f(1) = \dfrac{1}{2}(1) + \dfrac{1}{2} + \ln 1 = \dfrac{1}{2} + \dfrac{1}{2} + 0 = 1$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$G(1\,;\,1)$ est le <strong>point d'inflexion</strong> de $(C)$ (changement de concavité en $x=1$).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q3c</span>
+      <h2>Équation de la tangente $T$ en $G$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Pente : $f'(1) = 1 + \dfrac{1}{1} = 2$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Tangente en $G(1\,;\,1)$ : $y = f'(1)(x-1) + f(1) = 2(x-1) + 1 = 2x - 1$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$T :\ y = 2x - 1$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 4 -->
+  <div class="section-title">Partie 4 — Position relative de $(C)$ par rapport à $T$</div>
+
+  <!-- Q4a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q4a</span>
+      <h2>Étude de $g(x) = f(x) - (2x - 1)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $g(x) = \dfrac{1}{2}x^2 + \dfrac{1}{2} + \ln x - 2x + 1 = \dfrac{1}{2}x^2 - 2x + \dfrac{3}{2} + \ln x$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Dérivée de $g$</div>
+            <div class="calc-content">
+              $g'(x) = x + \dfrac{1}{x} - 2 = \dfrac{x^2 - 2x + 1}{x} = \dfrac{(x-1)^2}{x}$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Pour $x \in\, ]0\,;+\infty[$, $(x-1)^2 \geq 0$ et $x > 0$, donc $g'(x) \geq 0$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$g'(x) = \dfrac{(x-1)^2}{x} \geq 0$ sur $]0\,;+\infty[$. La fonction $g$ est <strong>croissante</strong> sur $]0\,;+\infty[$.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q4b</span>
+      <h2>Signe de $g(x)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $g(1) = f(1) - (2 \times 1 - 1) = 1 - 1 = 0$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          $g$ est croissante et s'annule uniquement en $x = 1$ (car $g' = 0$ seulement en $x=1$, sinon $g' > 0$) :
+          <ul style="margin-left:1rem; margin-top:0.3rem;">
+            <li>Pour $x \in\, ]0\,;\,1[$ : $g(x) < g(1) = 0$</li>
+            <li>Pour $x \in\, ]1\,;\,+\infty[$ : $g(x) > g(1) = 0$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $g(x) < 0$ sur $]0\,;\,1[$ et $g(x) > 0$ sur $]1\,;+\infty[$ ; $g(1) = 0$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q4c</span>
+      <h2>Position relative de $(C)$ par rapport à $T$</h2>
+    </div>
+    <div class="question-body">
+      <div class="logic-box">
+        <div class="logic-label">Interprétation géométrique</div>
+        <div class="logic-content">
+          $g(x) = f(x) - (2x-1)$ mesure l'écart vertical entre $(C)$ et $T$.
+        </div>
+      </div>
+      <div class="answer-box" style="margin-top:0.8rem;">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          • Sur $]0\,;\,1[$ : $g(x) < 0$, donc $(C)$ est <strong>en-dessous</strong> de $T$.<br>
+          • En $x = 1$ : $(C)$ et $T$ sont tangentes au point $G(1\,;\,1)$.<br>
+          • Sur $]1\,;+\infty[$ : $g(x) > 0$, donc $(C)$ est <strong>au-dessus</strong> de $T$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 5 -->
+  <div class="section-title">Partie 5 — Calcul d'aire</div>
+
+  <!-- Q5a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q5a</span>
+      <h2>Aire $\mathscr{A} = \displaystyle\int_1^e g(x)\,dx$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $g(x) = \dfrac{1}{2}x^2 - 2x + \dfrac{3}{2} + \ln x$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Primitive de $g$ :</strong> On cherche $G_0$ telle que $G_0' = g$.
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Primitives terme à terme</div>
+            <div class="calc-content">
+              $\int \dfrac{1}{2}x^2\,dx = \dfrac{1}{6}x^3$<br>
+              $\int (-2x)\,dx = -x^2$<br>
+              $\int \dfrac{3}{2}\,dx = \dfrac{3}{2}x$<br>
+              $\int \ln x\,dx = x\ln x - x$ (IPP)<br><br>
+              Donc : $G_0(x) = \dfrac{1}{6}x^3 - x^2 + \dfrac{3}{2}x + x\ln x - x = \dfrac{1}{6}x^3 - x^2 + \dfrac{1}{2}x + x\ln x$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Calcul de $G_0(e) - G_0(1)$</div>
+            <div class="calc-content">
+              $G_0(e) = \dfrac{e^3}{6} - e^2 + \dfrac{e}{2} + e \cdot 1 = \dfrac{e^3}{6} - e^2 + \dfrac{3e}{2}$<br><br>
+              $G_0(1) = \dfrac{1}{6} - 1 + \dfrac{1}{2} + 0 = \dfrac{1}{6} - \dfrac{1}{2} = \dfrac{1-3}{6} = -\dfrac{1}{3}$<br><br>
+              $\mathscr{A} = G_0(e) - G_0(1) = \dfrac{e^3}{6} - e^2 + \dfrac{3e}{2} - \left(-\dfrac{1}{3}\right) = \dfrac{e^3}{6} - e^2 + \dfrac{3e}{2} + \dfrac{1}{3}$<br><br>
+              Numériquement : $\approx \dfrac{20{,}09}{6} - 7{,}39 + \dfrac{3 \times 2{,}718}{2} + 0{,}333 \approx 3{,}348 - 7{,}389 + 4{,}077 + 0{,}333 \approx 0{,}37$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $$\mathscr{A} = \frac{e^3}{6} - e^2 + \frac{3e}{2} + \frac{1}{3} \approx 0{,}37 \text{ u.a.}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

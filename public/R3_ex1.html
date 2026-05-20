@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 3 — Exercice 1 : Nombres Complexes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+      line-height: 1.7;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Back button & breadcrumb */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    /* Header */
+    .page-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #2d4a7a;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+      border-radius: 14px 14px 0 0;
+    }
+    .page-header .ex-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+    }
+    .page-header h1 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+    .page-header .subtitle {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    .points-badge {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    /* Question blocks */
+    .question-block {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      background: #0f1f35;
+      border-bottom: 1px solid #334155;
+    }
+    .q-badge {
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .question-header h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #bfdbfe;
+    }
+    .question-body { padding: 1.2rem; }
+
+    /* Step */
+    .step {
+      display: flex;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #334155;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; font-size: 0.92rem; color: #cbd5e1; }
+
+    /* Answer box */
+    .answer-box {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    .answer-box .ans-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .answer-box .ans-content {
+      color: #6ee7b7;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    /* Logic box (amber) */
+    .logic-box {
+      background: linear-gradient(135deg, #451a03, #78350f);
+      border: 1.5px solid #f59e0b;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .logic-box .logic-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fcd34d;
+      margin-bottom: 0.4rem;
+    }
+    .logic-box .logic-content { color: #fde68a; font-size: 0.9rem; }
+
+    /* Calc box (purple) */
+    .calc-box {
+      background: linear-gradient(135deg, #2e1065, #3b0764);
+      border: 1.5px solid #7c3aed;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .calc-box .calc-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 0.4rem;
+    }
+    .calc-box .calc-content { color: #ddd6fe; font-size: 0.9rem; }
+
+    /* Section divider */
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #3b82f6;
+      margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #1e3a5f;
+    }
+
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #cbd5e1; }
+    .math-display { overflow-x: auto; padding: 0.3rem 0; }
+    .check { color: #34d399; font-weight: 700; }
+    .important { color: #fbbf24; font-weight: 600; }
+
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .page-header { padding: 1.3rem 1rem; }
+      .question-body { padding: 0.9rem; }
+      .points-badge { position: static; display: inline-block; margin-top: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <a href="../index.html" class="back-btn">&#8592; Retour</a>
+    <div class="breadcrumb">
+      <span>🏠</span>
+      <span class="sep">›</span>
+      <span>Sujet 3</span>
+      <span class="sep">›</span>
+      <span>Exercice 1</span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="ex-label">4ème Informatique — Révision N°3</div>
+    <h1>Exercice 1 : Nombres Complexes</h1>
+    <p class="subtitle">Équation de degré 3 et Alignement</p>
+    <div class="points-badge">5 pts</div>
+  </div>
+
+  <!-- PARTIE 1 -->
+  <div class="section-title">Partie 1 — Résolution de l'équation $(E)$</div>
+
+  <!-- Q1a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1a</span>
+      <h2>Vérification que $z = 2$ est solution de $(E)$</h2>
+    </div>
+    <div class="question-body">
+      <p>L'équation est : $(E):\ 2z^3-(7+5i)z^2+(4+14i)z+4-8i=0$</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Substituons $z = 2$ dans $(E)$ :
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Calcul</div>
+            <div class="calc-content">
+              $2(2)^3 - (7+5i)(2)^2 + (4+14i)(2) + 4 - 8i$<br>
+              $= 2(8) - (7+5i)(4) + (4+14i)(2) + 4 - 8i$<br>
+              $= 16 - 28 - 20i + 8 + 28i + 4 - 8i$<br>
+              $= (16 - 28 + 8 + 4) + i(-20 + 28 - 8)$<br>
+              $= 0 + 0i = 0$ <span class="check">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$z = 2$ est bien solution de $(E)$.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1b</span>
+      <h2>Détermination de $a$, $b$, $c$ tels que $(E) = (z-2)(az^2+bz+c)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On développe $(z-2)(az^2+bz+c)$ :
+          $$az^3 + bz^2 + cz - 2az^2 - 2bz - 2c = az^3 + (b-2a)z^2 + (c-2b)z - 2c$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Identification des coefficients</strong> avec $2z^3 - (7+5i)z^2 + (4+14i)z + (4-8i)$ :
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Identification</div>
+            <div class="calc-content">
+              $\bullet\ a = 2$<br>
+              $\bullet\ b - 2a = -(7+5i) \Rightarrow b = -(7+5i) + 4 = -3 - 5i$<br>
+              $\bullet\ -2c = 4 - 8i \Rightarrow c = -2 + 4i$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Vérification :</strong> $c - 2b = (-2+4i) - 2(-3-5i) = -2+4i+6+10i = 4+14i$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$a = 2,\quad b = -3-5i,\quad c = -2+4i$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1c</span>
+      <h2>Résolution complète de $(E)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On factorise : $(E) \Leftrightarrow (z-2)\bigl(2z^2-(3+5i)z+(-2+4i)\bigr)=0$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul du discriminant</strong> de $2z^2-(3+5i)z+(-2+4i)$ :
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Discriminant</div>
+            <div class="calc-content">
+              $\Delta = (3+5i)^2 - 4(2)(-2+4i)$<br>
+              $= 9 + 30i - 25 + 16 - 32i$<br>
+              $= (9 - 25 + 16) + i(30 - 32)$<br>
+              $= 0 - 2i = -2i$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Racine carrée de $\Delta = -2i$ :</strong>
+          On cherche $(a+bi)^2 = -2i$. On vérifie que $(1-i)^2 = 1 - 2i - 1 = -2i$.
+          <br>Donc $\sqrt{\Delta} = \pm(1-i)$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Calcul des racines :</strong>
+          <div class="calc-box" style="margin-top:0.5rem;">
+            <div class="calc-label">Racines</div>
+            <div class="calc-content">
+              $z_1 = \dfrac{(3+5i)+(1-i)}{2 \times 2} = \dfrac{4+4i}{4} = 1+i$<br><br>
+              $z_2 = \dfrac{(3+5i)-(1-i)}{4} = \dfrac{2+6i}{4} = \dfrac{1}{2}+\dfrac{3}{2}i$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$$S = \left\{2\,;\; 1+i\,;\; \frac{1}{2}+\frac{3}{2}i\right\}$$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 2 -->
+  <div class="section-title">Partie 2 — Alignement des points $A$, $B$, $C$</div>
+
+  <div class="logic-box">
+    <div class="logic-label">Données</div>
+    <div class="logic-content">
+      $z_A = 2$, $\quad z_B = \dfrac{1}{2}+\dfrac{3}{2}i$, $\quad z_C = 1+i$
+    </div>
+  </div>
+
+  <!-- Q2a -->
+  <div class="question-block" style="margin-top:1rem;">
+    <div class="question-header">
+      <span class="q-badge">Q2a</span>
+      <h2>Calcul de $(z_C - z_A)\overline{(z_B - z_A)}$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $z_C - z_A = (1+i) - 2 = -1+i$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          $z_B - z_A = \dfrac{1}{2}+\dfrac{3}{2}i - 2 = -\dfrac{3}{2}+\dfrac{3}{2}i$
+          $\quad\Rightarrow\quad \overline{z_B - z_A} = -\dfrac{3}{2}-\dfrac{3}{2}i$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Produit</div>
+            <div class="calc-content">
+              $(-1+i)\!\left(-\dfrac{3}{2}-\dfrac{3}{2}i\right)$<br>
+              $= \dfrac{3}{2} + \dfrac{3}{2}i - \dfrac{3}{2}i - \dfrac{3}{2}i^2$<br>
+              $= \dfrac{3}{2} + 0 + \dfrac{3}{2} = 3 \in \mathbb{R}^*$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$(z_C - z_A)\,\overline{(z_B - z_A)} = 3$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2b</span>
+      <h2>Alignement des points $A$, $B$, $C$</h2>
+    </div>
+    <div class="question-body">
+      <div class="logic-box">
+        <div class="logic-label">Critère d'alignement</div>
+        <div class="logic-content">
+          Trois points $A$, $B$, $C$ sont alignés si et seulement si $(z_C - z_A)\overline{(z_B - z_A)} \in \mathbb{R}$.
+        </div>
+      </div>
+      <p style="margin-top:0.8rem;">
+        Ici $(z_C - z_A)\overline{(z_B - z_A)} = 3 \in \mathbb{R}^*$, donc les vecteurs $\overrightarrow{AC}$ et $\overrightarrow{AB}$ sont colinéaires.
+      </p>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">Les points $A$, $B$ et $C$ sont alignés.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2c</span>
+      <h2>Homothétie et invariance de la droite $(AB)$</h2>
+    </div>
+    <div class="question-body">
+      <p>On considère la transformation $f$ définie par $z' = -\dfrac{1}{2}z + \dfrac{3}{2}(1+i)$.</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Identification du type de transformation :</strong><br>
+          $z' - z_C = -\dfrac{1}{2}z + \dfrac{3}{2}(1+i) - (1+i) = -\dfrac{1}{2}z + \dfrac{1}{2}(1+i) = -\dfrac{1}{2}(z - z_C)$
+          <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Cette relation caractérise l'<span class="important">homothétie de centre $C$ et de rapport $k = -\dfrac{1}{2}$</span>.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Invariance de $(AB)$ :</strong> Comme $C \in (AB)$ (alignement prouvé), le centre de l'homothétie appartient à $(AB)$. Tout point $M \in (AB)$ a son image $M' \in (AB)$. La droite $(AB)$ est donc globalement invariante par cette homothétie.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $f$ est l'homothétie de centre $C(1+i)$ et de rapport $-\dfrac{1}{2}$.<br>
+          La droite $(AB)$ est globalement invariante par $f$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

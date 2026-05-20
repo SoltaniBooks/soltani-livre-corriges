@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 1 — Exercice 1 : Nombres Complexes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #3b82f6;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: rgba(59,130,246,0.08);
+      border-radius: 50%;
+    }
+    .header-tag {
+      display: inline-block;
+      background: rgba(59,130,246,0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .header h1 { font-size: 1.4rem; font-weight: 700; color: #f1f5f9; line-height: 1.3; }
+    .header p { color: #94a3b8; font-size: 0.9rem; margin-top: 0.3rem; }
+    .header .points {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      width: 52px; height: 52px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.1rem; line-height: 1;
+    }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+
+    /* Question card */
+    .question-card {
+      background: #1e293b;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+    .question-header {
+      background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .question-number {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .question-title { color: #fff; font-weight: 600; font-size: 0.95rem; }
+    .question-body { padding: 1.2rem; }
+
+    /* Step */
+    .step {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 0.9rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #334155;
+      color: #94a3b8;
+      border-radius: 50%;
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; line-height: 1.7; font-size: 0.92rem; color: #cbd5e1; }
+
+    /* Math display block */
+    .math-block {
+      background: #0f172a;
+      border-left: 3px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 0.8rem 1rem;
+      margin: 0.6rem 0;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+
+    /* Answer box */
+    .answer-box {
+      background: rgba(16,185,129,0.1);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #34d399; font-weight: 500; font-size: 0.92rem; line-height: 1.6; }
+
+    /* Logic box (amber) */
+    .logic-box {
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.7rem 0;
+    }
+    .logic-box-title {
+      color: #f59e0b;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .logic-box-content { color: #fde68a; font-size: 0.88rem; line-height: 1.65; }
+
+    /* Calc box (purple) */
+    .calc-box {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.7rem 0;
+    }
+    .calc-box-title {
+      color: #a78bfa;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .calc-box-content { color: #ddd6fe; font-size: 0.88rem; line-height: 1.65; }
+
+    /* Inline check */
+    .check { color: #10b981; font-weight: 600; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .header h1 { font-size: 1.15rem; padding-right: 60px; }
+      .header .points { width: 44px; height: 44px; font-size: 0.95rem; }
+      .math-block { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Back button -->
+  <a class="back-btn" href="index.html">← Retour</a>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <span>🏠</span>
+    <span class="sep">›</span>
+    <span>Sujet 1</span>
+    <span class="sep">›</span>
+    <span style="color:#3b82f6;">Exercice 1</span>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-tag">4ème Informatique · Révision N°1</div>
+    <h1>Exercice 1 : Nombres Complexes</h1>
+    <p>Équations et Géométrie</p>
+    <div class="points">5<small>pts</small></div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Vérification que $(-2i)$ est solution de $(E)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On remplace $z = -2i$ dans l'équation $(E)$ :
+          $$z^3 - (5+i)z^2 + 4(2-i)z - 12 + 4i = 0$$
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Calcul</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$(-2i)^3 - (5+i)(-2i)^2 + 4(2-i)(-2i) - 12 + 4i$$
+          </div>
+          <div class="math-block">
+            $$= 8i - (5+i)(-4) - 8i(2-i) - 12 + 4i$$
+          </div>
+          <div class="math-block">
+            $$= 8i + 20 + 4i - 16i - 8 - 12 + 4i$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          En regroupant les parties réelle et imaginaire :
+          <div class="math-block">
+            $$(20 - 8 - 12) + i(8 + 4 - 16 + 4) = 0 + 0i = 0 \quad \checkmark$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <span class="answer-text">Donc $(-2i)$ est bien solution de l'équation $(E)$.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2</div>
+      <div class="question-title">Détermination de $a$, $b$, $c$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On développe le produit $(z+2i)(az^2+bz+c)$ :
+          <div class="math-block">
+            $$= az^3 + (b+2ia)z^2 + (c+2ib)z + 2ic$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Par identification avec $z^3 - (5+i)z^2 + 4(2-i)z - 12 + 4i$ :
+          <div class="math-block">
+            $$\begin{cases} a = 1 \\ b + 2ia = -(5+i) \\ c + 2ib = 4(2-i) \\ 2ic = -12+4i \end{cases}$$
+          </div>
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Résolution du système</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$a = 1$$
+            $$b = -(5+i) - 2i(1) = -5 - i - 2i = -5 - 3i$$
+            $$c = \frac{-12+4i}{2i} = \frac{(-12+4i)(-2i)}{(2i)(-2i)} = \frac{24i - 8i^2}{4} = \frac{8 + 24i}{4} = 2 + 6i$$
+          </div>
+          Vérification : $c + 2ib = 2+6i + 2i(-5-3i) = 2+6i-10i+6 = 8-4i = 4(2-i)$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          $a = 1$, $\quad b = -5-3i$, $\quad c = 2+6i$
+          <br>Donc $(E) : (z+2i)\bigl(z^2-(5+3i)z+2+6i\bigr)=0$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3</div>
+      <div class="question-title">Résolution complète de $(E)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Soit $z = -2i$, soit $z^2 - (5+3i)z + 2+6i = 0$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul du discriminant :</strong>
+          <div class="math-block">
+            $$\Delta = (5+3i)^2 - 4(2+6i) = 25 + 30i - 9 - 8 - 24i = 8 + 6i$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Racine carrée de $\Delta = 8+6i$ :</strong> On cherche $\delta = x+iy$ tel que $\delta^2 = 8+6i$.
+          <div class="math-block">
+            $$\begin{cases} x^2 - y^2 = 8 \\ x^2 + y^2 = |\Delta| = \sqrt{64+36} = 10 \\ 2xy = 6 > 0 \end{cases}$$
+          </div>
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Calcul de $\delta$</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$x^2 + y^2 = 10 \text{ et } x^2 - y^2 = 8 \implies x^2 = 9,\; y^2 = 1$$
+            $$2xy = 6 > 0 \implies x \text{ et } y \text{ même signe} \implies x = 3,\; y = 1$$
+            $$\delta = 3 + i$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Solutions du trinôme :</strong>
+          <div class="math-block">
+            $$z_1 = \frac{5+3i-(3+i)}{2} = \frac{2+2i}{2} = 1+i$$
+            $$z_2 = \frac{5+3i+(3+i)}{2} = \frac{8+4i}{2} = 4+2i$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          $$S_{\mathbb{C}} = \{-2i\;;\; 1+i\;;\; 4+2i\}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

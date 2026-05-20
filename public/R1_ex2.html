@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 1 — Exercice 2 : Arithmétique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    .header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #3b82f6;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: rgba(59,130,246,0.08);
+      border-radius: 50%;
+    }
+    .header-tag {
+      display: inline-block;
+      background: rgba(59,130,246,0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .header h1 { font-size: 1.4rem; font-weight: 700; color: #f1f5f9; line-height: 1.3; }
+    .header p { color: #94a3b8; font-size: 0.9rem; margin-top: 0.3rem; }
+    .header .points {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      width: 52px; height: 52px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.1rem; line-height: 1;
+    }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+
+    /* Part separator */
+    .part-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1.5rem 0 0.8rem;
+    }
+    .part-badge {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border-radius: 8px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .part-title { color: #c4b5fd; font-size: 0.95rem; font-weight: 600; }
+    .part-line { flex: 1; height: 1px; background: #334155; }
+
+    .question-card {
+      background: #1e293b;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+    .question-header {
+      background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+      padding: 0.65rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .question-label { color: #bfdbfe; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .question-title { color: #fff; font-weight: 600; font-size: 0.9rem; }
+    .question-body { padding: 1rem 1.2rem; }
+
+    .step {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #334155;
+      color: #94a3b8;
+      border-radius: 50%;
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .step-content { flex: 1; line-height: 1.7; font-size: 0.9rem; color: #cbd5e1; }
+
+    .math-block {
+      background: #0f172a;
+      border-left: 3px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 0.7rem 1rem;
+      margin: 0.5rem 0;
+      overflow-x: auto;
+      font-size: 0.93rem;
+    }
+
+    .answer-box {
+      background: rgba(16,185,129,0.1);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-top: 0.7rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .answer-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #34d399; font-weight: 500; font-size: 0.9rem; line-height: 1.6; }
+
+    .logic-box {
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin: 0.6rem 0;
+    }
+    .logic-box-title {
+      color: #f59e0b;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .logic-box-content { color: #fde68a; font-size: 0.87rem; line-height: 1.65; }
+
+    .calc-box {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin: 0.6rem 0;
+    }
+    .calc-box-title {
+      color: #a78bfa;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .calc-box-content { color: #ddd6fe; font-size: 0.87rem; line-height: 1.65; }
+
+    /* Table */
+    .mod-table-wrap { overflow-x: auto; margin: 0.7rem 0; }
+    .mod-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      min-width: 360px;
+    }
+    .mod-table th {
+      background: #334155;
+      color: #94a3b8;
+      padding: 0.5rem 0.8rem;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid #475569;
+    }
+    .mod-table td {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 0.5rem 0.8rem;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    .mod-table tr:first-child th:first-child,
+    .mod-table tr:first-child td:first-child {
+      text-align: left;
+      padding-left: 1rem;
+    }
+    .mod-table td.highlight { color: #a78bfa; font-weight: 600; background: rgba(124,58,237,0.1); }
+
+    .check { color: #10b981; font-weight: 600; }
+    .inline-code { background: #0f172a; border-radius: 4px; padding: 0.1rem 0.4rem; font-family: monospace; font-size: 0.85em; color: #93c5fd; }
+
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .header h1 { font-size: 1.1rem; padding-right: 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <a class="back-btn" href="index.html">← Retour</a>
+
+  <div class="breadcrumb">
+    <span>🏠</span>
+    <span class="sep">›</span>
+    <span>Sujet 1</span>
+    <span class="sep">›</span>
+    <span style="color:#3b82f6;">Exercice 2</span>
+  </div>
+
+  <div class="header">
+    <div class="header-tag">4ème Informatique · Révision N°1</div>
+    <h1>Exercice 2 : Arithmétique</h1>
+    <p>Congruences et Puissances</p>
+    <div class="points">5<small>pts</small></div>
+  </div>
+
+  <!-- PARTIE A -->
+  <div class="part-header">
+    <div class="part-badge">Partie A</div>
+    <div class="part-title">Puissances de $2$ modulo $7$</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- Q1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 1a</div>
+      <div class="question-title">Restes de $2^n \pmod{7}$ pour $n \in \{0,1,2,3\}$</div>
+    </div>
+    <div class="question-body">
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Calculs</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$2^0 = 1 \equiv 1 \pmod{7}$$
+            $$2^1 = 2 \equiv 2 \pmod{7}$$
+            $$2^2 = 4 \equiv 4 \pmod{7}$$
+            $$2^3 = 8 = 7 \times 1 + 1 \equiv 1 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <span class="answer-text">Les restes successifs sont : $1,\ 2,\ 4,\ 1$. Le cycle se répète avec période $3$.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 1b</div>
+      <div class="question-title">Montrer que $2^{3k} \equiv 1 \pmod{7}$ pour tout $k \in \mathbb{N}$</div>
+    </div>
+    <div class="question-body">
+      <div class="logic-box">
+        <div class="logic-box-title">💡 Méthode</div>
+        <div class="logic-box-content">On utilise la propriété de compatibilité de la congruence avec la puissance.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Puisque $2^3 = 8 \equiv 1 \pmod{7}$, on élève les deux membres à la puissance $k$ :
+          <div class="math-block">
+            $$2^{3k} = \left(2^3\right)^k \equiv 1^k \equiv 1 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 2a</div>
+      <div class="question-title">Montrer que $2025 \equiv 2 \pmod{7}$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Division euclidienne de $2025$ par $7$ :
+          <div class="math-block">$$2025 = 7 \times 289 + 2$$</div>
+          Donc $2025 \equiv 2 \pmod{7}$ <span class="check">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 2b</div>
+      <div class="question-title">Reste de $2025^{2026}$ dans la division par $7$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          D'après Q2a : $2025 \equiv 2 \pmod{7}$, donc :
+          <div class="math-block">$$2025^{2026} \equiv 2^{2026} \pmod{7}$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Division euclidienne de $2026$ par $3$ :
+          <div class="math-block">$$2026 = 3 \times 675 + 1$$</div>
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Application</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$2^{2026} = 2^{3 \times 675 + 1} = \left(2^3\right)^{675} \times 2^1 \equiv 1^{675} \times 2 \equiv 2 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <span class="answer-text">Le reste de $2025^{2026}$ dans la division par $7$ est $\mathbf{2}$.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE B -->
+  <div class="part-header">
+    <div class="part-badge">Partie B</div>
+    <div class="part-title">Puissances de $3$ modulo $7$</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- Q1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 1a</div>
+      <div class="question-title">Montrer que $3^3 \equiv -1 \pmod{7}$ et en déduire $3^{6k} \equiv 1$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          $3^3 = 27 = 7 \times 4 - 1$, donc $3^3 \equiv -1 \pmod{7}$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math-block">
+            $$3^{6k} = \left(3^3\right)^{2k} \equiv (-1)^{2k} \equiv 1 \pmod{7}$$
+          </div>
+          Car $(-1)^{2k} = 1$ pour tout $k \in \mathbb{N}$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1b tableau -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 1b</div>
+      <div class="question-title">Tableau des restes de $3^n \pmod{7}$ selon $n \pmod{6}$</div>
+    </div>
+    <div class="question-body">
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Calcul des restes</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$3^0=1,\quad 3^1=3,\quad 3^2=9\equiv 2,\quad 3^3=27\equiv 6$$
+            $$3^4=81\equiv 4,\quad 3^5=243\equiv 5 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+      <div class="mod-table-wrap">
+        <table class="mod-table">
+          <tr>
+            <th>$n \equiv \ldots \pmod{6}$</th>
+            <th>$0$</th>
+            <th>$1$</th>
+            <th>$2$</th>
+            <th>$3$</th>
+            <th>$4$</th>
+            <th>$5$</th>
+          </tr>
+          <tr>
+            <td>$3^n \equiv \ldots \pmod{7}$</td>
+            <td class="highlight">$1$</td>
+            <td class="highlight">$3$</td>
+            <td class="highlight">$2$</td>
+            <td class="highlight">$6$</td>
+            <td class="highlight">$4$</td>
+            <td class="highlight">$5$</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 2a</div>
+      <div class="question-title">Montrer que $2026 \equiv 3 \pmod{7}$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Division euclidienne : $2026 = 7 \times 289 + 3$
+          <br>Donc $2026 \equiv 3 \pmod{7}$ <span class="check">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 2b</div>
+      <div class="question-title">Reste de $2026^{2025}$ dans la division par $7$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          D'après Q2a : $2026 \equiv 3 \pmod{7}$, donc :
+          <div class="math-block">$$2026^{2025} \equiv 3^{2025} \pmod{7}$$</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Division euclidienne de $2025$ par $6$ :
+          <div class="math-block">$$2025 = 6 \times 337 + 3 \quad \Rightarrow \quad 2025 \equiv 3 \pmod{6}$$</div>
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Lecture du tableau</div>
+        <div class="calc-box-content">
+          D'après le tableau de Q1b, pour $n \equiv 3 \pmod{6}$ :
+          <div class="math-block">$$3^{2025} \equiv 3^3 \equiv 6 \pmod{7}$$</div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <span class="answer-text">Le reste de $2026^{2025}$ dans la division par $7$ est $\mathbf{6}$.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE C -->
+  <div class="part-header">
+    <div class="part-badge">Partie C</div>
+    <div class="part-title">Divisibilité de $A_n = 2025^{3n+1} + 2026^{6n+4} + 1$ par $7$</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 1</div>
+      <div class="question-title">Calcul de $2025^{3n+1} \pmod{7}$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Puisque $2025 \equiv 2 \pmod{7}$ :
+          <div class="math-block">
+            $$2025^{3n+1} \equiv 2^{3n+1} = \left(2^3\right)^n \times 2 \equiv 1^n \times 2 \equiv 2 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 2</div>
+      <div class="question-title">Calcul de $2026^{6n+4} \pmod{7}$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Puisque $2026 \equiv 3 \pmod{7}$ :
+          <div class="math-block">
+            $$2026^{6n+4} \equiv 3^{6n+4} = \left(3^6\right)^n \times 3^4 \equiv 1^n \times 81 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Or $81 = 7 \times 11 + 4$, donc $81 \equiv 4 \pmod{7}$ :
+          <div class="math-block">$$2026^{6n+4} \equiv 4 \pmod{7}$$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-label">Q 3</div>
+      <div class="question-title">Conclusion : $A_n$ est divisible par $7$</div>
+    </div>
+    <div class="question-body">
+      <div class="calc-box">
+        <div class="calc-box-title">🔢 Calcul final</div>
+        <div class="calc-box-content">
+          <div class="math-block">
+            $$A_n = 2025^{3n+1} + 2026^{6n+4} + 1 \equiv 2 + 4 + 1 = 7 \equiv 0 \pmod{7}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <span class="answer-text">Pour tout entier naturel $n$, $A_n$ est divisible par $7$.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>
