@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 2 — Exercice 2 : Arithmétique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .topbar {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #3b82f6;
+      color: #fff;
+      text-decoration: none;
+      padding: 7px 15px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .back-btn:hover { background: #2563eb; }
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #64748b; }
+    .breadcrumb strong { color: #cbd5e1; }
+
+    .hero {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 60%, #0f172a 100%);
+      border-bottom: 2px solid #3b82f6;
+      padding: 36px 20px 28px;
+      text-align: center;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: #3b82f620;
+      border: 1px solid #3b82f6;
+      color: #60a5fa;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: #3b82f6; }
+    .hero p { color: #94a3b8; font-size: 0.95rem; max-width: 540px; margin: 0 auto; }
+    .hero .points {
+      margin-top: 14px;
+      display: inline-block;
+      background: #10b98120;
+      border: 1px solid #10b981;
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 28px 16px;
+    }
+
+    /* Partie header (Partie A / Partie B) */
+    .partie-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      margin-top: 10px;
+    }
+    .partie-badge {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      color: #ede9fe;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 20px;
+    }
+    .partie-title {
+      color: #c4b5fd;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .question-block {
+      background: #1e293b;
+      border-radius: 14px;
+      margin-bottom: 22px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 24px #0006;
+    }
+    .question-header {
+      background: linear-gradient(90deg, #1e3a5f, #1e293b);
+      border-bottom: 2px solid #3b82f6;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .question-number {
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 4px 11px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .question-title {
+      color: #93c5fd;
+      font-weight: 600;
+      font-size: 0.97rem;
+    }
+    .question-body { padding: 20px; }
+
+    .sub-question { margin-bottom: 22px; }
+    .sub-label {
+      display: inline-block;
+      background: #334155;
+      color: #7dd3fc;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #334155;
+      color: #7dd3fc;
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; color: #cbd5e1; font-size: 0.95rem; }
+
+    .card-calc {
+      background: #2d1b69;
+      border-left: 4px solid #7c3aed;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 10px 0;
+      color: #ddd6fe;
+      font-size: 0.93rem;
+      overflow-x: auto;
+    }
+    .card-logic {
+      background: #292524;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 10px 0;
+      color: #fde68a;
+      font-size: 0.93rem;
+    }
+    .card-logic .logic-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #f59e0b;
+      margin-bottom: 6px;
+    }
+
+    .answer-box {
+      background: #052e16;
+      border: 2px solid #10b981;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 14px 0 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      overflow-x: auto;
+    }
+    .answer-icon { font-size: 1.3rem; line-height: 1; margin-top: 2px; }
+    .answer-content { flex: 1; }
+    .answer-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #10b981;
+      margin-bottom: 4px;
+    }
+    .answer-text { color: #34d399; font-size: 0.97rem; font-weight: 500; }
+
+    /* Big answer highlight for final result */
+    .answer-big {
+      background: #052e16;
+      border: 2px solid #10b981;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px 0 0;
+      text-align: center;
+    }
+    .answer-big .answer-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #10b981;
+      margin-bottom: 10px;
+    }
+    .answer-big .answer-year {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #34d399;
+      letter-spacing: 0.04em;
+    }
+    .answer-big .answer-sub {
+      color: #6ee7b7;
+      font-size: 0.88rem;
+      margin-top: 6px;
+    }
+
+    .sub-divider { border: none; border-top: 1px solid #334155; margin: 18px 0; }
+
+    .katex-display { margin: 10px 0 !important; overflow-x: auto; }
+    .katex { font-size: 1.05em; }
+
+    @media (max-width: 480px) {
+      .question-header { flex-wrap: wrap; }
+      .card-calc, .card-logic, .answer-box { padding: 12px 14px; }
+      .answer-big .answer-year { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <a href="../index.html" class="back-btn">&#8592; Retour</a>
+  <nav class="breadcrumb">
+    <span>🏠</span>
+    <span>›</span>
+    <strong>Sujet 2</strong>
+    <span>›</span>
+    <strong>Exercice 2</strong>
+  </nav>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badge">4ème Informatique · Révision N°2</div>
+  <h1>Exercice 2 : <span>Arithmétique</span></h1>
+  <p>Équation Diophantienne et Système de Congruences</p>
+  <div class="points">5 points</div>
+</div>
+
+<div class="container">
+
+  <!-- ═══ PARTIE A ═══ -->
+  <div class="partie-header">
+    <span class="partie-badge">Partie A</span>
+    <span class="partie-title">Équation diophantienne $(E) : 11x - 13y = 1$</span>
+  </div>
+
+  <!-- Partie A - Q1 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="question-number">Question 1</span>
+      <span class="question-title">Vérification que $(6, 5)$ est solution particulière</span>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">On substitue $x = 6$ et $y = 5$ dans $(E)$ :</div>
+      </div>
+      <div class="card-calc">
+        $$11(6) - 13(5) = 66 - 65 = 1 \quad \checkmark$$
+      </div>
+      <div class="answer-box">
+        <div class="answer-icon">✅</div>
+        <div class="answer-content">
+          <div class="answer-label">Solution particulière</div>
+          <div class="answer-text">$(6,\,5)$ est une solution particulière de $(E)$.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Partie A - Q2 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="question-number">Question 2</span>
+      <span class="question-title">Résolution complète dans $\mathbb{Z}^2$</span>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Soit $(x, y)$ une solution quelconque de $(E)$. On a simultanément :</div>
+      </div>
+      <div class="card-calc">
+        $$11x - 13y = 1 \quad \text{et} \quad 11(6) - 13(5) = 1$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">En soustrayant membre à membre :</div>
+      </div>
+      <div class="card-calc">
+        $$11(x - 6) = 13(y - 5)$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Application du <strong>théorème de Gauss</strong> : comme $\gcd(11, 13) = 1$ et que $13 \mid 11(x-6)$, alors $13 \mid (x-6)$.</div>
+      </div>
+      <div class="card-logic">
+        <div class="logic-title">🔎 Théorème de Gauss</div>
+        Si $a \mid bc$ et $\gcd(a,b)=1$, alors $a \mid c$.
+        Ici : $13 \mid 11(x-6)$ et $\gcd(13,11)=1 \Rightarrow 13 \mid (x-6)$.
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Il existe donc $k \in \mathbb{Z}$ tel que $x - 6 = 13k$, d'où $y - 5 = 11k$.</div>
+      </div>
+
+      <div class="answer-box">
+        <div class="answer-icon">🎯</div>
+        <div class="answer-content">
+          <div class="answer-label">Ensemble des solutions de $(E)$ dans $\mathbb{Z}^2$</div>
+          <div class="answer-text">
+            $$\begin{cases} x = 6 + 13k \\ y = 5 + 11k \end{cases}, \quad k \in \mathbb{Z}$$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PARTIE B ═══ -->
+  <div class="partie-header">
+    <span class="partie-badge">Partie B</span>
+    <span class="partie-title">Système $(S)$ : trouver une année $N$ avec $2020 \leq N \leq 2030$</span>
+  </div>
+
+  <div class="card-logic" style="border-radius:10px; margin-bottom:18px;">
+    <div class="logic-title">📋 Système de congruences</div>
+    $$\begin{cases} N \equiv 2 \pmod{11} \\ N \equiv 11 \pmod{13} \end{cases}$$
+  </div>
+
+  <!-- Partie B - Q1 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="question-number">Question 1</span>
+      <span class="question-title">Traduction des congruences et réduction à $(E')$</span>
+    </div>
+    <div class="question-body">
+
+      <div class="sub-question">
+        <span class="sub-label">Q1a — Écriture euclidienne</span>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">Les congruences s'écrivent via la division euclidienne :</div>
+        </div>
+        <div class="card-calc">
+          $$N \equiv 2 \pmod{11} \Rightarrow \exists\, u \in \mathbb{Z},\; N = 11u + 2$$
+          $$N \equiv 11 \pmod{13} \Rightarrow \exists\, v \in \mathbb{Z},\; N = 13v + 11$$
+        </div>
+      </div>
+
+      <hr class="sub-divider">
+
+      <div class="sub-question">
+        <span class="sub-label">Q1b — Le couple $(u, v)$ est solution de $(E') : 11x - 13y = 9$</span>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">En égalisant les deux expressions de $N$ :</div>
+        </div>
+        <div class="card-calc">
+          $$11u + 2 = 13v + 11 \implies 11u - 13v = 9$$
+        </div>
+        <div class="answer-box">
+          <div class="answer-icon">✅</div>
+          <div class="answer-content">
+            <div class="answer-label">Conclusion</div>
+            <div class="answer-text">$(u, v)$ est solution de $(E') : 11x - 13y = 9$.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Partie B - Q2 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="question-number">Question 2</span>
+      <span class="question-title">Résolution de $(E')$ et congruence modulo $143$</span>
+    </div>
+    <div class="question-body">
+
+      <div class="sub-question">
+        <span class="sub-label">Q2a — Solution particulière de $(E') : 11x - 13y = 9$</span>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">On multiplie la solution $(6,5)$ de $(E)$ par $9$ :</div>
+        </div>
+        <div class="card-calc">
+          $$9 \times \big[11(6) - 13(5)\big] = 9 \times 1 = 9$$
+          $$\Rightarrow 11(54) - 13(45) = 9 \quad \checkmark$$
+        </div>
+        <div class="answer-box">
+          <div class="answer-icon">🎯</div>
+          <div class="answer-content">
+            <div class="answer-label">Solution particulière de $(E')$</div>
+            <div class="answer-text">$(u_0, v_0) = (54,\, 45)$</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sub-divider">
+
+      <div class="sub-question">
+        <span class="sub-label">Q2b — Déduction de la congruence $N \equiv 24 \pmod{143}$</span>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">Les solutions de $(E')$ dans $\mathbb{Z}^2$ sont (même structure que $(E)$) :</div>
+        </div>
+        <div class="card-calc">
+          $$u = 54 + 13k, \quad k \in \mathbb{Z}$$
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">On remplace dans $N = 11u + 2$ :</div>
+        </div>
+        <div class="card-calc">
+          $$N = 11(54 + 13k) + 2 = 594 + 143k + 2 = 596 + 143k$$
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">On effectue la division euclidienne de $596$ par $143$ :</div>
+        </div>
+        <div class="card-calc">
+          $$596 = 4 \times 143 + 24 \implies N \equiv 24 \pmod{143}$$
+        </div>
+
+        <div class="answer-box">
+          <div class="answer-icon">🎯</div>
+          <div class="answer-content">
+            <div class="answer-label">Congruence de N</div>
+            <div class="answer-text">$N \equiv 24 \pmod{143}$</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Partie B - Q3 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="question-number">Question 3</span>
+      <span class="question-title">Détermination de l'année $N$ entre $2020$ et $2030$</span>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Les solutions sont de la forme $N = 24 + 143k$, $k \in \mathbb{Z}$. On cherche $k$ tel que $2020 \leq N \leq 2030$ :</div>
+      </div>
+      <div class="card-calc">
+        $$2020 \leq 24 + 143k \leq 2030$$
+        $$\frac{1996}{143} \leq k \leq \frac{2006}{143}$$
+        $$13{,}96... \leq k \leq 14{,}02...$$
+        $$\implies k = 14$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">On calcule $N$ :</div>
+      </div>
+      <div class="card-calc">
+        $$N = 24 + 143 \times 14 = 24 + 2002 = 2026$$
+      </div>
+
+      <div class="answer-big">
+        <div class="answer-label">🏆 Année d'inauguration</div>
+        <div class="answer-year">2026</div>
+        <div class="answer-sub">$N = 2026$ est l'unique solution dans $[\,2020;\,2030\,]$.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

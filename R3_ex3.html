@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 3 — Exercice 3 : Probabilités</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+      line-height: 1.7;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    .page-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #2d4a7a;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+      border-radius: 14px 14px 0 0;
+    }
+    .page-header .ex-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+    }
+    .page-header h1 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+    .page-header .subtitle {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+    .points-badge {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    .question-block {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      background: #0f1f35;
+      border-bottom: 1px solid #334155;
+    }
+    .q-badge {
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .question-header h2 { font-size: 0.95rem; font-weight: 600; color: #bfdbfe; }
+    .question-body { padding: 1.2rem; }
+
+    .step {
+      display: flex;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #334155; color: #94a3b8;
+      font-size: 0.75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-content { flex: 1; font-size: 0.92rem; color: #cbd5e1; }
+
+    .answer-box {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    .answer-box .ans-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-box .ans-content { color: #6ee7b7; font-size: 0.92rem; font-weight: 500; }
+
+    .logic-box {
+      background: linear-gradient(135deg, #451a03, #78350f);
+      border: 1.5px solid #f59e0b;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .logic-box .logic-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fcd34d; margin-bottom: 0.4rem;
+    }
+    .logic-box .logic-content { color: #fde68a; font-size: 0.9rem; }
+
+    .calc-box {
+      background: linear-gradient(135deg, #2e1065, #3b0764);
+      border: 1.5px solid #7c3aed;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .calc-box .calc-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #c4b5fd; margin-bottom: 0.4rem;
+    }
+    .calc-box .calc-content { color: #ddd6fe; font-size: 0.9rem; }
+
+    .section-title {
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #3b82f6; margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.4rem; border-bottom: 1px solid #1e3a5f;
+    }
+
+    /* Probability tree */
+    .tree-container {
+      background: #0f1f35;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin: 0.8rem 0;
+      overflow-x: auto;
+    }
+    .tree-svg { width: 100%; max-width: 600px; display: block; margin: 0 auto; }
+
+    /* Summary table */
+    .prob-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.85rem;
+    }
+    .prob-table th {
+      background: #0f1f35; color: #60a5fa;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #334155; font-weight: 600;
+    }
+    .prob-table td {
+      background: #1e293b; color: #cbd5e1;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid #334155; text-align: center;
+    }
+
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #cbd5e1; }
+    .check { color: #34d399; font-weight: 700; }
+    .important { color: #fbbf24; font-weight: 600; }
+
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .page-header { padding: 1.3rem 1rem; }
+      .question-body { padding: 0.9rem; }
+      .points-badge { position: static; display: inline-block; margin-top: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <a href="../index.html" class="back-btn">&#8592; Retour</a>
+    <div class="breadcrumb">
+      <span>🏠</span>
+      <span class="sep">›</span>
+      <span>Sujet 3</span>
+      <span class="sep">›</span>
+      <span>Exercice 3</span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="ex-label">4ème Informatique — Révision N°3</div>
+    <h1>Exercice 3 : Probabilités</h1>
+    <p class="subtitle">Durée de Vie des Ordinateurs</p>
+    <div class="points-badge">5 pts</div>
+  </div>
+
+  <!-- Données -->
+  <div class="logic-box" style="margin-bottom:1rem;">
+    <div class="logic-label">Données du problème</div>
+    <div class="logic-content">
+      <strong>Événements :</strong> $A$ = l'ordinateur est de type D, $B$ = type L, $C$ = en panne<br>
+      $P(A) = P(B) = 0{,}5$ (50% de chaque type)<br>
+      59% des ordinateurs de type D ont eu une panne → $P(C|A) = 0{,}59$<br>
+      30% des ordinateurs de type L sont <em>sans</em> panne → $P(\bar{C}|B) = 0{,}30$
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1</span>
+      <h2>Probabilités conditionnelles</h2>
+    </div>
+    <div class="question-body">
+      <p>À partir des données énoncées :</p>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          $P(C|A) = 0{,}59$ et $P(\bar{C}|B) = 0{,}30$<br>
+          On en déduit : $P(\bar{C}|A) = 1 - 0{,}59 = 0{,}41$ et $P(C|B) = 1 - 0{,}30 = 0{,}70$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 — Arbre -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2</span>
+      <h2>Arbre des probabilités</h2>
+    </div>
+    <div class="question-body">
+      <div class="tree-container">
+        <svg class="tree-svg" viewBox="0 0 580 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- Root node -->
+          <circle cx="80" cy="120" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+          <text x="80" y="125" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="Inter,sans-serif" font-weight="600">Ω</text>
+
+          <!-- Branch A -->
+          <line x1="98" y1="108" x2="220" y2="60" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="153" y="73" text-anchor="middle" fill="#93c5fd" font-size="12" font-family="Inter,sans-serif">0,5</text>
+          <circle cx="238" cy="55" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+          <text x="238" y="60" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="Inter,sans-serif" font-weight="600">A</text>
+
+          <!-- Branch B -->
+          <line x1="98" y1="132" x2="220" y2="180" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="153" y="168" text-anchor="middle" fill="#93c5fd" font-size="12" font-family="Inter,sans-serif">0,5</text>
+          <circle cx="238" cy="185" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+          <text x="238" y="190" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="Inter,sans-serif" font-weight="600">B</text>
+
+          <!-- From A: C -->
+          <line x1="256" y1="43" x2="370" y2="25" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="310" y="23" text-anchor="middle" fill="#fcd34d" font-size="11" font-family="Inter,sans-serif">0,59</text>
+          <text x="410" y="30" fill="#6ee7b7" font-size="13" font-family="Inter,sans-serif" font-weight="600">C</text>
+          <text x="450" y="30" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif">→ 0,295</text>
+
+          <!-- From A: C-bar -->
+          <line x1="256" y1="55" x2="370" y2="75" stroke="#10b981" stroke-width="1.5"/>
+          <text x="315" y="55" text-anchor="middle" fill="#6ee7b7" font-size="11" font-family="Inter,sans-serif">0,41</text>
+          <text x="410" y="80" fill="#6ee7b7" font-size="13" font-family="Inter,sans-serif" font-weight="600">C̄</text>
+          <text x="450" y="80" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif">→ 0,205</text>
+
+          <!-- From B: C-bar -->
+          <line x1="256" y1="173" x2="370" y2="155" stroke="#10b981" stroke-width="1.5"/>
+          <text x="315" y="152" text-anchor="middle" fill="#6ee7b7" font-size="11" font-family="Inter,sans-serif">0,30</text>
+          <text x="410" y="160" fill="#6ee7b7" font-size="13" font-family="Inter,sans-serif" font-weight="600">C̄</text>
+          <text x="450" y="160" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif">→ 0,150</text>
+
+          <!-- From B: C -->
+          <line x1="256" y1="197" x2="370" y2="215" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="315" y="220" text-anchor="middle" fill="#fcd34d" font-size="11" font-family="Inter,sans-serif">0,70</text>
+          <text x="410" y="220" fill="#6ee7b7" font-size="13" font-family="Inter,sans-serif" font-weight="600">C</text>
+          <text x="450" y="220" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif">→ 0,350</text>
+        </svg>
+      </div>
+      <table class="prob-table">
+        <thead>
+          <tr>
+            <th>Événement</th>
+            <th>$P(A \cap C)$</th>
+            <th>$P(A \cap \bar{C})$</th>
+            <th>$P(B \cap \bar{C})$</th>
+            <th>$P(B \cap C)$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Probabilité</td>
+            <td>$0{,}5 \times 0{,}59 = 0{,}295$</td>
+            <td>$0{,}5 \times 0{,}41 = 0{,}205$</td>
+            <td>$0{,}5 \times 0{,}30 = 0{,}150$</td>
+            <td>$0{,}5 \times 0{,}70 = 0{,}350$</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q3a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q3a</span>
+      <h2>Calcul de $P(\bar{C})$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On applique la <strong>loi des probabilités totales</strong> (partition $\{A, B\}$) :
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-label">Loi des probabilités totales</div>
+        <div class="calc-content">
+          $P(\bar{C}) = P(A) \cdot P(\bar{C}|A) + P(B) \cdot P(\bar{C}|B)$<br>
+          $= 0{,}5 \times 0{,}41 + 0{,}5 \times 0{,}30$<br>
+          $= 0{,}205 + 0{,}150 = 0{,}355 \approx 0{,}36$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$P(\bar{C}) = 0{,}355 \approx 0{,}36$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q3b</span>
+      <h2>Calcul de $P(A|\bar{C})$ — Formule de Bayes</h2>
+    </div>
+    <div class="question-body">
+      <div class="logic-box">
+        <div class="logic-label">Formule de Bayes</div>
+        <div class="logic-content">
+          $P(A|\bar{C}) = \dfrac{P(A \cap \bar{C})}{P(\bar{C})} = \dfrac{P(A) \cdot P(\bar{C}|A)}{P(\bar{C})}$
+        </div>
+      </div>
+      <div class="calc-box" style="margin-top:0.8rem;">
+        <div class="calc-label">Application numérique</div>
+        <div class="calc-content">
+          $P(A|\bar{C}) = \dfrac{0{,}5 \times 0{,}41}{0{,}355} = \dfrac{0{,}205}{0{,}355} \approx 0{,}578$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$P(A|\bar{C}) \approx 0{,}58$<br>
+        <small style="color:#a7f3d0;">Interprétation : sachant qu'un ordinateur n'est pas en panne, il y a environ 58% de chances qu'il soit de type D.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE LOI EXP -->
+  <div class="section-title">Loi Exponentielle et Loi Binomiale</div>
+
+  <div class="logic-box" style="margin-bottom:1rem;">
+    <div class="logic-label">Modèle</div>
+    <div class="logic-content">
+      $X$ = durée de vie (en années) d'un ordinateur de type D.<br>
+      $X \sim \mathcal{E}(0{,}18)$ : loi exponentielle de paramètre $\lambda = 0{,}18$.<br>
+      Rappel : $P(X > t) = e^{-\lambda t}$.
+    </div>
+  </div>
+
+  <!-- Q4a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q4a</span>
+      <h2>Calcul de $P(X > 6)$</h2>
+    </div>
+    <div class="question-body">
+      <div class="calc-box">
+        <div class="calc-label">Calcul</div>
+        <div class="calc-content">
+          $P(X > 6) = e^{-0{,}18 \times 6} = e^{-1{,}08} \approx 0{,}34$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$P(X > 6) = e^{-1{,}08} \approx 0{,}34$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q4b</span>
+      <h2>Loi binomiale — Au moins un ordinateur dure plus de 6 ans</h2>
+    </div>
+    <div class="question-body">
+      <p>On prend un échantillon de $n = 10$ ordinateurs de type D. On note $p = P(X > 6) \approx 0{,}34$.</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Soit $Y$ le nombre d'ordinateurs qui durent plus de 6 ans parmi les 10.
+          $Y \sim \mathcal{B}(10\,;\, 0{,}34)$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Calcul de $P(Y \geq 1)$</div>
+            <div class="calc-content">
+              $P(Y \geq 1) = 1 - P(Y = 0)$<br>
+              $P(Y = 0) = (1 - 0{,}34)^{10} = (0{,}66)^{10}$<br>
+              $(0{,}66)^{10} \approx 0{,}016$<br>
+              $P(Y \geq 1) \approx 1 - 0{,}016 = 0{,}984$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$p = P(Y \geq 1) \approx 0{,}98$<br>
+        <small style="color:#a7f3d0;">Il y a environ 98% de probabilité qu'au moins un ordinateur sur 10 dure plus de 6 ans.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

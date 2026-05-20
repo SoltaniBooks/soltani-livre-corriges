@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 3 — Exercice 2 : Arithmétique & Cryptographie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 1rem;
+      line-height: 1.7;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: #334155; color: #e2e8f0; }
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb span { color: #94a3b8; }
+    .breadcrumb .sep { color: #475569; }
+
+    .page-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+      border: 1px solid #2d4a7a;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+      border-radius: 14px 14px 0 0;
+    }
+    .page-header .ex-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+    }
+    .page-header h1 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+    .page-header .subtitle {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    .points-badge {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    .question-block {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      background: #0f1f35;
+      border-bottom: 1px solid #334155;
+    }
+    .q-badge {
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .question-header h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #bfdbfe;
+    }
+    .question-body { padding: 1.2rem; }
+
+    .step {
+      display: flex;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #334155;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; font-size: 0.92rem; color: #cbd5e1; }
+
+    .answer-box {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border: 1.5px solid #10b981;
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    .answer-box .ans-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-box .ans-content { color: #6ee7b7; font-size: 0.92rem; font-weight: 500; }
+
+    .logic-box {
+      background: linear-gradient(135deg, #451a03, #78350f);
+      border: 1.5px solid #f59e0b;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .logic-box .logic-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fcd34d;
+      margin-bottom: 0.4rem;
+    }
+    .logic-box .logic-content { color: #fde68a; font-size: 0.9rem; }
+
+    .calc-box {
+      background: linear-gradient(135deg, #2e1065, #3b0764);
+      border: 1.5px solid #7c3aed;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-top: 0.8rem;
+    }
+    .calc-box .calc-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 0.4rem;
+    }
+    .calc-box .calc-content { color: #ddd6fe; font-size: 0.9rem; }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #3b82f6;
+      margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #1e3a5f;
+    }
+
+    /* Cipher table */
+    .cipher-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.82rem;
+    }
+    .cipher-table th {
+      background: #0f1f35;
+      color: #60a5fa;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid #334155;
+      font-weight: 600;
+      text-align: center;
+    }
+    .cipher-table td {
+      background: #1e293b;
+      color: #cbd5e1;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #334155;
+      text-align: center;
+    }
+    .cipher-table tr:hover td { background: #263348; }
+
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #cbd5e1; }
+    .check { color: #34d399; font-weight: 700; }
+    .important { color: #fbbf24; font-weight: 600; }
+    .highlight { color: #34d399; font-weight: 600; }
+
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .page-header { padding: 1.3rem 1rem; }
+      .question-body { padding: 0.9rem; }
+      .points-badge { position: static; display: inline-block; margin-top: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <a href="../index.html" class="back-btn">&#8592; Retour</a>
+    <div class="breadcrumb">
+      <span>🏠</span>
+      <span class="sep">›</span>
+      <span>Sujet 3</span>
+      <span class="sep">›</span>
+      <span>Exercice 2</span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="ex-label">4ème Informatique — Révision N°3</div>
+    <h1>Exercice 2 : Arithmétique &amp; Cryptographie</h1>
+    <p class="subtitle">Chiffrement Affine</p>
+    <div class="points-badge">5 pts</div>
+  </div>
+
+  <!-- Rappel du contexte -->
+  <div class="logic-box">
+    <div class="logic-label">Contexte — Chiffrement affine modulo 26</div>
+    <div class="logic-content">
+      La fonction de chiffrement est $y \equiv ax + b \pmod{26}$ où $a, b \in \mathbb{Z}$ et $\gcd(a, 26) = 1$.<br>
+      A=0, B=1, C=2, …, Z=25. On sait que S$(x=18)$ est chiffrée en U$(y=20)$ et I$(x=8)$ en W$(y=22)$.
+    </div>
+  </div>
+
+  <!-- PARTIE A -->
+  <div class="section-title">Partie A — Détermination de la clé $(a, b)$</div>
+
+  <!-- Q1a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1a</span>
+      <h2>Mise en équation</h2>
+    </div>
+    <div class="question-body">
+      <p>En appliquant $y \equiv ax + b \pmod{26}$ aux deux correspondances connues :</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          S$(x=18)$ → U$(y=20)$ : $\quad 18a + b \equiv 20 \pmod{26}$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          I$(x=8)$ → W$(y=22)$ : $\quad 8a + b \equiv 22 \pmod{26}$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">
+          Système obtenu :
+          $$\begin{cases} 18a + b \equiv 20 \pmod{26} \\ 8a + b \equiv 22 \pmod{26} \end{cases}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1b</span>
+      <h2>Simplification du système</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On soustrait la 2ème équation de la 1ère :
+          $$(18-8)a \equiv 20 - 22 \pmod{26}$$
+          $$10a \equiv -2 \equiv 24 \pmod{26}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          En divisant par 2 (ce qui est licite car $\gcd(2, 26/2) = \gcd(2,13) = 1$… on simplifie par 2 les trois termes) :
+          $$5a \equiv 12 \pmod{13}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$10a \equiv 24 \pmod{26}$ et $5a \equiv 12 \pmod{13}$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2a</span>
+      <h2>Résolution de $5x \equiv 12 \pmod{13}$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On remarque que $12 \equiv 25 \pmod{13}$, donc :
+          $$5x \equiv 25 \pmod{13}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Comme $\gcd(5, 13) = 1$, on peut simplifier par 5 :
+          $$x \equiv 5 \pmod{13}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$S_{\mathbb{Z}} = \{5 + 13k \mid k \in \mathbb{Z}\}$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2b</span>
+      <h2>Valeur de $a$</h2>
+    </div>
+    <div class="question-body">
+      <p>Les valeurs possibles de $a \in \{0,\ldots,25\}$ vérifiant $a \equiv 5 \pmod{13}$ sont : $a = 5$ ou $a = 18$.</p>
+      <div class="calc-box">
+        <div class="calc-label">Condition d'inversibilité</div>
+        <div class="calc-content">
+          $\gcd(18, 26) = 2 \neq 1$ → $a = 18$ <span style="color:#f87171;">✗ non valide</span><br>
+          $\gcd(5, 26) = 1$ → $a = 5$ <span style="color:#34d399;">✓ valide</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$a = 5$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2c</span>
+      <h2>Valeur de $b$</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          On substitue $a = 5$ dans $8a + b \equiv 22 \pmod{26}$ :
+          $$8(5) + b \equiv 22 \pmod{26}$$
+          $$40 + b \equiv 22 \pmod{26}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Calcul</div>
+            <div class="calc-content">
+              $b \equiv 22 - 40 \equiv -18 \equiv -18 + 26 \equiv 8 \pmod{26}$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$b = 8$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE B -->
+  <div class="section-title">Partie B — Chiffrement et Déchiffrement (avec $a = 5$, $b = 8$)</div>
+
+  <div class="logic-box" style="margin-bottom:1rem;">
+    <div class="logic-label">Clé de chiffrement</div>
+    <div class="logic-content">
+      Fonction de chiffrement : $y \equiv 5x + 8 \pmod{26}$
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q1</span>
+      <h2>Chiffrement de la lettre B</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">B correspond à $x = 1$ (A=0, B=1).</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          $y \equiv 5(1) + 8 = 13 \pmod{26}$<br>
+          $y = 13$ correspond à la lettre <strong class="highlight">N</strong>.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">B est chiffrée par la lettre <strong>N</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2a -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2a</span>
+      <h2>Inverse modulaire de 5 modulo 26</h2>
+    </div>
+    <div class="question-body">
+      <p>On cherche $u$ tel que $5u \equiv 1 \pmod{26}$.</p>
+      <div class="calc-box">
+        <div class="calc-label">Vérification</div>
+        <div class="calc-content">
+          $5 \times 21 = 105 = 4 \times 26 + 1 \equiv 1 \pmod{26}$ <span class="check">✓</span>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">$u = 21$ (car $5 \times 21 \equiv 1 \pmod{26}$)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2b -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2b</span>
+      <h2>Formule de déchiffrement</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          De $y \equiv 5x + 8 \pmod{26}$, on tire $5x \equiv y - 8 \pmod{26}$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          En multipliant par $5^{-1} = 21$ :
+          $$x \equiv 21(y - 8) \equiv 21y - 168 \pmod{26}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Simplification</div>
+            <div class="calc-content">
+              $-168 = -6 \times 26 - 12 + (-168 + 156) = \ldots$<br>
+              $-168 \div 26 = -6$ reste $-168 + 156 = -12$, et $-12 + 26 = 14$<br>
+              Donc $-168 \equiv 14 \pmod{26}$
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">Formule de déchiffrement : $x \equiv 21y + 14 \pmod{26}$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2c -->
+  <div class="question-block">
+    <div class="question-header">
+      <span class="q-badge">Q2c</span>
+      <h2>Décryptage de la lettre H</h2>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">H correspond à $y = 7$ (A=0, …, H=7).</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="calc-box">
+            <div class="calc-label">Calcul</div>
+            <div class="calc-content">
+              $x \equiv 21(7) + 14 = 147 + 14 = 161 \pmod{26}$<br>
+              $161 = 6 \times 26 + 5$, donc $161 \equiv 5 \pmod{26}$<br>
+              $x = 5$ correspond à la lettre <strong>F</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="ans-icon">✅</span>
+        <div class="ans-content">La lettre H se décrypte en <strong>F</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>
