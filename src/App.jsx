@@ -77,25 +77,7 @@ export default function App() {
     window.history.pushState({}, '', u)
   }
 
-  const handleChipClick = (code) => {
-    setInput(code)
-    setExoId(code)
-    setSearched(true)
-    setIsValid(checkValidity(code))
-    const u = new URL(window.location)
-    u.searchParams.set('exo', code)
-    window.history.pushState({}, '', u)
-  }
-
   const meta = getMetadata(exoId)
-
-  // Codes rapides disponibles
-  const quickCodes = [
-    'R1-E1', 'R1-E2', 'R1-E3',
-    'R2-E1', 'R2-E2', 'R2-E3',
-    'R3-E1', 'R3-E2', 'R3-E3', 'R3-E4',
-    'R4-E1', 'R4-E2', 'R4-E3', 'R4-E4',
-  ]
 
   return (
     <div className="app-container">
@@ -123,20 +105,6 @@ export default function App() {
             <button className="search-button" type="submit">Rechercher</button>
           </form>
 
-          {/* Accès rapide */}
-          <div className="available-codes">
-            <span>Accès rapide :</span>
-            {quickCodes.map(code => (
-              <button
-                key={code}
-                className="code-chip"
-                onClick={() => handleChipClick(code)}
-                type="button"
-              >
-                {code}
-              </button>
-            ))}
-          </div>
         </section>
 
         {searched && isValid && meta && (
