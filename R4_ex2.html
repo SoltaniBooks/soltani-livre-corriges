@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 4 — Exercice 2 : Arithmétique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    .section-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #1a6b3a; margin: 1.8rem 0 0.8rem; padding-bottom: 0.5rem; border-bottom: 2px solid #1a6b3a; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 4</span>
+    <span class="sep">›</span>
+    <span>Exercice 2</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Arithmétique</span>
+    <h1>Sujet 4 — Exercice 2 : Équations Diophantiennes et Congruences</h1>
+    <p>Résolution d'équations linéaires dans $\mathbb{Z}^2$, étude de divisibilité et résolution de systèmes de congruences simultanées.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <div class="section-title">Partie A : Équation Diophantienne</div>
+
+  <!-- Question A1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Vérification de la solution particulière de $(E) : 4x - 3y = 5$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Remplacement de $x$ et $y$ par $(2, 1)$ :</strong><br>
+          Calculons le membre de gauche avec les valeurs proposées $x=2$ et $y=1$ :
+          <div class="math-block">
+            $$4(2) - 3(1) = 8 - 3 = 5$$
+          </div>
+          Puisque le résultat obtenu est égal à $5$, l'égalité est vérifiée.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Le couple $(2, 1)$ est bien une solution particulière de l'équation $(E)$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question A2 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2</div>
+      <div class="question-title">Résolution générale de $(E)$ dans $\mathbb{Z}^2$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Soustraction membre à membre :</strong><br>
+          Puisque $(2,1)$ est solution de $(E)$, nous avons :
+          <div class="math-block">
+            $$\begin{cases} 4x - 3y = 5 \\ 4(2) - 3(1) = 5 \end{cases} \implies 4(x-2) - 3(y-1) = 0 \iff 4(x-2) = 3(y-1)$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application du théorème de Gauss :</strong><br>
+          Le nombre $3$ divise le produit $4(x-2)$. Or, $\text{pgcd}(3,4) = 1$.<br>
+          D'après le théorème de Gauss, $3$ divise donc $(x-2)$.<br>
+          Ainsi, il existe un entier $k \in \mathbb{Z}$ tel que :
+          <div class="math-block">
+            $$x - 2 = 3k \implies x = 2 + 3k$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Détermination de $y$ :</strong><br>
+          En remplaçant $(x-2)$ par $3k$ dans la relation $4(x-2) = 3(y-1)$, nous obtenons :
+          <div class="math-block">
+            $$4(3k) = 3(y-1) \iff 12k = 3(y-1) \iff y-1 = 4k \implies y = 1 + 4k$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'ensemble des solutions de $(E)$ est l'ensemble des couples :
+          $$S = \{ (2 + 3k \;; \; 1 + 4k) \;; \; k \in \mathbb{Z} \}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Partie B : Étude du PGCD</div>
+
+  <!-- Question B1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1a</div>
+      <div class="question-title">Calcul de la combinaison linéaire $4b - 3a$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Substitution et développement :</strong><br>
+          Avec $a = 4n+1$ et $b = 3n+2$ pour $n \in \mathbb{N}$ :
+          <div class="math-block">
+            $$4b - 3a = 4(3n+2) - 3(4n+1) = 12n + 8 - 12n - 3$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Pour tout entier naturel $n$ :
+          $$4b - 3a = 5$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question B1b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1b</div>
+      <div class="question-title">Déduction des valeurs possibles de $d = \text{pgcd}(a,b)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Propriété du PGCD :</strong><br>
+          Soit $d = \text{pgcd}(a, b)$. Par définition, $d$ divise $a$ et $d$ divise $b$.<br>
+          Par conséquent, $d$ divise toute combinaison linéaire entière de $a$ et $b$.<br>
+          En particulier, $d$ divise $4b - 3a$.
+          <div class="math-block">
+            $$d \mid (4b - 3a) \implies d \mid 5$$
+          </div>
+          Les diviseurs positifs de $5$ sont $1$ et $5$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les seules valeurs possibles pour le PGCD $d$ sont **1** ou **5**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question B2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Équivalence : $a \equiv 0 \pmod 5 \iff n \equiv 1 \pmod 5$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Résolution de la congruence modulo 5 :</strong><br>
+          Développons la relation :
+          <div class="math-block">
+            $$a \equiv 0 \pmod 5 \iff 4n + 1 \equiv 0 \pmod 5 \iff 4n \equiv -1 \equiv 4 \pmod 5$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Multiplication par l'inverse de 4 :</strong><br>
+          Puisque $4 \equiv -1 \pmod 5$, son propre inverse modulo 5 est $4$ car $4 \times 4 = 16 \equiv 1 \pmod 5$.
+          $$4n \equiv 4 \pmod 5 \iff n \equiv 1 \pmod 5 \quad(\text{en simplifiant par } 4)$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On a bien l'équivalence : $a \equiv 0 \pmod 5 \iff n \equiv 1 \pmod 5$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question B2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Vérification de la divisibilité de $b$ par 5</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Substitution dans $b$ modulo 5 :</strong><br>
+          Supposons que $n \equiv 1 \pmod 5$. Exprimons $b = 3n + 2$ modulo 5 :
+          <div class="math-block">
+            $$b \equiv 3(1) + 2 \equiv 5 \equiv 0 \pmod 5$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Si $n \equiv 1 \pmod 5$, alors $b \equiv 0 \pmod 5$, ce qui signifie que $b$ est un multiple de 5.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question B2c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2c</div>
+      <div class="question-title">Détermination de la valeur de $d$ selon $n$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Cas 1 : $n \equiv 1 \pmod 5$</strong><br>
+          D'après 2a et 2b, si $n \equiv 1 \pmod 5$, alors $a \equiv 0 \pmod 5$ et $b \equiv 0 \pmod 5$.<br>
+          Le nombre 5 est un diviseur commun de $a$ et $b$. Puisque $d \in \{1, 5\}$, on en déduit que $d = 5$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Cas 2 : $n \not\equiv 1 \pmod 5$</strong><br>
+          D'après l'équivalence de 2a, si $n \not\equiv 1 \pmod 5$, alors $a \not\equiv 0 \pmod 5$.<br>
+          Le nombre 5 ne divise pas $a$. Ainsi, le PGCD $d$ ne peut pas être égal à $5$, ce qui impose $d = 1$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La valeur de $d$ est :
+          $$d = \begin{cases} 5 & \text{si } n \equiv 1 \pmod 5 \\ 1 & \text{sinon} \end{cases}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Partie C : Système de congruences</div>
+
+  <!-- Question C1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Traduction sous forme de système $(S)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Traduction de la première condition ($\text{pgcd}=5$) :</strong><br>
+          D'après la partie B, $\text{pgcd}(4n+1, 3n+2) = 5 \iff n \equiv 1 \pmod 5$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Traduction de la seconde condition (division par 7) :</strong><br>
+          Le reste de la division euclidienne de $n$ par $7$ est $3 \iff n \equiv 3 \pmod 7$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Le système à résoudre est :
+          $$(S) : \begin{cases} n \equiv 1 \pmod 5 \\ n \equiv 3 \pmod 7 \end{cases}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question C2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Recherche d'une solution particulière $n_0$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Test des valeurs $n \equiv 3 \pmod 7$ :</strong><br>
+          On teste les entiers de la forme $n = 7k + 3$ ($k \in \mathbb{N}$) pour voir lequel vérifie la première congruence modulo 5 :
+          <ul>
+            <li>$k=0 \implies n = 3 \not\equiv 1 \pmod 5$</li>
+            <li>$k=1 \implies n = 10 \equiv 0 \not\equiv 1 \pmod 5$</li>
+            <li>$k=2 \implies n = 17 \equiv 2 \not\equiv 1 \pmod 5$</li>
+            <li>$k=3 \implies n = 24 \equiv 4 \not\equiv 1 \pmod 5$</li>
+            <li>$k=4 \implies n = 31 \equiv 1 \pmod 5$ <span class="check">✓</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Le plus petit entier naturel solution de $(S)$ est **$n_0 = 31$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question C2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Résolution complète du système $(S)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Théorème des restes chinois :</strong><br>
+          Puisque $5$ et $7$ sont premiers entre eux ($\text{pgcd}(5,7)=1$), la solution générale modulo $5 \times 7 = 35$ est unique.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Mise en équation :</strong><br>
+          Soit $n$ une solution de $(S)$. On a :
+          $$\begin{cases} n \equiv 31 \pmod 5 \\ n \equiv 31 \pmod 7 \end{cases} \iff \begin{cases} 5 \mid (n - 31) \\ 7 \mid (n - 31) \end{cases}$$
+          Puisque $5$ et $7$ sont premiers entre eux, cela équivaut à :
+          $$35 \mid (n - 31) \iff n \equiv 31 \pmod{35}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les solutions du système $(S)$ sont tous les entiers de la forme :
+          $$n = 31 + 35k \quad (k \in \mathbb{Z}) \iff n \equiv 31 \pmod{35}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

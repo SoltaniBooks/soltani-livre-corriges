@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 5 — Exercice 4 : Analyse (Étude de Fonction et Intégrale)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .top-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1.5px solid #d1d5db; color: #1a2d59; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; margin-bottom: 1rem; cursor: pointer; }
+    .back-btn:hover { background: #1a6b3a; color: #fff; border-color: #1a6b3a; }
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } .header h1 { font-size: 1.15rem; padding-right: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 5</span>
+    <span class="sep">›</span>
+    <span>Exercice 4</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Analyse</span>
+    <h1>Sujet 5 — Exercice 4 : Étude de Fonction et Intégrales</h1>
+    <p>Étude des variations d'une fonction exponentielle, limites, asymptotes, point d'inflexion et calcul d'aire par intégration par parties.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1a</div>
+      <div class="question-title">Calcul de la dérivée de $g(x) = 1 - (2x+1)e^{-2x}$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Formule de dérivation :</strong><br>
+          La fonction $g$ est définie sur $\mathbb{R}$ par $g(x) = 1 - u(x)v(x)$, avec :
+          <ul>
+            <li>$u(x) = 2x + 1 \implies u'(x) = 2$</li>
+            <li>$v(x) = e^{-2x} \implies v'(x) = -2e^{-2x}$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application de $(uv)' = u'v + uv'$ :</strong>
+          <div class="math-block">
+            $$g'(x) = 0 - \big[u'(x)v(x) + u(x)v'(x)\big]$$
+            $$g'(x) = - \big[2e^{-2x} + (2x+1)(-2e^{-2x})\big]$$
+            $$g'(x) = - \big[2 - 4x - 2\big]e^{-2x}$$
+            $$g'(x) = - (-4x)e^{-2x} = 4xe^{-2x}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La dérivée de $g$ sur $\mathbb{R}$ est :
+          $$g'(x) = 4xe^{-2x}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 1b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1b</div>
+      <div class="question-title">Sens de variations de $g$ et positivité</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Étude du signe de $g'(x)$ :</strong><br>
+          Pour tout réel $x$, $e^{-2x} > 0$. Le signe de $g'(x) = 4xe^{-2x}$ est donc identique à celui de $x$.
+          <ul>
+            <li>Si $x < 0$, $g'(x) < 0 \implies g$ est strictement décroissante sur $]-\infty \;; \; 0]$.</li>
+            <li>Si $x > 0$, $g'(x) > 0 \implies g$ est strictement croissante sur $[0 \;; \; +\infty[$.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Recherche du minimum global :</strong><br>
+          La fonction $g$ admet donc un minimum global en $x = 0$. Sa valeur est :
+          <div class="math-block">
+            $$g(0) = 1 - (2(0)+1)e^{0} = 1 - 1 \times 1 = 0$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque le minimum global de $g$ sur $\mathbb{R}$ est $g(0) = 0$, on en déduit que pour tout réel $x$ :
+          $$g(x) \ge 0$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Étude de $f(x) = (x+1) + (x+1)e^{-2x}$ au voisinage de $-\infty$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Limite de $f$ en $-\infty$ :</strong><br>
+          Étudions les limites des différents facteurs :
+          <ul>
+            <li>$\lim_{x\to -\infty} (x+1) = -\infty$</li>
+            <li>$\lim_{x\to -\infty} e^{-2x} = +\infty$ (car $\lim_{X\to +\infty} e^X = +\infty$)</li>
+          </ul>
+          Par conséquent, $\lim_{x\to -\infty} (x+1)e^{-2x} = -\infty \times +\infty = -\infty$.<br>
+          Par somme de limites, on a :
+          $$\lim_{x\to -\infty} f(x) = -\infty$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de $\lim_{x\to -\infty} \frac{f(x)}{x}$ :</strong>
+          Pour $x \ne 0$ :
+          <div class="math-block">
+            $$\frac{f(x)}{x} = \frac{x+1}{x} + \frac{x+1}{x}e^{-2x} = \left(1 + \frac{1}{x}\right) + \left(1 + \frac{1}{x}\right)e^{-2x}$$
+          </div>
+          On sait que $\lim_{x\to -\infty} \left(1 + \frac{1}{x}\right) = 1$ et $\lim_{x\to -\infty} e^{-2x} = +\infty$. Par produit et somme :
+          $$\lim_{x\to -\infty} \frac{f(x)}{x} = 1 + 1 \times (+\infty) = +\infty$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On a $\lim_{x\to -\infty} f(x) = -\infty$ et $\lim_{x\to -\infty} \frac{f(x)}{x} = +\infty$.<br>
+          **Interprétation** : La courbe $(\mathcal{C})$ admet une branche parabolique de direction l'axe des ordonnées $(Oy)$ au voisinage de $-\infty$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Étude de $f(x)$ au voisinage de $+\infty$ et asymptote oblique</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Limite de $f$ en $+\infty$ :</strong><br>
+          Développons le deuxième terme : $(x+1)e^{-2x} = xe^{-2x} + e^{-2x}$.<br>
+          Par croissance comparée :
+          <ul>
+            <li>$\lim_{x\to +\infty} xe^{-2x} = \lim_{x\to +\infty} \frac{x}{e^{2x}} = 0$</li>
+            <li>$\lim_{x\to +\infty} e^{-2x} = 0$</li>
+          </ul>
+          On a donc $\lim_{x\to +\infty} (x+1)e^{-2x} = 0$. Comme $\lim_{x\to +\infty} (x+1) = +\infty$, par somme :
+          $$\lim_{x\to +\infty} f(x) = +\infty$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Vérification de l'asymptote oblique :</strong><br>
+          Calculons l'écart entre la courbe et la droite $D : y = x+1$ :
+          <div class="math-block">
+            $$\lim_{x\to +\infty} [f(x) - (x+1)] = \lim_{x\to +\infty} (x+1)e^{-2x} = 0$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque la limite de l'écart est nulle en $+\infty$, la droite $D : y = x+1$ est bien une **asymptote oblique** à la courbe $(\mathcal{C})$ au voisinage de $+\infty$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2c</div>
+      <div class="question-title">Position relative de $(\mathcal{C})$ et de $D$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Étude du signe de la différence :</strong><br>
+          La différence est donnée par :
+          <div class="math-block">
+            $$f(x) - y_D = (x+1)e^{-2x}$$
+          </div>
+          Puisque $e^{-2x} > 0$ pour tout réel $x$, le signe de cette différence est uniquement déterminé par celui du facteur $(x+1)$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Analyse des cas :</strong>
+          <ul>
+            <li>$x+1 > 0 \iff x > -1 \implies f(x) - y_D > 0$, donc $(\mathcal{C})$ est **au-dessus** de $D$.</li>
+            <li>$x+1 < 0 \iff x < -1 \implies f(x) - y_D < 0$, donc $(\mathcal{C})$ est **en-dessous** de $D$.</li>
+            <li>$x = -1 \implies f(-1) - y_D = 0$, $(\mathcal{C})$ et $D$ se coupent au point $I(-1 \;; \; 0)$.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          $(\mathcal{C})$ est au-dessus de $D$ sur $]-1 \;; \; +\infty[$ et en-dessous de $D$ sur $]-\infty \;; \; -1[$. Les deux se coupent en $I(-1, 0)$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3</div>
+      <div class="question-title">Variations de la fonction $f$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul de $f'(x)$ :</strong><br>
+          La fonction $f(x) = x+1 + (x+1)e^{-2x}$ est dérivable sur $\mathbb{R}$.
+          <div class="math-block">
+            $$f'(x) = 1 + \big[ 1 \times e^{-2x} + (x+1)(-2e^{-2x}) \big]$$
+            $$f'(x) = 1 + (1 - 2x - 2)e^{-2x} = 1 - (2x+1)e^{-2x}$$
+          </div>
+          On retrouve exactement l'expression de la fonction $g(x)$. Donc **$f'(x) = g(x)$**.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Tableau de variations :</strong><br>
+          À la question 1.b, nous avons démontré que pour tout $x \in \mathbb{R}$, $g(x) \ge 0$, avec $g(x) = 0 \iff x=0$.<br>
+          Donc, $f'(x) \ge 0$ sur $\mathbb{R}$, avec une annulation isolée en $x=0$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La fonction $f$ est **strictement croissante** sur $\mathbb{R}$.
+          <ul>
+            <li>$\lim_{x\to-\infty} f(x) = -\infty$</li>
+            <li>$f(0) = (0+1) + (0+1)e^0 = 2$</li>
+            <li>$\lim_{x\to+\infty} f(x) = +\infty$</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4a</div>
+      <div class="question-title">Point d'inflexion de la courbe $(\mathcal{C})$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Dérivée seconde de $f$ :</strong><br>
+          Comme $f'(x) = g(x)$, la dérivée seconde de $f$ est égale à la dérivée de $g$ :
+          $$f''(x) = g'(x) = 4xe^{-2x}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Changement de signe :</strong><br>
+          Puisque $e^{-2x} > 0$, $f''(x)$ s'annule en $x=0$.
+          <ul>
+            <li>Pour $x < 0$, $f''(x) < 0$ (la courbe est concave).</li>
+            <li>Pour $x > 0$, $f''(x) > 0$ (la courbe est convexe).</li>
+          </ul>
+          La dérivée seconde s'annule en $x=0$ en changeant de signe, ce qui définit un point d'inflexion.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Coordonnées du point d'inflexion :</strong><br>
+          L'abscisse est $0$. L'ordonnée est $f(0) = 2$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La courbe $(\mathcal{C})$ admet un unique point d'inflexion **$A(0 \;; \; 2)$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4b</div>
+      <div class="question-title">Équation de la tangente $T$ au point $A$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Formule de la tangente :</strong><br>
+          L'équation de la tangente à $(\mathcal{C})$ au point d'abscisse $x_0 = 0$ est :
+          $$y = f'(0)(x-0) + f(0)$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Valeur des coefficients :</strong>
+          <ul>
+            <li>$f(0) = 2$</li>
+            <li>$f'(0) = g(0) = 0$</li>
+          </ul>
+          On a donc $y = 0(x) + 2 = 2$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'équation de la tangente $T$ en $A$ est la droite horizontale :
+          $$T : y = 2$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 5a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">5a</div>
+      <div class="question-title">Calcul d'aire par intégration par parties : $\mathcal{A}_\alpha$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Définition de l'intégrale :</strong><br>
+          L'aire $\mathcal{A}_\alpha$ de la partie du plan délimitée par $(\mathcal{C})$, $D$ et les droites $x=-1$ et $x=\alpha$ (avec $\alpha > -1$) est :
+          $$\mathcal{A}_\alpha = \int_{-1}^{\alpha} \big(f(x) - y_D\big) dx = \int_{-1}^{\alpha} (x+1)e^{-2x} dx$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Intégration par parties :</strong><br>
+          Posons :
+          <ul>
+            <li>$u(x) = x+1 \implies u'(x) = 1$</li>
+            <li>$v'(x) = e^{-2x} \implies v(x) = -\frac{1}{2}e^{-2x}$</li>
+          </ul>
+          Les fonctions $u$ et $v$ sont continûment dérivables sur $[-1 \;; \; \alpha]$. La formule donne :
+          <div class="math-block">
+            $$\int_{-1}^{\alpha} u(x)v'(x) dx = \big[u(x)v(x)\big]_{-1}^{\alpha} - \int_{-1}^{\alpha} u'(x)v(x) dx$$
+            $$\mathcal{A}_\alpha = \left[ -\frac{1}{2}(x+1)e^{-2x} \right]_{-1}^{\alpha} - \int_{-1}^{\alpha} \left(-\frac{1}{2}e^{-2x}\right) dx$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul des termes :</strong>
+          <div class="math-block">
+            $$\left[ -\frac{1}{2}(x+1)e^{-2x} \right]_{-1}^{\alpha} = -\frac{1}{2}(\alpha+1)e^{-2\alpha} - 0 = -\frac{1}{2}(\alpha+1)e^{-2\alpha}$$
+            $$\int_{-1}^{\alpha} \left(-\frac{1}{2}e^{-2x}\right) dx = \left[ \frac{1}{4}e^{-2x} \right]_{-1}^{\alpha} = \frac{1}{4}e^{-2\alpha} - \frac{1}{4}e^{2}$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Simplification :</strong>
+          <div class="math-block">
+            $$\mathcal{A}_\alpha = -\frac{1}{2}(\alpha+1)e^{-2\alpha} - \left( \frac{1}{4}e^{-2\alpha} - \frac{1}{4}e^{2} \right)$$
+            $$\mathcal{A}_\alpha = \frac{1}{4}e^{2} - \left(\frac{1}{2}\alpha + \frac{1}{2} + \frac{1}{4}\right)e^{-2\alpha}$$
+            $$\mathcal{A}_\alpha = \frac{1}{4}e^{2} - \left(\frac{1}{2}\alpha + \frac{3}{4}\right)e^{-2\alpha}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'aire est égale à :
+          $$\mathcal{A}_\alpha = \frac{1}{4}e^{2} - \left(\frac{1}{2}\alpha + \frac{3}{4}\right)e^{-2\alpha} \text{ u.a.}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 5b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">5b</div>
+      <div class="question-title">Limite de l'aire quand $\alpha \to +\infty$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Analyse des limites :</strong><br>
+          Étudions la limite de l'expression $\left(\frac{1}{2}\alpha + \frac{3}{4}\right)e^{-2\alpha} = \frac{1}{2}\alpha e^{-2\alpha} + \frac{3}{4}e^{-2\alpha}$ :
+          <ul>
+            <li>$\lim_{\alpha\to +\infty} e^{-2\alpha} = 0$</li>
+            <li>$\lim_{\alpha\to +\infty} \alpha e^{-2\alpha} = \lim_{\alpha\to +\infty} \frac{\alpha}{e^{2\alpha}} = 0$ (par croissance comparée)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul final :</strong><br>
+          On en déduit que :
+          $$\lim_{\alpha\to +\infty} \left(\frac{1}{2}\alpha + \frac{3}{4}\right)e^{-2\alpha} = 0$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La limite de l'aire quand $\alpha$ tend vers $+\infty$ est :
+          $$\lim_{\alpha\to +\infty} \mathcal{A}_\alpha = \frac{1}{4}e^2 \approx 1{,}85 \text{ u.a.}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

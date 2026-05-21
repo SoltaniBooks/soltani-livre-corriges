@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 4 — Exercice 3 : Probabilités conditionnelles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    /* ─── Contrôles de l'arbre ─────────────────────────────────────────── */
+    .tree-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 1.2rem 0 0.6rem;
+      background: #f8fafc;
+      padding: 0.8rem 1.2rem;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .tree-control-btn {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      color: #1a2d59;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .tree-control-btn:hover:not(:disabled) {
+      background: #1a6b3a;
+      color: #fff;
+      border-color: #1a6b3a;
+      box-shadow: 0 4px 10px rgba(26,107,58,0.2);
+    }
+    .tree-control-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .tree-control-btn.reset {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .tree-control-btn.reset:hover {
+      background: #cbd5e1;
+      color: #1e293b;
+      border-color: #94a3b8;
+    }
+    .tree-step-indicator {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      background: #cbd5e1;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+    .step-dot.active {
+      background: #1a6b3a;
+      transform: scale(1.3);
+      box-shadow: 0 0 0 3px rgba(26, 107, 58, 0.2);
+    }
+    .tree-step-desc {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1a2d59;
+      min-height: 48px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.5rem 1rem;
+      background: #ede9f8;
+      border: 1px dashed #d8b4fe;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      line-height: 1.5;
+    }
+    .step-badge {
+      background: #1a6b3a;
+      color: #white;
+      color: white;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    
+    /* ─── Arbre de probabilités moderne et animé ────────────────────────── */
+    .prob-tree-container {
+      background: #fdfdfd;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 2.2rem 1.5rem;
+      margin: 1.2rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    
+    .tree-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: 680px;
+      position: relative;
+    }
+    
+    /* Conteneur des enfants */
+    .tree-children-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      position: relative;
+      padding-left: 20px;
+    }
+    
+    /* Ligne verticale de liaison pour les enfants */
+    .tree-children-container::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 18%;
+      bottom: 18%;
+      width: 2px;
+      background: #cbd5e1;
+      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tree-children-container.active-branch::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    
+    .sub-level {
+      gap: 20px;
+    }
+    
+    /* Lignes individuelles de liaison (Edges) */
+    .tree-edge {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100px;
+      height: 40px;
+      margin-left: -20px;
+    }
+    
+    /* La ligne horizontale */
+    .tree-edge-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #cbd5e1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+    .tree-edge.active-edge .tree-edge-line {
+      transform: scaleX(1);
+      background: #1a6b3a;
+    }
+    .tree-edge.edge-down.active-edge .tree-edge-line {
+      background: #cbd5e1; /* Keep simple link or color as desired */
+    }
+    
+    /* Étiquette sur la branche */
+    .tree-edge-label {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.6);
+      top: 50%;
+      z-index: 10;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1a6b3a;
+      background: #e8f5eb;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      border: 1px solid #bbf7d0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .tree-edge-label.alt {
+      color: #c0392b;
+      background: #fdf2f2;
+      border-color: #fca5a5;
+    }
+    .tree-edge.active-edge .tree-edge-label {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    
+    /* Styles des Nœuds */
+    .tree-node {
+      background: #fff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 0.5rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 135px;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      opacity: 0;
+      transform: translateX(-15px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 5;
+    }
+    .tree-node.active-node {
+      opacity: 1;
+      transform: translateX(0);
+      border-color: #94a3b8;
+    }
+    
+    /* Nœud Racine */
+    .root-node {
+      background: #1a2d59;
+      color: #fff;
+      border-color: #1a2d59 !important;
+      box-shadow: 0 8px 16px rgba(26, 45, 89, 0.25);
+    }
+    
+    /* Nœuds spécifiques colorés */
+    .tree-node.success.active-node {
+      border-color: #2e8b57;
+      background: #f4fbf7;
+    }
+    .tree-node.danger.active-node {
+      border-color: #fca5a5;
+      background: #fffbfb;
+    }
+    
+    /* Contenu du nœud */
+    .node-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .root-node .node-title {
+      color: #fff;
+      font-size: 0.92rem;
+    }
+    .node-subtitle {
+      font-size: 0.68rem;
+      color: #64748b;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .root-node .node-subtitle {
+      color: #94a3b8;
+    }
+    
+    .tree-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .prob-tree-container { padding: 0.8rem; overflow-x: auto; justify-content: flex-start; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 4</span>
+    <span class="sep">›</span>
+    <span>Exercice 3</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Probabilités</span>
+    <h1>Sujet 4 — Exercice 3 : Probabilités Conditionnelles et Filtre Anti-Spam</h1>
+    <p>Modélisation d'un processus de détection par un arbre de probabilités, application de la formule des probabilités totales, théorème de Bayes et loi binomiale.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1a</div>
+      <div class="question-title">Identification des probabilités de l'énoncé</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Analyse des événements :</strong><br>
+          Soient les événements définis par l'énoncé :
+          <ul>
+            <li>$S$ : « L'email est un spam » ($\overline{S}$ : « L'email est légitime »)</li>
+            <li>$D$ : « L'email est détecté (et classé) comme spam » ($\overline{D}$ : « L'email n'est pas détecté comme spam »)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Extraction des données numériques :</strong><br>
+          <ul>
+            <li>$30\%$ des emails reçus sont des spams : 
+              <div class="math-block">$$P(S) = 0{,}30 \quad\text{donc}\quad P(\overline{S}) = 1 - P(S) = 0{,}70$$</div>
+            </li>
+            <li>Le filtre détecte $92\%$ des spams. C'est la probabilité que l'email soit détecté comme spam sachant que c'est un spam :
+              <div class="math-block">$$P(D|S) = 0{,}92 \quad\text{donc}\quad P(\overline{D}|S) = 1 - 0{,}92 = 0{,}08$$</div>
+            </li>
+            <li>Le filtre classe par erreur $4\%$ des emails légitimes comme spams :
+              <div class="math-block">$$P(D|\overline{S}) = 0{,}04 \quad\text{donc}\quad P(\overline{D}|\overline{S}) = 1 - 0{,}04 = 0{,}96$$</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les probabilités issues de l'énoncé sont :
+          $$P(S) = 0{,}30 \quad;\quad P(D|S) = 0{,}92 \quad;\quad P(D|\overline{S}) = 0{,}04$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 1b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1b</div>
+      <div class="question-title">Construction de l'arbre pondéré de probabilités</div>
+    </div>
+    <div class="question-body">
+      <p>Construisez l'arbre pas-à-pas en cliquant sur les boutons ci-dessous pour suivre les étapes logiques de l'énoncé :</p>
+      
+      <!-- Contrôles d'animation de l'arbre -->
+      <div class="tree-controls">
+        <button id="btn-prev" class="tree-control-btn" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Précédent
+        </button>
+        
+        <div class="tree-step-indicator">
+          <span class="step-dot active" data-step="0" title="Étape 1 : Racine"></span>
+          <span class="step-dot" data-step="1" title="Étape 2 : Événements principaux S et Sbar"></span>
+          <span class="step-dot" data-step="2" title="Étape 3 : Arbre complet (Détection D)"></span>
+        </div>
+        
+        <button id="btn-next" class="tree-control-btn">
+          Suivant
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        
+        <button id="btn-reset" class="tree-control-btn reset" title="Recommencer l'animation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+        </button>
+      </div>
+      
+      <div class="tree-step-desc">
+        <span class="step-badge" id="step-badge">Étape 1 / 3</span>
+        <span id="step-text">Chargement de la racine (Email reçu)</span>
+      </div>
+
+      <div class="prob-tree-container">
+        <div class="tree-wrapper">
+          
+          <!-- Racine -->
+          <div class="tree-node root-node active-node" id="node-root">
+            <div class="node-title">Email reçu</div>
+            <div class="node-subtitle">Événement de départ</div>
+          </div>
+          
+          <!-- Premier niveau (Spam / Légitime) -->
+          <div class="tree-children-container" id="level-1-container">
+            
+            <!-- Branche haute : S (Spam) -->
+            <div class="tree-row">
+              <div class="tree-edge edge-up" id="edge-s">
+                <div class="tree-edge-line"></div>
+                <div class="tree-edge-label">$P(S) = 0{,}30$</div>
+              </div>
+              
+              <div class="tree-node" id="node-s">
+                <div class="node-title">Spam ($S$)</div>
+                <div class="node-subtitle">Vrai spam</div>
+              </div>
+              
+              <!-- Second niveau (Détecté / Non détecté) -->
+              <div class="tree-children-container sub-level" id="level-2-s-container">
+                
+                <!-- Branche S -> D (Détecté) -->
+                <div class="tree-row">
+                  <div class="tree-edge edge-up" id="edge-s-d">
+                    <div class="tree-edge-line"></div>
+                    <div class="tree-edge-label">$0{,}92$</div>
+                  </div>
+                  <div class="tree-node success" id="node-s-d">
+                    <div class="node-title">Détecté ($D$)</div>
+                    <div class="node-subtitle">Spam détecté</div>
+                  </div>
+                </div>
+                
+                <!-- Branche S -> Dbar (Non détecté) -->
+                <div class="tree-row">
+                  <div class="tree-edge edge-down" id="edge-s-dbar">
+                    <div class="tree-edge-line"></div>
+                    <div class="tree-edge-label alt">$0{,}08$</div>
+                  </div>
+                  <div class="tree-node" id="node-s-dbar">
+                    <div class="node-title">Non détecté ($\overline{D}$)</div>
+                    <div class="node-subtitle">Faux négatif</div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+            <!-- Branche basse : Sbar (Légitime) -->
+            <div class="tree-row">
+              <div class="tree-edge edge-down" id="edge-sbar">
+                <div class="tree-edge-line"></div>
+                <div class="tree-edge-label alt">$P(\overline{S}) = 0{,}70$</div>
+              </div>
+              
+              <div class="tree-node" id="node-sbar">
+                <div class="node-title">Légitime ($\overline{S}$)</div>
+                <div class="node-subtitle">Email correct</div>
+              </div>
+              
+              <!-- Second niveau sous Sbar -->
+              <div class="tree-children-container sub-level" id="level-2-sbar-container">
+                
+                <!-- Branche Sbar -> D (Détecté par erreur) -->
+                <div class="tree-row">
+                  <div class="tree-edge edge-up" id="edge-sbar-d">
+                    <div class="tree-edge-line"></div>
+                    <div class="tree-edge-label alt">$0{,}04$</div>
+                  </div>
+                  <div class="tree-node danger" id="node-sbar-d">
+                    <div class="node-title">Détecté ($D$)</div>
+                    <div class="node-subtitle">Faux positif</div>
+                  </div>
+                </div>
+                
+                <!-- Branche Sbar -> Dbar (Non détecté, correct) -->
+                <div class="tree-row">
+                  <div class="tree-edge edge-down" id="edge-sbar-dbar">
+                    <div class="tree-edge-line"></div>
+                    <div class="tree-edge-label">$0{,}96$</div>
+                  </div>
+                  <div class="tree-node" id="node-sbar-dbar">
+                    <div class="node-title">Non détecté ($\overline{D}$)</div>
+                    <div class="node-subtitle">Légitime préservé</div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Calcul de la probabilité que l'email soit détecté comme spam : $P(D) = 0{,}304$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Application de la formule des probabilités totales :</strong><br>
+          Les événements $S$ et $\overline{S}$ forment une partition de l'univers. Pour tout événement $D$, on a :
+          <div class="math-block">
+            $$P(D) = P(S \cap D) + P(\overline{S} \cap D) = P(D|S) \times P(S) + P(D|\overline{S}) \times P(\overline{S})$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul numérique :</strong>
+          <div class="math-block">
+            $$P(D) = 0{,}92 \times 0{,}30 + 0{,}04 \times 0{,}70$$
+            $$P(D) = 0{,}276 + 0{,}028 = 0{,}304$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité qu'un email soit classé comme spam par le filtre est bien égale à **$0{,}304$** (soit $30{,}4\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Calcul et interprétation de $P(S|D)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Application de la formule de Bayes :</strong><br>
+          Nous cherchons la probabilité conditionnelle que l'email soit un vrai spam sachant qu'il est détecté comme spam.
+          <div class="math-block">
+            $$P(S|D) = \frac{P(S \cap D)}{P(D)} = \frac{P(D|S) \times P(S)}{P(D)}$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul numérique :</strong>
+          <div class="math-block">
+            $$P(S|D) = \frac{0{,}92 \times 0{,}30}{0{,}304} = \frac{0{,}276}{0{,}304} \approx 0{,}9079$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité d'avoir un vrai spam parmi les emails détectés est de **$P(S|D) \approx 0{,}908$** (ou $90{,}8\%$).
+          <br><br>
+          <strong>Interprétation :</strong> Cela signifie que $90{,}8\%$ des emails signalés par le filtre comme spams sont de vrais spams. Par conséquent, environ $9{,}2\%$ des emails classés spams sont en réalité légitimes (faux positifs). Le filtre est performant mais présente un petit risque de bloquer des messages importants.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Calcul de la probabilité que les 3 emails choisis soient de vrais spams</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Modélisation de l'expérience :</strong><br>
+          On choisit au hasard et de manière indépendante (ou avec remise) 3 emails parmi les spams signalés.
+          Pour chaque email choisi, la probabilité qu'il soit un vrai spam est $p = P(S|D) \approx 0{,}908$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de la probabilité d'obtenir 3 succès consécutifs :</strong><br>
+          Puisque les choix sont indépendants :
+          <div class="math-block">
+            $$P(3 \text{ vrais spams}) = p^3 = (0{,}9079)^3 \approx 0{,}7483$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité que les 3 emails signalés soient tous de vrais spams est d'environ **$0{,}748$** (soit $74{,}8\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Probabilité d'obtenir au moins un vrai spam</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Utilisation de l'événement contraire :</strong><br>
+          L'événement contraire de « au moins un vrai spam » est « aucun vrai spam » (les 3 emails sont légitimes).
+          <div class="math-block">
+            $$P(\text{au moins un vrai spam}) = 1 - P(\text{aucun vrai spam})$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de la probabilité de l'événement contraire :</strong><br>
+          La probabilité qu'un email signalé soit légitime est $1 - p = 1 - 0{,}9079 = 0{,}0921$.
+          <div class="math-block">
+            $$P(\text{aucun vrai spam}) = (1 - p)^3 = (0{,}0921)^3 \approx 0{,}00078$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Déduction finale :</strong>
+          <div class="math-block">
+            $$P(\text{au moins un vrai spam}) = 1 - 0{,}00078 = 0{,}99922$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité d'avoir au moins un vrai spam parmi les 3 emails signalés est extrêmement élevée : **$P \approx 0{,}999$** (soit $99{,}9\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let currentStep = 0;
+    const maxSteps = 3; // 0, 1, 2
+    
+    const stepsData = [
+      {
+        badge: "Étape 1 / 3",
+        text: "Événement de départ : Réception de l'email dans la boîte aux lettres."
+      },
+      {
+        badge: "Étape 2 / 3",
+        text: "Événements principaux : l'email est soit un Spam ($S$ avec $P(S)=0{,}30$), soit légitime ($\\overline{S}$ avec $P(\\overline{S})=0{,}70$)."
+      },
+      {
+        badge: "Étape 3 / 3",
+        text: "Probabilités conditionnelles de détection ($D$ et $\\overline{D}$) selon la nature réelle de l'email."
+      }
+    ];
+
+    function updateTree() {
+      // 1. Update text & badge
+      document.getElementById("step-badge").innerText = stepsData[currentStep].badge;
+      const stepTextEl = document.getElementById("step-text");
+      stepTextEl.innerText = stepsData[currentStep].text;
+      
+      // Re-run KaTeX on the description text
+      if (window.renderMathInElement) {
+        renderMathInElement(stepTextEl, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      // 2. Toggle buttons
+      document.getElementById("btn-prev").disabled = (currentStep === 0);
+      document.getElementById("btn-next").disabled = (currentStep === maxSteps - 1);
+      
+      // 3. Toggle indicators
+      const dots = document.querySelectorAll(".step-dot");
+      dots.forEach((dot, idx) => {
+        if (idx === currentStep) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+
+      // 4. Toggle tree classes
+      const container1 = document.getElementById("level-1-container");
+      const edgeS = document.getElementById("edge-s");
+      const nodeS = document.getElementById("node-s");
+      const edgeSbar = document.getElementById("edge-sbar");
+      const nodeSbar = document.getElementById("node-sbar");
+
+      const container2S = document.getElementById("level-2-s-container");
+      const container2Sbar = document.getElementById("level-2-sbar-container");
+      const subEdges = [
+        document.getElementById("edge-s-d"),
+        document.getElementById("edge-s-dbar"),
+        document.getElementById("edge-sbar-d"),
+        document.getElementById("edge-sbar-dbar")
+      ];
+      const subNodes = [
+        document.getElementById("node-s-d"),
+        document.getElementById("node-s-dbar"),
+        document.getElementById("node-sbar-d"),
+        document.getElementById("node-sbar-dbar")
+      ];
+
+      if (currentStep === 0) {
+        // Step 0: Only Root
+        container1.classList.remove("active-branch");
+        edgeS.classList.remove("active-edge");
+        nodeS.classList.remove("active-node");
+        edgeSbar.classList.remove("active-edge");
+        nodeSbar.classList.remove("active-node");
+
+        container2S.classList.remove("active-branch");
+        container2Sbar.classList.remove("active-branch");
+        subEdges.forEach(el => el.classList.remove("active-edge"));
+        subNodes.forEach(el => el.classList.remove("active-node"));
+      } else if (currentStep === 1) {
+        // Step 1: Level 1 active, Level 2 inactive
+        container1.classList.add("active-branch");
+        edgeS.classList.add("active-edge");
+        nodeS.classList.add("active-node");
+        edgeSbar.classList.add("active-edge");
+        nodeSbar.classList.add("active-node");
+
+        container2S.classList.remove("active-branch");
+        container2Sbar.classList.remove("active-branch");
+        subEdges.forEach(el => el.classList.remove("active-edge"));
+        subNodes.forEach(el => el.classList.remove("active-node"));
+      } else if (currentStep === 2) {
+        // Step 2: Everything active
+        container1.classList.add("active-branch");
+        edgeS.classList.add("active-edge");
+        nodeS.classList.add("active-node");
+        edgeSbar.classList.add("active-edge");
+        nodeSbar.classList.add("active-node");
+
+        container2S.classList.add("active-branch");
+        container2Sbar.classList.add("active-branch");
+        subEdges.forEach(el => el.classList.add("active-edge"));
+        subNodes.forEach(el => el.classList.add("active-node"));
+      }
+    }
+
+    // Attach click events
+    document.getElementById("btn-next").addEventListener("click", () => {
+      if (currentStep < maxSteps - 1) {
+        currentStep++;
+        updateTree();
+      }
+    });
+
+    document.getElementById("btn-prev").addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        updateTree();
+      }
+    });
+
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      currentStep = 0;
+      updateTree();
+    });
+
+    // Add support for clicking the indicator dots directly
+    document.querySelectorAll(".step-dot").forEach(dot => {
+      dot.addEventListener("click", (e) => {
+        currentStep = parseInt(e.target.getAttribute("data-step"));
+        updateTree();
+      });
+    });
+
+    // Initial state
+    updateTree();
+  });
+</script>
+</body>
+</html>

@@ -6,12 +6,12 @@
     <title>Animation : Géométrie et Nombres Complexes (Sujet 1)</title>
     <style>
         :root {
-            --primary: #2563eb; /* Bleu */
-            --accent: #e11d48; /* Rose/Rouge */
+            --primary: #1a2d59; /* Bleu */
+            --accent: #f51e65; /* Rose/Rouge */
             --bg: #f8fafc;
-            --text: #334155;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --text: #1c2e5a;
+            --success: #39d6c3;
+            --warning: #39d6c3;
         }
         body {
             margin: 0;
@@ -66,7 +66,7 @@
             margin-top: 0;
             color: var(--primary);
             font-size: 1.25rem;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid rgba(26, 45, 89, 0.12);
             padding-bottom: 10px;
             margin-bottom: 15px;
         }
@@ -76,19 +76,19 @@
             margin-bottom: 15px;
             padding: 10px;
             border-radius: 8px;
-            background: #f1f5f9;
+            background: #f6f8fb;
             transform: translateX(-10px);
         }
         .step.active {
             opacity: 1;
             transform: translateX(0);
-            background: #eff6ff;
+            background: rgba(57, 214, 195, 0.08);
             border-left: 4px solid var(--primary);
         }
         .step.done {
             opacity: 0.7;
             transform: translateX(0);
-            border-left: 4px solid #cbd5e1;
+            border-left: 4px solid rgba(26, 45, 89, 0.15);
         }
         .step-title {
             font-weight: 600;
@@ -124,18 +124,18 @@
             transition: all 0.2s;
         }
         #btn-prev {
-            background: #e2e8f0;
-            color: #475569;
+            background: rgba(26, 45, 89, 0.12);
+            color: rgba(26, 45, 89, 0.4);
         }
         #btn-prev:hover:not(:disabled) {
-            background: #cbd5e1;
+            background: rgba(26, 45, 89, 0.15);
         }
         #btn-next {
             background: var(--primary);
             color: white;
         }
         #btn-next:hover:not(:disabled) {
-            background: #1d4ed8;
+            background: #1a2d59;
         }
         button:disabled {
             opacity: 0.5;
@@ -155,6 +155,18 @@
                 height: 60%;
             }
         }
+    
+    /* Added animations style */
+    .question-block, .sidebar, .canvas-container, .step, .card-calc, .card-logic, .answer-box {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .animate-in {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    /* staggered-entry-animation marker */
     </style>
 </head>
 <body>
@@ -231,11 +243,11 @@
     let animRequest = null;
     
     const pts = {
-        A: { x: 0, y: -2, name: 'A', color: '#1e293b' },
-        B: { x: 1, y: 1, name: 'B', color: '#e11d48' },
-        C: { x: 4, y: 2, name: 'C', color: '#1e293b' },
-        I: { x: 2, y: 0, name: 'I', color: '#10b981' },
-        D: { x: 3, y: -1, name: 'D', color: '#2563eb' }
+        A: { x: 0, y: -2, name: 'A', color: '#152448' },
+        B: { x: 1, y: 1, name: 'B', color: '#f51e65' },
+        C: { x: 4, y: 2, name: 'C', color: '#152448' },
+        I: { x: 2, y: 0, name: 'I', color: '#39d6c3' },
+        D: { x: 3, y: -1, name: 'D', color: '#1a2d59' }
     };
     
     function mapX(x) {
@@ -253,7 +265,7 @@
         const w = canvas.clientWidth;
         const h = canvas.clientHeight;
         
-        ctx.strokeStyle = '#e2e8f0';
+        ctx.strokeStyle = 'rgba(26, 45, 89, 0.12)';
         ctx.lineWidth = 1;
         
         // Vertical lines
@@ -266,26 +278,26 @@
         }
         
         // Axes
-        ctx.strokeStyle = '#475569';
+        ctx.strokeStyle = 'rgba(26, 45, 89, 0.4)';
         ctx.lineWidth = 2;
         // X axis
         if (view.yMin <= 0 && view.yMax >= 0) {
             ctx.beginPath(); ctx.moveTo(0, mapY(0)); ctx.lineTo(w, mapY(0)); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(w-10, mapY(0)-5); ctx.lineTo(w, mapY(0)); ctx.lineTo(w-10, mapY(0)+5); ctx.stroke();
-            ctx.fillStyle = '#475569'; ctx.font = '14px sans-serif'; ctx.fillText('Re(z)', w - 40, mapY(0) - 10);
+            ctx.fillStyle = 'rgba(26, 45, 89, 0.4)'; ctx.font = '14px sans-serif'; ctx.fillText('Re(z)', w - 40, mapY(0) - 10);
         }
         // Y axis
         if (view.xMin <= 0 && view.xMax >= 0) {
             ctx.beginPath(); ctx.moveTo(mapX(0), 0); ctx.lineTo(mapX(0), h); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(mapX(0)-5, 10); ctx.lineTo(mapX(0), 0); ctx.lineTo(mapX(0)+5, 10); ctx.stroke();
-            ctx.fillStyle = '#475569'; ctx.font = '14px sans-serif'; ctx.fillText('Im(z)', mapX(0) + 10, 20);
+            ctx.fillStyle = 'rgba(26, 45, 89, 0.4)'; ctx.font = '14px sans-serif'; ctx.fillText('Im(z)', mapX(0) + 10, 20);
         }
         
         // Origin
         ctx.fillText('O', mapX(0) - 15, mapY(0) + 15);
         
         // Vector u, v
-        ctx.strokeStyle = '#1e3a8a';
+        ctx.strokeStyle = '#1a2d59';
         ctx.lineWidth = 3;
         ctx.beginPath(); ctx.moveTo(mapX(0), mapY(0)); ctx.lineTo(mapX(1), mapY(0)); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(mapX(1)-8, mapY(0)-4); ctx.lineTo(mapX(1), mapY(0)); ctx.lineTo(mapX(1)-8, mapY(0)+4); ctx.stroke();
@@ -375,45 +387,45 @@
         if (currentStep >= 1) {
             const alpha = currentStep === 1 ? animProgress : 1;
             // Draw AC
-            drawSegment(pts.A, pts.C, '#1e293b', alpha);
+            drawSegment(pts.A, pts.C, '#152448', alpha);
             if (currentStep > 1 || animProgress > 0.5) {
-                drawMark(pts.A, pts.I, '#1e293b', 'single');
-                drawMark(pts.I, pts.C, '#1e293b', 'single');
+                drawMark(pts.A, pts.I, '#152448', 'single');
+                drawMark(pts.I, pts.C, '#152448', 'single');
             }
         }
         
         // Step 2: AB, BC (Isosceles)
         if (currentStep >= 2) {
             const alpha = currentStep === 2 ? animProgress : 1;
-            drawSegment(pts.A, pts.B, '#e11d48', alpha);
-            drawSegment(pts.B, pts.C, '#e11d48', alpha);
+            drawSegment(pts.A, pts.B, '#f51e65', alpha);
+            drawSegment(pts.B, pts.C, '#f51e65', alpha);
             if (currentStep > 2 || animProgress > 0.5) {
-                drawMark(pts.A, pts.B, '#e11d48', 'double');
-                drawMark(pts.B, pts.C, '#e11d48', 'double');
+                drawMark(pts.A, pts.B, '#f51e65', 'double');
+                drawMark(pts.B, pts.C, '#f51e65', 'double');
             }
         }
         
         // Step 3: D symmetric
         if (currentStep >= 3) {
             const alpha = currentStep === 3 ? animProgress : 1;
-            drawSegment(pts.B, pts.I, '#2563eb', alpha, true);
-            drawSegment(pts.I, pts.D, '#2563eb', alpha, true);
+            drawSegment(pts.B, pts.I, '#1a2d59', alpha, true);
+            drawSegment(pts.I, pts.D, '#1a2d59', alpha, true);
             drawPoint(pts.D, alpha);
         }
         
         // Step 4: Rhombus
         if (currentStep >= 4) {
             const alpha = currentStep === 4 ? animProgress : 1;
-            drawSegment(pts.A, pts.D, '#8b5cf6', alpha);
-            drawSegment(pts.D, pts.C, '#8b5cf6', alpha);
+            drawSegment(pts.A, pts.D, '#f51e65', alpha);
+            drawSegment(pts.D, pts.C, '#f51e65', alpha);
             
             if (animProgress > 0.5) {
-                drawMark(pts.A, pts.D, '#8b5cf6', 'double');
-                drawMark(pts.D, pts.C, '#8b5cf6', 'double');
+                drawMark(pts.A, pts.D, '#f51e65', 'double');
+                drawMark(pts.D, pts.C, '#f51e65', 'double');
                 
                 // Shade area
                 ctx.globalAlpha = 0.1 * alpha;
-                ctx.fillStyle = '#8b5cf6';
+                ctx.fillStyle = '#f51e65';
                 ctx.beginPath();
                 ctx.moveTo(mapX(pts.A.x), mapY(pts.A.y));
                 ctx.lineTo(mapX(pts.B.x), mapY(pts.B.y));
@@ -469,5 +481,26 @@
         updateUI();
     }, 100);
 </script>
-</body>
+
+    <!-- Staggered Entry Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Stagger container cards
+        const cards = document.querySelectorAll('.question-block, .sidebar, .canvas-container');
+        cards.forEach((card, i) => {
+          setTimeout(() => {
+            card.classList.add('animate-in');
+          }, i * 120);
+        });
+
+        // Stagger inner steps
+        const steps = document.querySelectorAll('.step, .card-calc, .card-logic, .answer-box');
+        steps.forEach((step, i) => {
+          setTimeout(() => {
+            step.classList.add('animate-in');
+          }, i * 60 + 200);
+        });
+      });
+    </script>
+    </body>
 </html>
