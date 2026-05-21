@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 5 — Exercice 3 : Loi Binomiale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .top-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1.5px solid #d1d5db; color: #1a2d59; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; margin-bottom: 1rem; cursor: pointer; }
+    .back-btn:hover { background: #1a6b3a; color: #fff; border-color: #1a6b3a; }
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } .header h1 { font-size: 1.15rem; padding-right: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 5</span>
+    <span class="sep">›</span>
+    <span>Exercice 3</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Probabilités</span>
+    <h1>Sujet 5 — Exercice 3 : Transmission de Paquets Réseau</h1>
+    <p>Modélisation probabiliste par une loi binomiale et calcul de probabilités d'erreur et d'espérance mathématique.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Justification de la loi binomiale $\mathcal{B}(20\;; \; 0{,}05)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Schéma de Bernoulli :</strong><br>
+          Chaque transmission de paquet de données constitue une épreuve de Bernoulli à deux issues possibles :
+          <ul>
+            <li>Le "succès" (ici, l'événement indésirable, l'erreur de transmission) noté $E$, de probabilité $p = 0,05$.</li>
+            <li>L'échec (transmission correcte) noté $\bar{E}$, de probabilité $1 - p = 0,95$.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Répétition indépendante :</strong><br>
+          La transmission du fichier consiste à répéter $n = 20$ épreuves identiques de manière indépendante (les erreurs d'un paquet n'influençant pas les autres).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Définition de la variable aléatoire :</strong><br>
+          La variable aléatoire $X$ compte le nombre total de paquets erronés à l'issue de ces 20 transmissions indépendantes. Elle suit donc la loi binomiale de paramètres $n = 20$ et $p = 0,05$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La variable aléatoire $X$ modélisant le nombre de paquets erronés suit la loi binomiale :
+          $$X \sim \mathcal{B}(20\;; \; 0{,}05)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Calcul de la probabilité d'avoir aucun paquet erroné : $P(X = 0)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Formule de la loi binomiale :</strong><br>
+          La formule générale pour une loi binomiale $\mathcal{B}(n, p)$ est :
+          $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application numérique pour $k = 0$ :</strong>
+          <div class="math-block">
+            $$P(X = 0) = \binom{20}{0} (0{,}05)^0 (0{,}95)^{20}$$
+            $$P(X = 0) = 1 \times 1 \times (0{,}95)^{20} \approx 0{,}3585$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité que la transmission s'effectue sans aucune erreur est d'environ **$0{,}36$** (ou $35{,}85\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Calcul de la probabilité d'avoir exactement deux paquets erronés : $P(X = 2)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul du coefficient binomial $\binom{20}{2}$ :</strong>
+          <div class="math-block">
+            $$\binom{20}{2} = \frac{20 \times 19}{2} = 190$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application de la formule binomiale pour $k = 2$ :</strong>
+          <div class="math-block">
+            $$P(X = 2) = \binom{20}{2} (0{,}05)^2 (0{,}95)^{18}$$
+            $$P(X = 2) = 190 \times 0{,}0025 \times (0{,}95)^{18}$$
+            $$P(X = 2) = 0{,}475 \times 0{,}3972 \approx 0{,}1887$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité d'avoir exactement 2 paquets erronés lors de la transmission est d'environ **$0{,}19$** (ou $18{,}87\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Calcul de $P(X \ge 1)$ et interprétation</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Passage par l'événement contraire :</strong><br>
+          L'événement contraire de "au moins un paquet erroné" ($X \ge 1$) est "aucun paquet erroné" ($X = 0$).
+          <div class="math-block">
+            $$P(X \ge 1) = 1 - P(X = 0)$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul numérique :</strong>
+          <div class="math-block">
+            $$P(X \ge 1) = 1 - (0{,}95)^{20} \approx 1 - 0{,}3585 = 0{,}6415$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On a **$P(X \ge 1) \approx 0{,}64$** (soit $64{,}15\%$).<br>
+          **Interprétation** : Il y a environ $64{,}15\%$ de chances que le fichier transmis comporte au moins un paquet erroné.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Calcul de la probabilité de corruption du fichier : $P(X > 2)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Définition de l'événement contraire :</strong><br>
+          Le fichier est corrompu si $X > 2$ (strictement plus de 2 paquets erronés). L'événement complémentaire est $X \le 2$ (au plus 2 paquets erronés).
+          <div class="math-block">
+            $$P(X > 2) = 1 - P(X \le 2) = 1 - \big[P(X = 0) + P(X = 1) + P(X = 2)\big]$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de $P(X = 1)$ :</strong>
+          <div class="math-block">
+            $$P(X = 1) = \binom{20}{1} (0{,}05)^1 (0{,}95)^{19} = 20 \times 0{,}05 \times 0{,}3774 \approx 0{,}3774$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul de la somme $P(X \le 2)$ :</strong>
+          <div class="math-block">
+            $$P(X \le 2) = 0{,}3585 + 0{,}3774 + 0{,}1887 = 0{,}9246$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Soustraction finale :</strong>
+          <div class="math-block">
+            $$P(X > 2) = 1 - 0{,}9246 = 0{,}0754$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La probabilité que le fichier soit corrompu (plus de 2 erreurs) est d'environ **$0{,}08$** (ou $7{,}54\%$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4</div>
+      <div class="question-title">Calcul de l'espérance $E(X)$ et de la variance $V(X)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Formule et calcul de l'espérance $E(X)$ :</strong><br>
+          Pour une loi binomiale :
+          <div class="math-block">
+            $$E(X) = n \times p = 20 \times 0{,}05 = 1$$
+          </div>
+          **Interprétation** : Sur un grand nombre de fichiers de 20 paquets transmis, on s'attend à avoir en moyenne **1 paquet erroné** par fichier.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Formule et calcul de la variance $V(X)$ :</strong><br>
+          Pour une loi binomiale :
+          <div class="math-block">
+            $$V(X) = n \times p \times (1 - p) = 20 \times 0{,}05 \times 0{,}95 = 0{,}95$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'espérance mathématique est **$E(X) = 1$ paquet** et la variance est **$V(X) = 0{,}95$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

@@ -4,10 +4,10 @@
   --blue-night: #1A2D59;
   --pink-vivid: #F51E65;
   --turquoise: #39D6C3;
-  --gold: #D4AF37;
-  --bg-color: #F8FAFC;
-  --text-dark: #0F172A;
-  --text-light: #64748B;
+  --bg-color: rgba(26, 45, 89, 0.03);
+  --text-dark: #1A2D59;
+  --text-light: rgba(26, 45, 89, 0.7);
+  --border-color: rgba(26, 45, 89, 0.12);
 }
 
 * {
@@ -74,7 +74,7 @@ h4 {
 }
 
 .logo-accent {
-  color: #fb2c67;
+  color: var(--pink-vivid);
   font-style: italic;
   font-family: 'Inter', sans-serif;
   font-size: 1.3rem;
@@ -162,7 +162,7 @@ h4 {
 }
 
 .search-button:hover {
-  background-color: #d1124e;
+  background-color: rgba(245, 30, 101, 0.85);
 }
 
 /* Correction Card */
@@ -175,7 +175,7 @@ h4 {
 }
 
 .card-header {
-  background: linear-gradient(135deg, var(--blue-night) 0%, #2A437E 100%);
+  background: linear-gradient(135deg, var(--blue-night) 0%, rgba(26, 45, 89, 0.85) 100%);
   color: white;
   padding: 2rem;
   position: relative;
@@ -358,31 +358,32 @@ h4 {
 
 /* ─── Boîtes pédagogiques ───────────────────────────────────────────── */
 .info-box {
-  background: linear-gradient(135deg, #e8f4fd, #f0e8ff);
-  border: 1px solid #b8d4ef;
+  background: rgba(57, 214, 195, 0.08);
+  border: 1px solid rgba(57, 214, 195, 0.3);
   border-radius: 8px;
   padding: 0.6rem 1rem;
   margin: 0.8rem 0;
   font-size: 0.9rem;
-  color: #1d3a6e;
+  color: var(--blue-night);
   overflow-x: auto;
   max-width: 100%;
 }
 
 .info-label {
   font-weight: 700;
-  color: #7c3aed;
+  color: var(--pink-vivid);
   margin-right: 0.4rem;
 }
 
 .result-box {
-  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-  border: 2px solid #16803c;
+  background: rgba(57, 214, 195, 0.12);
+  border: 2px solid var(--turquoise);
   border-radius: 10px;
   padding: 1rem 1.2rem;
   margin: 1rem 0 0;
   text-align: center;
   font-weight: 600;
+  color: var(--blue-night);
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
@@ -484,12 +485,14 @@ h4 {
 .available-codes {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   margin-top: 1.2rem;
   font-size: 0.85rem;
   color: var(--text-light);
   font-weight: 600;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
 }
 
 .available-codes>span {
@@ -499,15 +502,15 @@ h4 {
 }
 
 .code-chip {
-  background: #eef2ff;
-  border: 1.5px solid #c7d2fe;
+  background: rgba(26, 45, 89, 0.05);
+  border: 1.5px solid rgba(26, 45, 89, 0.15);
   color: var(--blue-night);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.03em;
 }
@@ -563,16 +566,16 @@ h4 {
 }
 
 .var-header {
-  background: #1d3a6e;
+  background: var(--blue-night);
   color: white !important;
   font-weight: 700;
   width: 60px;
 }
 
 .var-x {
-  background: #f1f5f9;
+  background: rgba(26, 45, 89, 0.05);
   font-weight: 600;
-  color: #1d3a6e;
+  color: var(--blue-night);
 }
 
 .var-sign {
@@ -612,15 +615,15 @@ h4 {
   font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7c3aed;
-  border-bottom: 2px solid #7c3aed;
+  color: var(--pink-vivid);
+  border-bottom: 2px solid var(--pink-vivid);
   padding-bottom: 0.2rem;
   margin: 1rem 0 0.5rem;
 }
 
 /* ??? Raisonnement par r�currence ???????????????????????????????????????? */
 .rec-box {
-  border: 2px solid #7c3aed;
+  border: 2px solid var(--blue-night);
   border-radius: 10px;
   overflow: hidden;
   margin: 1rem 0;
@@ -628,7 +631,7 @@ h4 {
 }
 
 .rec-prop {
-  background: #7c3aed;
+  background: var(--blue-night);
   color: white;
   padding: 0.5rem 1rem;
   font-weight: 600;
@@ -657,7 +660,7 @@ h4 {
 }
 
 .rec-step {
-  border-right: 1px solid #e2e8f0;
+  border-right: 1px solid rgba(26, 45, 89, 0.1);
   padding: 0.7rem 0.8rem;
 }
 
@@ -674,109 +677,27 @@ h4 {
 }
 
 .rec-init {
-  background: #eff6ff;
+  background: rgba(57, 214, 195, 0.08);
 }
 
 .rec-init .rec-step-badge {
-  color: #1d4ed8;
+  color: var(--turquoise);
 }
 
 .rec-hyp {
-  background: #fef3c7;
+  background: rgba(245, 30, 101, 0.04);
 }
 
 .rec-hyp .rec-step-badge {
-  color: #d97706;
+  color: var(--pink-vivid);
 }
 
 .rec-demo {
-  background: #f0fdf4;
+  background: rgba(57, 214, 195, 0.15);
 }
 
 .rec-demo .rec-step-badge {
-  color: #16803c;
-}
-
-.rec-step-body {
-  line-height: 1.6;
-}
-
-/* ─── Raisonnement par récurrence ──────────────────────────────────────── */
-.rec-box {
-  border: 2px solid #7c3aed;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 1rem 0;
-  font-size: 0.9rem;
-}
-
-.rec-prop {
-  background: #7c3aed;
-  color: white;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.rec-label {
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
-.rec-steps {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-@media (max-width: 600px) {
-  .rec-steps {
-    grid-template-columns: 1fr;
-  }
-}
-
-.rec-step {
-  border-right: 1px solid #e2e8f0;
-  padding: 0.7rem 0.8rem;
-}
-
-.rec-step:last-child {
-  border-right: none;
-}
-
-.rec-step-badge {
-  font-weight: 800;
-  font-size: 0.78rem;
-  margin-bottom: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.rec-init {
-  background: #eff6ff;
-}
-
-.rec-init .rec-step-badge {
-  color: #1d4ed8;
-}
-
-.rec-hyp {
-  background: #fef3c7;
-}
-
-.rec-hyp .rec-step-badge {
-  color: #d97706;
-}
-
-.rec-demo {
-  background: #f0fdf4;
-}
-
-.rec-demo .rec-step-badge {
-  color: #16803c;
+  color: var(--turquoise);
 }
 
 .rec-step-body {
@@ -916,7 +837,7 @@ h4 {
 }
 
 .stat-table th {
-  background: linear-gradient(135deg, #F51E65, #c9104b);
+  background: var(--pink-vivid);
   color: white;
   padding: 12px 15px;
   font-weight: 600;
@@ -939,6 +860,6 @@ h4 {
 
 .stat-table td:first-child {
   font-weight: 600;
-  color: #F51E65;
+  color: var(--pink-vivid);
   text-align: left;
 }

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 5 — Exercice 1 : Nombres Complexes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .top-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1.5px solid #d1d5db; color: #1a2d59; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; margin-bottom: 1rem; cursor: pointer; }
+    .back-btn:hover { background: #1a6b3a; color: #fff; border-color: #1a6b3a; }
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } .header h1 { font-size: 1.15rem; padding-right: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 5</span>
+    <span class="sep">›</span>
+    <span>Exercice 1</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Nombres Complexes</span>
+    <h1>Sujet 5 — Exercice 1 : Équations et Géométrie dans le Plan</h1>
+    <p>Résolution d'équations de degré 2 et 3 dans $\mathbb{C}$, propriétés géométriques d'un triangle équilatéral et d'un losange.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Résolution de l'équation $z^2 - 2iz - 4 = 0$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul du discriminant ($\Delta$) :</strong><br>
+          Pour l'équation $z^2 - 2iz - 4 = 0$, les coefficients sont $a=1$, $b=-2i$ et $c=-4$.
+          <div class="math-block">
+            $$\Delta = b^2 - 4ac = (-2i)^2 - 4(1)(-4) = -4 + 16 = 12$$
+          </div>
+          Puisque $\Delta = 12 > 0$, l'équation admet deux solutions complexes (qui ne sont pas réelles car $b$ n'est pas réel).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul des solutions :</strong>
+          La racine carrée de $\Delta$ est $\sqrt{12} = 2\sqrt{3}$.
+          <div class="math-block">
+            $$z_1 = \frac{-b - \sqrt{\Delta}}{2a} = \frac{2i - 2\sqrt{3}}{2} = -\sqrt{3} + i$$
+            $$z_2 = \frac{-b + \sqrt{\Delta}}{2a} = \frac{2i + 2\sqrt{3}}{2} = \sqrt{3} + i$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'ensemble des solutions de l'équation est :
+          $$S = \{ -\sqrt{3} + i \;; \; \sqrt{3} + i \}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Vérification de l'identité polynomiale</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Développement du produit de facteurs :</strong><br>
+          Développons l'expression membre à membre pour tout complexe $z$ :
+          <div class="math-block">
+            $$(z+2i)(z^2 - 2iz - 4) = z(z^2 - 2iz - 4) + 2i(z^2 - 2iz - 4)$$
+            $$= z^3 - 2iz^2 - 4z + 2iz^2 - 4i^2z - 8i$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Simplification :</strong><br>
+          En utilisant $i^2 = -1$, on a $-4i^2z = 4z$. Regroupons les termes :
+          <div class="math-block">
+            $$(z+2i)(z^2 - 2iz - 4) = z^3 + (-2i + 2i)z^2 + (-4 + 4)z - 8i$$
+            $$= z^3 - 8i$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'égalité est bien vérifiée pour tout $z \in \mathbb{C}$ :
+          $$z^3 - 8i = (z+2i)(z^2 - 2iz - 4)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Résolution de l'équation $z^3 = 8i$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Factorisation de l'équation :</strong><br>
+          L'équation $z^3 = 8i$ équivaut à $z^3 - 8i = 0$. En utilisant le résultat de la question précédente :
+          $$(z+2i)(z^2 - 2iz - 4) = 0$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Résolution :</strong><br>
+          Un produit de facteurs est nul si et seulement si l'un au moins des facteurs est nul.
+          <ul>
+            <li>$z + 2i = 0 \iff z = -2i$</li>
+            <li>$z^2 - 2iz - 4 = 0$ d'où les solutions trouvées en **Question 1** : $z = -\sqrt{3} + i$ ou $z = \sqrt{3} + i$.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les solutions dans $\mathbb{C}$ de l'équation $z^3 = 8i$ sont :
+          $$S_{\mathbb{C}} = \{ -2i \;; \; -\sqrt{3} + i \;; \; \sqrt{3} + i \}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Appartenance de $B$ et $D$ au cercle $(C)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Détermination du rayon de $(C)$ :</strong><br>
+          Le cercle $(C)$ a pour centre $O(0)$ et passe par $A(z_A = -2i)$.Son rayon $R$ est donc :
+          <div class="math-block">
+            $$R = OA = |z_A| = |-2i| = 2$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul des distances $OB$ et $OD$ (modules d'affixes) :</strong>
+          <div class="math-block">
+            $$OB = |z_B| = |\sqrt{3} + i| = \sqrt{(\sqrt{3})^2 + 1^2} = \sqrt{3+1} = 2$$
+            $$OD = |z_D| = |-\sqrt{3} + i| = \sqrt{(-\sqrt{3})^2 + 1^2} = \sqrt{3+1} = 2$$
+          </div>
+          Comme $OB = OD = 2$, les distances du centre aux points $B$ et $D$ sont égales au rayon $R$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $OB = OD = 2$, les points $B$ et $D$ appartiennent bien au cercle $(C)$ de centre $O$ et de rayon $2$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Construction des points $B$ et $D$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Analyse des coordonnées :</strong><br>
+          Les affixes des points sont $z_B = \sqrt{3} + i$ et $z_D = -\sqrt{3} + i$. Leurs coordonnées cartésiennes sont :
+          $$B(\sqrt{3} \;; \; 1) \quad \text{et} \quad D(-\sqrt{3} \;; \; 1)$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Méthode de construction géométrique :</strong><br>
+          Les deux points ont pour ordonnée $y = 1$. Ils se situent donc à l'intersection du cercle $(C)$ de rayon 2 et de la droite horizontale d'équation $y = 1$.
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">📍 Instruction de tracé</div>
+        <div class="calc-box-content">
+          Tracer la droite parallèle à l'axe des abscisses passant par $(0, 1)$ sur l'axe des ordonnées. Ses intersections avec le cercle $(C)$ de rayon 2 donnent précisément $B$ (à droite, car $\text{Re}(z_B) > 0$) et $D$ (à gauche, car $\text{Re}(z_D) < 0$).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3c</div>
+      <div class="question-title">Preuve que le triangle $ABD$ est équilatéral</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul de la longueur $BD$ :</strong>
+          <div class="math-block">
+            $$BD = |z_B - z_D| = |\sqrt{3} + i - (-\sqrt{3} + i)| = |2\sqrt{3}| = 2\sqrt{3}$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul des longueurs $AB$ et $AD$ :</strong>
+          <div class="math-block">
+            $$AB = |z_B - z_A| = |\sqrt{3} + i - (-2i)| = |\sqrt{3} + 3i| = \sqrt{(\sqrt{3})^2 + 3^2} = \sqrt{3+9} = \sqrt{12} = 2\sqrt{3}$$
+            $$AD = |z_D - z_A| = |-\sqrt{3} + i - (-2i)| = |-\sqrt{3} + 3i| = \sqrt{(-\sqrt{3})^2 + 3^2} = \sqrt{3+9} = \sqrt{12} = 2\sqrt{3}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $AB = AD = BD = 2\sqrt{3}$, les trois côtés ont la même longueur. Le triangle $ABD$ est donc équilatéral.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4a</div>
+      <div class="question-title">Forme de l'affixe du point d'intersection $E$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Propriété géométrique de la tangente en $A$ :</strong><br>
+          La tangente $T_1$ au cercle $(C)$ au point $A(0, -2)$ est perpendiculaire au rayon $[OA]$. Comme $[OA]$ est vertical (axe des ordonnées), la tangente $T_1$ est une droite horizontale d'équation $y = -2$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Déduction pour $E$ :</strong><br>
+          Le point $E$ étant l'intersection de $T_1$ et $T_2$, il appartient en particulier à la tangente $T_1$. Son ordonnée est donc nécessairement égale à $-2$, ce qui signifie que sa partie imaginaire est $-2$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'affixe du point $E$ s'écrit bien sous la forme :
+          $$z_E = x - 2i \quad \text{où } x \in \mathbb{R}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4b</div>
+      <div class="question-title">Développement de l'expression complexe</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul de $z_E - z_B$ :</strong>
+          <div class="math-block">
+            $$z_E - z_B = (x - 2i) - (\sqrt{3} + i) = (x - \sqrt{3}) - 3i$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul du produit avec $\overline{z_B}$ :</strong><br>
+          On sait que $\overline{z_B} = \sqrt{3} - i$. Multiplions les deux termes :
+          <div class="math-block">
+            $$(z_E - z_B)\overline{z_B} = \big[(x - \sqrt{3}) - 3i\big](\sqrt{3} - i)$$
+            $$= (x - \sqrt{3})\sqrt{3} - i(x - \sqrt{3}) - 3i\sqrt{3} + 3i^2$$
+            $$= x\sqrt{3} - 3 - ix + i\sqrt{3} - 3i\sqrt{3} - 3$$
+            $$= x\sqrt{3} - 6 - i(x + 2\sqrt{3})$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On obtient bien l'identité demandée :
+          $$(z_E - z_B)\overline{z_B} = x\sqrt{3} - 6 - i(x + 2\sqrt{3})$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4c</div>
+      <div class="question-title">Déduction de l'affixe exacte du point $E$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Traduction de la tangence en $B$ :</strong><br>
+          Le point $E$ appartient à la tangente $T_2$ au cercle $(C)$ en $B$. Par conséquent, la droite $(BE)$ est perpendiculaire au rayon $(OB)$. Le produit scalaire entre les vecteurs $\vec{OB}$ et $\vec{BE}$ est donc nul :
+          $$\vec{OB} \cdot \vec{BE} = 0 \iff \text{Re}\left(\frac{z_E - z_B}{z_B}\right) = 0 \iff \text{Re}\big((z_E - z_B)\overline{z_B}\big) = 0$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Résolution en $x$ :</strong><br>
+          D'après l'expression réelle obtenue à la question précédente :
+          <div class="math-block">
+            $$\text{Re}\big((z_E - z_B)\overline{z_B}\big) = 0 \iff x\sqrt{3} - 6 = 0 \iff x = \frac{6}{\sqrt{3}} = 2\sqrt{3}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          En injectant $x = 2\sqrt{3}$ dans l'expression de $z_E$ :
+          $$z_E = 2\sqrt{3} - 2i$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 5a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">5a</div>
+      <div class="question-title">Nature du quadrilatère $AEBD$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Parallélogramme (égalité de vecteurs) :</strong><br>
+          Calculons et comparons les affixes des vecteurs $\vec{AE}$ et $\vec{DB}$ :
+          <div class="math-block">
+            $$z_{\vec{AE}} = z_E - z_A = (2\sqrt{3} - 2i) - (-2i) = 2\sqrt{3}$$
+            $$z_{\vec{DB}} = z_B - z_D = (\sqrt{3} + i) - (-\sqrt{3} + i) = 2\sqrt{3}$$
+          </div>
+          Puisque $z_{\vec{AE}} = z_{\vec{DB}}$, on a $\vec{AE} = \vec{DB}$. Le quadrilatère $AEBD$ est donc un **parallélogramme**.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Côtés adjacents de même longueur :</strong><br>
+          Nous avons déjà calculé la longueur du côté $AD$ à la question 3.c : $AD = 2\sqrt{3}$.<br>
+          Calculons la longueur du côté adjacent $AE$ :
+          <div class="math-block">
+            $$AE = |z_E - z_A| = |2\sqrt{3}| = 2\sqrt{3}$$
+          </div>
+          Les côtés adjacents $[AD]$ et $[AE]$ ont la même longueur.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          $AEBD$ est un parallélogramme possédant deux côtés consécutifs de même longueur ($AD = AE = 2\sqrt{3}$), c'est donc un **losange**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 5b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">5b</div>
+      <div class="question-title">Calcul de l'aire du losange $AEBD$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Longueur de la diagonale $[AB]$ :</strong><br>
+          Nous avons montré à la question 3.c que $AB = 2\sqrt{3}$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Longueur de la diagonale $[DE]$ :</strong><br>
+          Calculons la distance entre $D$ et $E$ :
+          <div class="math-block">
+            $$DE = |z_E - z_D| = |(2\sqrt{3} - 2i) - (-\sqrt{3} + i)| = |3\sqrt{3} - 3i|$$
+            $$DE = \sqrt{(3\sqrt{3})^2 + (-3)^2} = \sqrt{27 + 9} = \sqrt{36} = 6$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul final de l'aire :</strong><br>
+          L'aire d'un losange est égale au demi-produit de ses diagonales :
+          <div class="math-block">
+            $$\text{Aire}(AEBD) = \frac{AB \times DE}{2} = \frac{2\sqrt{3} \times 6}{2} = 6\sqrt{3}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'aire du losange $AEBD$ est de :
+          $$\text{Aire} = 6\sqrt{3} \approx 10,39 \text{ u.a.}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

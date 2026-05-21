@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 4 — Exercice 4 : Analyse de fonction et réciproque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    /* ─── Tableau de variations ────────────────────────────────────────── */
+    .var-table-wrap { overflow-x: auto; margin: 1.2rem 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+    .var-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.88rem; text-align: center; }
+    .var-table th { background: #1a2d59; color: #fff; padding: 0.6rem 1rem; border: 1px solid #cbd5e1; font-weight: 700; }
+    .var-table td { padding: 0.8rem 1rem; border: 1px solid #e2e8f0; color: #333; }
+    .var-table .var-row { height: 70px; position: relative; }
+    .var-table .sign-pos { color: #1a6b3a; font-weight: 700; font-size: 1.1rem; }
+    .var-table .sign-neg { color: #c0392b; font-weight: 700; font-size: 1.1rem; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 4</span>
+    <span class="sep">›</span>
+    <span>Exercice 4</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Analyse</span>
+    <h1>Sujet 4 — Exercice 4 : Étude de fonction exponentielle et bijection</h1>
+    <p>Étude complète de la fonction $f(x) = e^{2x} - 2e^x + 2$, recherche de branches paraboliques, points d'inflexion, calcul d'aire, théorème de la bijection et fonction réciproque.</p>
+    <div class="points">6 <small>points</small></div>
+  </div>
+
+  <!-- Question 1a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1a</div>
+      <div class="question-title">Limite de $f(x)$ en $-\infty$ et interprétation</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul de la limite :</strong><br>
+          La fonction est définie sur $\mathbb{R}$ par $f(x) = e^{2x} - 2e^x + 2$.
+          Rappelons que :
+          $$\lim_{x\to-\infty} e^x = 0 \quad\text{et}\quad \lim_{x\to-\infty} e^{2x} = 0$$
+          Par conséquent, par somme de limites :
+          <div class="math-block">
+            $$\lim_{x\to-\infty} f(x) = 0 - 2(0) + 2 = 2$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On a **$\lim_{x\to-\infty} f(x) = 2$**.
+          <br>
+          <strong>Interprétation graphique :</strong> La droite d'équation **$y=2$** est une asymptote horizontale à la courbe $(\mathcal{C})$ au voisinage de $-\infty$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 1b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1b</div>
+      <div class="question-title">Limite de $f(x)$ et branche parabolique en $+\infty$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Limite en $+\infty$ :</strong><br>
+          Factorisons par le terme dominant $e^{2x}$ :
+          <div class="math-block">
+            $$f(x) = e^{2x} \left( 1 - \frac{2e^x}{e^{2x}} + \frac{2}{e^{2x}} \right) = e^{2x} (1 - 2e^{-x} + 2e^{-2x})$$
+          </div>
+          Comme $\lim_{x\to+\infty} e^{2x} = +\infty$ et $\lim_{x\to+\infty} e^{-x} = 0$, la parenthèse tend vers $1$.
+          Par produit, on obtient :
+          <div class="math-block">
+            $$\lim_{x\to+\infty} f(x) = +\infty$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de $\lim_{x\to+\infty} \frac{f(x)}{x}$ :</strong>
+          <div class="math-block">
+            $$\frac{f(x)}{x} = \frac{e^{2x} - 2e^x + 2}{x} = \frac{e^{2x}}{x} \left( 1 - 2e^{-x} + 2e^{-2x} \right)$$
+          </div>
+          Par croissances comparées, nous savons que pour tout entier $n > 0$, $\lim_{x\to+\infty} \frac{e^{\alpha x}}{x} = +\infty$ ($\alpha > 0$).
+          Ici, $\lim_{x\to+\infty} \frac{e^{2x}}{x} = +\infty$. Par produit :
+          <div class="math-block">
+            $$\lim_{x\to+\infty} \frac{f(x)}{x} = +\infty$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On a $\lim_{x\to+\infty} f(x) = +\infty$ et $\lim_{x\to+\infty} \frac{f(x)}{x} = +\infty$.
+          <br>
+          <strong>Interprétation graphique :</strong> La courbe $(\mathcal{C})$ admet une **branche parabolique de direction l'axe des ordonnées $(Oy)$** au voisinage de $+\infty$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Calcul de la dérivée $f'(x)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Dérivation des termes :</strong><br>
+          La fonction $f$ est dérivable sur $\mathbb{R}$ en tant que somme de fonctions dérivables.
+          <div class="math-block">
+            $$f'(x) = \left(e^{2x}\right)' - 2\left(e^x\right)' + (2)'$$
+            $$f'(x) = 2e^{2x} - 2e^x$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Factorisation :</strong><br>
+          On factorise par le terme commun $2e^x$ :
+          <div class="math-block">
+            $$f'(x) = 2e^x(e^x - 1)$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On obtient bien pour tout réel $x$ :
+          $$f'(x) = 2e^x(e^x - 1)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Variations de $f$ et tableau de variations</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Étude du signe de $f'(x)$ :</strong><br>
+          Puisque $2e^x > 0$ pour tout $x \in \mathbb{R}$, le signe de $f'(x)$ est identique à celui de $e^x - 1$.
+          <ul>
+            <li>$e^x - 1 = 0 \iff e^x = 1 \iff x = 0$</li>
+            <li>$e^x - 1 > 0 \iff e^x > 1 \iff x > 0$</li>
+            <li>$e^x - 1 < 0 \iff e^x < 1 \iff x < 0$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Minimum local/absolu :</strong><br>
+          La fonction change de sens de variation en $x=0$, y atteignant son minimum :
+          $$f(0) = e^0 - 2e^0 + 2 = 1 - 2 + 2 = 1$$
+        </div>
+      </div>
+      
+      <div class="var-table-wrap">
+        <table class="var-table">
+          <thead>
+            <tr>
+              <th>$x$</th>
+              <th>$-\infty$</th>
+              <th></th>
+              <th>$0$</th>
+              <th></th>
+              <th>$+\infty$</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Signe de $f'(x)$</strong></td>
+              <td></td>
+              <td class="sign-neg">$-$</td>
+              <td>$0$</td>
+              <td class="sign-pos">$+$</td>
+              <td></td>
+            </tr>
+            <tr class="var-row">
+              <td><strong>Variations de $f(x)$</strong></td>
+              <td style="vertical-align: top; padding-top: 10px;">$2$</td>
+              <td style="vertical-align: middle;">🛬</td>
+              <td style="vertical-align: bottom; padding-bottom: 10px;">$1$ <br> (min)</td>
+              <td style="vertical-align: middle;">🛫</td>
+              <td style="vertical-align: top; padding-top: 10px;">$+\infty$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Calcul de la dérivée seconde $f''(x)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Dérivation à partir de la forme développée $f'(x) = 2e^{2x} - 2e^x$ :</strong>
+          <div class="math-block">
+            $$f''(x) = 4e^{2x} - 2e^x$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Factorisation :</strong><br>
+          On factorise par $2e^x$ :
+          <div class="math-block">
+            $$f''(x) = 2e^x(2e^x - 1)$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La dérivée seconde est :
+          $$f''(x) = 2e^x(2e^x - 1)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Point d'inflexion $A(-\ln 2, 5/4)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Annulation de $f''(x)$ :</strong><br>
+          Puisque $2e^x > 0$, la dérivée seconde s'annule si et seulement si :
+          $$2e^x - 1 = 0 \iff e^x = \frac{1}{2} \iff x = \ln\left(\frac{1}{2}\right) = -\ln 2$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Changement de signe :</strong><br>
+          Le facteur $2e^x - 1$ change de signe en $-\ln 2$ :
+          <ul>
+            <li>Si $x < -\ln 2$, $2e^x - 1 < 0 \implies f''(x) < 0$</li>
+            <li>Si $x > -\ln 2$, $2e^x - 1 > 0 \implies f''(x) > 0$</li>
+          </ul>
+          Puisque la dérivée seconde s'annule en changeant de signe en $x = -\ln 2$, la courbe $(\mathcal{C})$ admet un point d'inflexion en cette abscisse.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul de l'ordonnée correspondante :</strong>
+          <div class="math-block">
+            $$f(-\ln 2) = e^{-2\ln 2} - 2e^{-\ln 2} + 2$$
+            $$f(-\ln 2) = \frac{1}{(e^{\ln 2})^2} - \frac{2}{e^{\ln 2}} + 2 = \frac{1}{4} - \frac{2}{2} + 2 = \frac{1}{4} - 1 + 2 = \frac{5}{4}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Le point **$A\left(-\ln 2\;; \; \frac{5}{4}\right)$** est bien le point d'inflexion de la courbe $(\mathcal{C})$. La courbe traverse sa tangente en ce point.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4a</div>
+      <div class="question-title">Appartenance du point $B(\ln 2, 2)$ à la courbe</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Évaluation de $f(\ln 2)$ :</strong>
+          <div class="math-block">
+            $$f(\ln 2) = e^{2\ln 2} - 2e^{\ln 2} + 2$$
+            $$f(\ln 2) = (e^{\ln 2})^2 - 2(e^{\ln 2}) + 2 = 4 - 2(2) + 2 = 2$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $f(\ln 2) = 2$, le point **$B(\ln 2\;; \; 2)$** appartient bien à la courbe $(\mathcal{C})$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 5 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">5</div>
+      <div class="question-title">Calcul de l'aire $\mathcal{A}$ sous la courbe</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Recherche d'une primitive $F(x)$ de $f(x)$ :</strong><br>
+          Puisque $f(x) = e^{2x} - 2e^x + 2$, une primitive immédiate sur $\mathbb{R}$ est :
+          <div class="math-block">
+            $$F(x) = \frac{1}{2}e^{2x} - 2e^x + 2x$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul de l'intégrale :</strong><br>
+          La fonction $f$ étant strictement positive sur $\mathbb{R}$, l'aire (en unités d'aire) sous la courbe entre $x=0$ et $x=\ln 2$ est :
+          <div class="math-block">
+            $$\mathcal{A} = \int_{0}^{\ln 2} f(x) dx = \left[ \frac{1}{2}e^{2x} - 2e^x + 2x \right]_{0}^{\ln 2}$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Développement :</strong>
+          <div class="math-block">
+            $$F(\ln 2) = \frac{1}{2}e^{2\ln 2} - 2e^{\ln 2} + 2\ln 2 = \frac{1}{2}(4) - 2(2) + 2\ln 2 = 2 - 4 + 2\ln 2 = 2\ln 2 - 2$$
+            $$F(0) = \frac{1}{2}e^0 - 2e^0 + 2(0) = \frac{1}{2} - 2 = -\frac{3}{2}$$
+            $$\mathcal{A} = F(\ln 2) - F(0) = (2\ln 2 - 2) - \left(-\frac{3}{2}\right) = 2\ln 2 - 2 + \frac{3}{2} = 2\ln 2 - \frac{1}{2}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'aire est bien égale à :
+          $$\mathcal{A} = 2\ln 2 - \frac{1}{2} \text{ (unités d'aire)} \approx 0{,}886$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 6a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">6a</div>
+      <div class="question-title">Restriction de $f$ et théorème de la bijection</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Continuité et monotonie :</strong><br>
+          Soit $g$ la restriction de $f$ à l'intervalle $I = [0, +\infty[$.<br>
+          <ul>
+            <li>$g$ est continue sur $[0, +\infty[$ en tant que restriction d'une somme de fonctions continues.</li>
+            <li>D'après 2b, $g'(x) = 2e^x(e^x - 1) > 0$ sur $]0, +\infty[$. La fonction $g$ est donc **strictement croissante** sur $[0, +\infty[$.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Détermination de l'intervalle image $J$ :</strong><br>
+          D'après le théorème de la bijection :
+          <div class="math-block">
+            $$J = g(I) = [g(0)\;; \; \lim_{x\to+\infty} g(x)[ = [1\;; \; +\infty[$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La fonction $g$ réalise une bijection de l'intervalle $[0\;; \; +\infty[$ sur l'intervalle **$[1\;; \; +\infty[$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 6b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">6b</div>
+      <div class="question-title">Expression de la fonction réciproque $g^{-1}(x)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Mise en équation $g(y) = x$ :</strong><br>
+          Pour tout $x \in [1, +\infty[$ et $y \in [0, +\infty[$ :
+          $$e^{2y} - 2e^y + 2 = x \iff (e^y)^2 - 2e^y + (2 - x) = 0$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Changement de variable :</strong><br>
+          Posons $t = e^y$. Puisque $y \ge 0$, nous devons avoir $t \ge 1$.
+          L'équation devient une équation quadratique en $t$ :
+          $$t^2 - 2t + (2 - x) = 0$$
+          Le discriminant est :
+          $$\Delta_t = (-2)^2 - 4(1)(2 - x) = 4 - 8 + 4x = 4x - 4 = 4(x - 1)$$
+          Comme $x \ge 1$, $x - 1 \ge 0$, donc $\Delta_t \ge 0$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul des racines en $t$ :</strong>
+          $$t_1 = \frac{2 - \sqrt{4(x-1)}}{2} = 1 - \sqrt{x-1}$$
+          $$t_2 = \frac{2 + \sqrt{4(x-1)}}{2} = 1 + \sqrt{x-1}$$
+          Comme nous cherchons $t \ge 1$ et sachant que $\sqrt{x-1} \ge 0$, la racine $t_1 \le 1$ et la racine $t_2 \ge 1$.
+          On retient donc :
+          $$t = 1 + \sqrt{x-1}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Retour à la variable $y$ :</strong>
+          $$e^y = 1 + \sqrt{x-1} \implies y = \ln\left(1 + \sqrt{x-1}\right)$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Pour tout $x \in [1, +\infty[$ :
+          $$g^{-1}(x) = \ln\left(1 + \sqrt{x-1}\right)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 6c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">6c</div>
+      <div class="question-title">Tracé géométrique de $(\mathcal{C}')$</div>
+    </div>
+    <div class="question-body">
+      <div class="answer-box">
+        <span class="answer-icon">📈</span>
+        <div class="answer-text">
+          La courbe $(\mathcal{C}')$ de la fonction réciproque $g^{-1}$ s'obtient géométriquement en effectuant la **symétrie orthogonale** de la courbe $(\mathcal{C}_g)$ (portion de $\mathcal{C}$ sur $[0, +\infty[$) par rapport à la **première bissectrice** (droite d'équation $y = x$).
+          <br><br>
+          <strong>Points remarquables de $(\mathcal{C}')$ :</strong>
+          <ul>
+            <li>Puisque $g(0) = 1$, le point de départ de $(\mathcal{C}')$ est $I(1, 0)$ (symétrique de $(0,1)$).</li>
+            <li>Puisque $g(\ln 2) = 2$, $(\mathcal{C}')$ passe par le point $B'(2, \ln 2)$ (symétrique de $B(\ln 2, 2)$).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 6d -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">6d</div>
+      <div class="question-title">Calcul de l'intégrale de la fonction réciproque</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Relation fondamentale d'aire des fonctions inverses :</strong><br>
+          Graphiquement ou analytiquement, pour une bijection $g$ continue et strictement croissante :
+          <div class="math-block">
+            $$\int_{g(a)}^{g(b)} g^{-1}(x) dx = b \cdot g(b) - a \cdot g(a) - \int_{a}^{b} g(x) dx$$
+          </div>
+          Ici, posons $a = 0$ et $b = \ln 2$. On a $g(a) = g(0) = 1$ et $g(b) = g(\ln 2) = 2$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application numérique :</strong>
+          <div class="math-block">
+            $$\int_{1}^{2} g^{-1}(x) dx = (\ln 2 \times 2) - (0 \times 1) - \int_{0}^{\ln 2} g(x) dx$$
+            $$\int_{1}^{2} g^{-1}(x) dx = 2\ln 2 - \mathcal{A}$$
+          </div>
+          D'après la question 5, $\mathcal{A} = 2\ln 2 - \frac{1}{2}$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Simplification :</strong>
+          <div class="math-block">
+            $$\int_{1}^{2} \ln\left(1 + \sqrt{x-1}\right) dx = 2\ln 2 - \left( 2\ln 2 - \frac{1}{2} \right) = \frac{1}{2}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          La valeur de l'intégrale est :
+          $$\int_{1}^{2} \ln\left(1 + \sqrt{x-1}\right) dx = \frac{1}{2}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

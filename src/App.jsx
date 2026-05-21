@@ -6,6 +6,8 @@ const HTML_EXERCISES = {
   'R1': [1, 2, 3],
   'R2': [1, 2, 3],
   'R3': [1, 2, 3, 4],
+  'R4': [1, 2, 3, 4],
+  'R5': [1, 2, 3, 4],
 }
 
 export default function App() {
@@ -92,6 +94,7 @@ export default function App() {
     'R1-E1', 'R1-E2', 'R1-E3',
     'R2-E1', 'R2-E2', 'R2-E3',
     'R3-E1', 'R3-E2', 'R3-E3', 'R3-E4',
+    'R4-E1', 'R4-E2', 'R4-E3', 'R4-E4',
   ]
 
   return (
@@ -147,7 +150,7 @@ export default function App() {
                       href={`${import.meta.env.BASE_URL}assets/belfallagui_${meta.pdfName}.pdf`}
                       download
                       className="download-pdf-btn"
-                      style={{ background: 'linear-gradient(135deg, #F51E65, #c9104b)', borderColor: '#F51E65' }}
+                      style={{ background: 'linear-gradient(135deg, var(--pink-vivid) 0%, var(--blue-night) 100%)', borderColor: 'var(--pink-vivid)' }}
                       title="Télécharger la version très détaillée Belfallagui (Sujet complet)"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -187,7 +190,7 @@ export default function App() {
                   <div className="info-box" style={{ marginBottom: '1rem' }}>
                     <span className="info-label">📋 Corrigé interactif :</span> Corrigé détaillé avec formules mathématiques et explications étape par étape.
                   </div>
-                  <div style={{ width: '100%', height: '75vh', borderRadius: '10px', overflow: 'hidden', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+                  <div style={{ width: '100%', height: '75vh', borderRadius: '10px', overflow: 'hidden', border: '1.5px solid var(--border-color)', boxShadow: '0 8px 30px rgba(26, 45, 89, 0.08)' }}>
                     <iframe
                       src={`${import.meta.env.BASE_URL}${meta.htmlFile}`}
                       width="100%"
@@ -204,7 +207,7 @@ export default function App() {
                   <div className="info-box" style={{ marginBottom: '1rem' }}>
                     <span className="info-label">📄 Aperçu du corrigé :</span> Corrigé complet du sujet disponible ci-dessous.
                   </div>
-                  <div style={{ width: '100%', height: '600px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #e2e8f0' }}>
+                  <div style={{ width: '100%', height: '600px', borderRadius: '8px', overflow: 'hidden', border: '1.5px solid var(--border-color)', boxShadow: '0 8px 30px rgba(26, 45, 89, 0.08)' }}>
                     <iframe
                       src={`${import.meta.env.BASE_URL}assets/${meta.pdfName}.pdf`}
                       width="100%"

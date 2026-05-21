@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 4 — Exercice 1 : Nombres Complexes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .top-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1.5px solid #d1d5db; color: #1a2d59; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; margin-bottom: 1rem; cursor: pointer; }
+    .back-btn:hover { background: #1a6b3a; color: #fff; border-color: #1a6b3a; }
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } .header h1 { font-size: 1.15rem; padding-right: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 4</span>
+    <span class="sep">›</span>
+    <span>Exercice 1</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Nombres Complexes</span>
+    <h1>Sujet 4 — Exercice 1 : Polynôme et Géométrie</h1>
+    <p>Résolution d'équations dans $\mathbb{C}$, factorisation réelle et étude géométrique d'un quadrilatère inscrit.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Résolution de l'équation $(E) : z^2 - z + 1 = 0$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul du discriminant ($\Delta$) :</strong><br>
+          Il s'agit d'une équation du second degré à coefficients réels avec $a=1$, $b=-1$, $c=1$.
+          <div class="math-block">
+            $$\Delta = b^2 - 4ac = (-1)^2 - 4(1)(1) = 1 - 4 = -3$$
+          </div>
+          Puisque $\Delta < 0$, l'équation admet deux solutions complexes conjuguées.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Expression des solutions :</strong>
+          <div class="math-block">
+            $$z_1 = \frac{-b + i\sqrt{-\Delta}}{2a} = \frac{1 + i\sqrt{3}}{2} = \frac{1}{2} + i\frac{\sqrt{3}}{2}$$
+            $$z_2 = \overline{z_1} = \frac{1 - i\sqrt{3}}{2} = \frac{1}{2} - i\frac{\sqrt{3}}{2}$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les solutions de $(E)$ sont :
+          $$S_{\mathbb{C}} = \left\{ \frac{1}{2} + i\frac{\sqrt{3}}{2} \;; \; \frac{1}{2} - i\frac{\sqrt{3}}{2} \right\} = \left\{ e^{i\frac{\pi}{3}} \;; \; e^{-i\frac{\pi}{3}} \right\}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Factorisation de $P(z) = z^4 - z^2 + 1$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Méthode du début de carré parfait :</strong><br>
+          Nous pouvons exprimer le polynôme sous la forme d'une différence de deux carrés :
+          <div class="math-block">
+            $$P(z) = (z^4 + 2z^2 + 1) - 3z^2$$
+          </div>
+          On reconnaît une identité remarquable dans la parenthèse :
+          <div class="math-block">
+            $$P(z) = (z^2 + 1)^2 - (\sqrt{3}z)^2$$
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application de la formule $A^2 - B^2 = (A-B)(A+B)$ :</strong>
+          <div class="math-block">
+            $$P(z) = (z^2 - \sqrt{3}z + 1)(z^2 + \sqrt{3}z + 1)$$
+          </div>
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Forme produit de deux polynômes du second degré à coefficients réels :
+          $$P(z) = (z^2 - \sqrt{3}z + 1)(z^2 + \sqrt{3}z + 1)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Résolution de $(E') : z^4 - z^2 + 1 = 0$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Utilisation de la factorisation précédente :</strong><br>
+          Un produit de facteurs est nul si et seulement si l'un des facteurs est nul.
+          $$z^4 - z^2 + 1 = 0 \iff z^2 - \sqrt{3}z + 1 = 0 \quad\text{ou}\quad z^2 + \sqrt{3}z + 1 = 0$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Résolution du premier facteur $z^2 - \sqrt{3}z + 1 = 0$ :</strong>
+          $$\Delta_1 = (-\sqrt{3})^2 - 4(1)(1) = 3 - 4 = -1 = i^2$$
+          Les racines sont :
+          $$z_A = \frac{\sqrt{3} + i}{2} \quad\text{et}\quad z_B = \frac{\sqrt{3} - i}{2}$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Résolution du second facteur $z^2 + \sqrt{3}z + 1 = 0$ :</strong>
+          $$\Delta_2 = (\sqrt{3})^2 - 4(1)(1) = 3 - 4 = -1 = i^2$$
+          Les racines sont :
+          $$z_D = \frac{-\sqrt{3} + i}{2} \quad\text{et}\quad z_C = \frac{-\sqrt{3} - i}{2}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'équation $(E')$ possède 4 solutions complexes :
+          $$S_{\mathbb{C}} = \left\{ \frac{\sqrt{3}+i}{2} \;; \; \frac{\sqrt{3}-i}{2} \;; \; \frac{-\sqrt{3}-i}{2} \;; \; \frac{-\sqrt{3}+i}{2} \right\}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Placement des points $A$, $B$, $C$, $D$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Identification des affixes :</strong><br>
+          D'après les conditions de l'énoncé :
+          <ul>
+            <li>$\text{Re}(z_A) > 0$ et $\text{Im}(z_A) > 0 \implies z_A = \frac{\sqrt{3}+i}{2} = e^{i\frac{\pi}{6}}$</li>
+            <li>$\text{Re}(z_B) > 0 \implies z_B = \frac{\sqrt{3}-i}{2} = e^{-i\frac{\pi}{6}}$</li>
+            <li>$\text{Im}(z_D) > 0 \implies z_D = \frac{-\sqrt{3}+i}{2} = e^{i\frac{5\pi}{6}}$</li>
+            <li>Par élimination : $z_C = \frac{-\sqrt{3}-i}{2} = e^{-i\frac{5\pi}{6}}$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Position géométrique :</strong><br>
+          Tous ces points ont un module égal à 1 :
+          $$|z_A| = |z_B| = |z_C| = |z_D| = 1$$
+          Ils appartiennent donc tous au **cercle unité** $\mathcal{C}$ de centre $O$ et de rayon $1$.
+        </div>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-title">📍 Coordonnées cartésiennes</div>
+        <div class="calc-box-content">
+          $$A\left(\frac{\sqrt{3}}{2}, \frac{1}{2}\right) \quad B\left(\frac{\sqrt{3}}{2}, -\frac{1}{2}\right) \quad C\left(-\frac{\sqrt{3}}{2}, -\frac{1}{2}\right) \quad D\left(-\frac{\sqrt{3}}{2}, \frac{1}{2}\right)$$
+          Les points $A$ et $B$ d'une part, $C$ et $D$ d'autre part sont symétriques par rapport à l'axe des abscisses.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Nature du quadrilatère $ABCD$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul des distances :</strong>
+          <div class="math-block">
+            $$AB = |z_B - z_A| = \left| \frac{\sqrt{3}-i}{2} - \frac{\sqrt{3}+i}{2} \right| = |-i| = 1$$
+            $$CD = |z_D - z_C| = \left| \frac{-\sqrt{3}+i}{2} - \frac{-\sqrt{3}-i}{2} \right| = |i| = 1$$
+            $$BC = |z_C - z_B| = \left| \frac{-\sqrt{3}-i}{2} - \frac{\sqrt{3}-i}{2} \right| = |-\sqrt{3}| = \sqrt{3}$$
+            $$AD = |z_D - z_A| = \left| \frac{-\sqrt{3}+i}{2} - \frac{\sqrt{3}+i}{2} \right| = |-\sqrt{3}| = \sqrt{3}$$
+          </div>
+          On a $AB = CD = 1$ et $BC = AD = \sqrt{3}$. Les côtés opposés sont de même longueur, donc $ABCD$ est un **parallélogramme**.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Vérification de l'orthogonalité (ou des diagonales) :</strong><br>
+          Le milieu de $[AC]$ a pour affixe :
+          $$z_I = \frac{z_A + z_C}{2} = \frac{\frac{\sqrt{3}+i}{2} + \frac{-\sqrt{3}-i}{2}}{2} = 0 = O$$
+          De même, le milieu de $[BD]$ est $O$. Les diagonales se coupent en leur milieu $O$, et :
+          $$AC = |z_C - z_A| = |-\sqrt{3}-i| = \sqrt{3+1} = 2$$
+          $$BD = |z_D - z_B| = |-\sqrt{3}+i| = \sqrt{3+1} = 2$$
+          Les diagonales $[AC]$ et $[BD]$ sont de longueurs égales ($AC = BD = 2$).
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $ABCD$ est un parallélogramme dont les diagonales sont de même longueur, **$ABCD$ est un rectangle**.
+          Ses dimensions sont de $1$ sur $\sqrt{3}$, et il est inscrit dans le cercle unité de diamètre $2$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>

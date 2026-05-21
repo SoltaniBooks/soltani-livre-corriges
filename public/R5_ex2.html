@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujet 5 — Exercice 2 : Système de Congruences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding: 1rem; line-height: 1.7; }
+    .container { max-width: 860px; margin: 0 auto; }
+    
+    /* ─── Navigation ─────────────────────────────────────────────────── */
+    .top-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1.5px solid #d1d5db; color: #1a2d59; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; margin-bottom: 1rem; cursor: pointer; }
+    .back-btn:hover { background: #1a6b3a; color: #fff; border-color: #1a6b3a; }
+    .breadcrumb { font-size: 0.82rem; color: #6b7280; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .breadcrumb span { color: #1a2d59; font-weight: 500; }
+    .breadcrumb .sep { color: #9ca3af; }
+    
+    /* ─── En-tête page ─────────────────────────────────────────────────── */
+    .header { background: linear-gradient(135deg, #1a2d59 0%, #1a4a2e 100%); border-radius: 14px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(26,45,89,0.2); }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1a6b3a, #39d6c3, #1a2d59); border-radius: 14px 14px 0 0; }
+    .header-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #6ee7b7; margin-bottom: 0.5rem; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); border-radius: 20px; padding: 0.2rem 0.8rem; }
+    .header h1 { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 700; color: #f6f8fb; margin-bottom: 0.4rem; }
+    .header p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+    .header .points { position: absolute; top: 1.2rem; right: 1.2rem; background: #1a6b3a; color: white; border-radius: 50%; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; line-height: 1; }
+    .header .points small { font-size: 0.6rem; font-weight: 400; }
+    
+    /* ─── Carte question ─────────────────────────────────────────────────── */
+    .question-card { background: #fff; border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s, opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); opacity: 0; transform: translateY(15px); }
+    .question-card.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .question-card:hover { box-shadow: 0 4px 18px rgba(26,107,58,0.13); }
+    .question-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .question-number { background: #1a6b3a; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .question-title { font-size: 0.95rem; font-weight: 700; color: #1a2d59; }
+    .question-body { padding: 1.4rem; }
+    
+    /* ─── Étapes ─────────────────────────────────────────────────────────── */
+    .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .step.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a6b3a; color: #fff; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 6px rgba(26,107,58,0.3); }
+    .step-content { flex: 1; font-size: 0.92rem; color: #333; border-left: 3px solid #bbf7d0; padding-left: 0.9rem; line-height: 1.75; }
+    .math-block { background: #f8fafc; border-left: 3px solid #1a6b3a; border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; font-size: 0.95rem; color: #1a2d59; }
+    .answer-box { background: #e8f5eb; border: 1.5px solid #2e8b57; border-radius: 10px; padding: 0.9rem 1.2rem; margin-top: 0.8rem; display: flex; align-items: flex-start; gap: 0.7rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .answer-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .answer-text { color: #1a4a2e; font-size: 0.92rem; font-weight: 500; line-height: 1.65; }
+    .calc-box { background: #ede9f8; border: 1.5px solid #9b7ed9; border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.8rem; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .calc-box.animate-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .calc-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem; }
+    .calc-box-content { color: #4c1d95; font-size: 0.9rem; line-height: 1.7; }
+    
+    .check { color: #1a6b3a; font-weight: 700; }
+    p { margin-bottom: 0.6rem; font-size: 0.92rem; color: #333; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-bottom: 0.2rem; }
+    @media (max-width: 600px) { body { padding: 0.75rem; } .header { padding: 1.3rem 1rem; } .question-body { padding: 0.9rem; } .header .points { position: static; display: inline-flex; margin-top: 0.5rem; } .header h1 { font-size: 1.15rem; padding-right: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="index.html" style="color: #6b7280; text-decoration: none;">🏠 Accueil</a>
+    <span class="sep">›</span>
+    <span>Sujet de Révision 5</span>
+    <span class="sep">›</span>
+    <span>Exercice 2</span>
+  </div>
+
+  <div class="header">
+    <span class="header-tag">Arithmétique</span>
+    <h1>Sujet 5 — Exercice 2 : Système de Congruences</h1>
+    <p>Résolution d'un système de congruences linéaires et application concrète à un système d'authentification réseau.</p>
+    <div class="points">5 <small>points</small></div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">1</div>
+      <div class="question-title">Vérification de la solution particulière 23</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Calcul modulo 5 :</strong><br>
+          Divisons 23 par 5 pour obtenir son reste :
+          <div class="math-block">
+            $$23 = 4 \times 5 + 3 \implies 23 \equiv 3 \pmod 5$$
+          </div>
+          La première condition est vérifiée.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Calcul modulo 7 :</strong><br>
+          Divisons 23 par 7 :
+          <div class="math-block">
+            $$23 = 3 \times 7 + 2 \implies 23 \equiv 2 \pmod 7$$
+          </div>
+          La deuxième condition est vérifiée.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $23$ satisfait simultanément les deux équations du système, **23 est bien une solution particulière de $(S)$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2a</div>
+      <div class="question-title">Divisibilité de $(n - 23)$ par 5 et par 7</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Divisibilité par 5 :</strong><br>
+          Soit $n$ une solution de $(S)$. On a :
+          $$\begin{cases} n \equiv 3 \pmod 5 \\ 23 \equiv 3 \pmod 5 \end{cases} \implies n - 23 \equiv 3 - 3 \equiv 0 \pmod 5$$
+          Ainsi, $n - 23$ est un multiple de 5, donc **5 divise $(n-23)$**.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Divisibilité par 7 :</strong><br>
+          De même :
+          $$\begin{cases} n \equiv 2 \pmod 7 \\ 23 \equiv 2 \pmod 7 \end{cases} \implies n - 23 \equiv 2 - 2 \equiv 0 \pmod 7$$
+          Ainsi, $n - 23$ est un multiple de 7, donc **7 divise $(n-23)$**.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Pour toute solution $n$ du système $(S)$, l'entier $(n - 23)$ est divisible par $5$ et par $7$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2b</div>
+      <div class="question-title">Divisibilité par 35 d'un entier divisible par 5 et par 7</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Utilisation de la définition :</strong><br>
+          Soit $p$ un entier divisible par 5 et par 7.
+          Puisque $5$ divise $p$, il existe un entier $q$ tel que $p = 5q$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Application du théorème de Gauss :</strong><br>
+          Puisque $7$ divise $p$, alors $7$ divise $5q$.<br>
+          Or, $5$ et $7$ sont des nombres premiers entre eux ($\text{pgcd}(5, 7) = 1$).<br>
+          D'après le **théorème de Gauss**, si $7$ divise $5q$ et est premier avec $5$, alors **$7$ divise $q$**.<br>
+          Il existe donc un entier $k$ tel que $q = 7k$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Conclusion :</strong><br>
+          En remplaçant $q$, on obtient :
+          $$p = 5(7k) = 35k$$
+          Ce qui montre que $p$ est divisible par $35$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Puisque $\text{pgcd}(5,7) = 1$, tout entier divisible par $5$ et par $7$ est également divisible par leur produit $35$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">2c</div>
+      <div class="question-title">Obtention de la congruence modulo 35</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Synthèse des questions précédentes :</strong><br>
+          Pour toute solution $n$ de $(S)$, l'entier $p = n - 23$ est divisible par $5$ et par $7$ (Question 2.a).<br>
+          D'après la Question 2.b, cet entier $p = n - 23$ est donc divisible par $35$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Expression sous forme de congruence :</strong><br>
+          Puisque $35$ divise $n - 23$, on a :
+          $$n - 23 \equiv 0 \pmod{35}$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          On en déduit que si $n$ est solution de $(S)$, alors :
+          $$n \equiv 23 \pmod{35}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3a</div>
+      <div class="question-title">Preuve de l'équivalence algébrique</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Développement du membre de droite :</strong><br>
+          Considérons l'égalité $n - 3 = 5(4 + 7k)$ :
+          $$n - 3 = 20 + 35k$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Isolement du terme :</strong><br>
+          En ajoutant 3 des deux côtés :
+          $$n = 23 + 35k \iff n - 23 = 35k$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'équivalence logique est établie pour tout $n, k \in \mathbb{Z}$ :
+          $$n - 23 = 35k \iff n - 3 = 5(4 + 7k)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3b</div>
+      <div class="question-title">Preuve réciproque</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Hypothèse :</strong><br>
+          Supposons que $n \equiv 23 \pmod{35}$. Cela signifie qu'il existe un entier $k$ tel que $n = 23 + 35k$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Vérification modulo 5 :</strong>
+          $$n = 23 + 35k = (4 \times 5 + 3) + 5 \times 7k = 3 + 5(4 + 7k)$$
+          Donc $n \equiv 3 \pmod 5$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Vérification modulo 7 :</strong>
+          $$n = 23 + 35k = (3 \times 7 + 2) + 7 \times 5k = 2 + 7(3 + 5k)$$
+          Donc $n \equiv 2 \pmod 7$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Les deux équations du système $(S)$ sont satisfaites, donc $n$ est bien solution de $(S)$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 3c -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">3c</div>
+      <div class="question-title">Ensemble général des solutions de $(S)$</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Conclusion par double implication :</strong><br>
+          Nous avons montré qu'une condition nécessaire et suffisante pour que $n$ soit solution de $(S)$ est $n \equiv 23 \pmod{35}$.
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'ensemble des solutions dans $\mathbb{Z}$ du système $(S)$ est :
+          $$S_{\mathbb{Z}} = \{ 23 + 35k \;; \; k \in \mathbb{Z} \}$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4a -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4a</div>
+      <div class="question-title">Application : Identifiant compris entre 100 et 135</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Formulation du problème :</strong><br>
+          L'identifiant $N$ vérifie $N \equiv 3 \pmod 5$ et $N \equiv 2 \pmod 7$, il est donc solution du système $(S)$.<br>
+          Ainsi, $N$ s'écrit sous la forme $N = 23 + 35k$ avec $k \in \mathbb{Z}$.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Recherche de l'entier $k$ adéquat :</strong><br>
+          On veut $100 \leq 23 + 35k \leq 135$ :
+          $$100 - 23 \leq 35k \leq 135 - 23 \iff 77 \leq 35k \leq 112$$
+          Divisons par 35 :
+          $$\frac{77}{35} \leq k \leq \frac{112}{35} \iff 2,2 \leq k \leq 3,2$$
+          Puisque $k$ doit être un entier, la seule valeur possible est **$k = 3$**.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Calcul de $N$ :</strong>
+          $$N = 23 + 35 \times 3 = 23 + 105 = 128$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          L'unique identifiant valide compris entre 100 et 135 est **$N = 128$**.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 4b -->
+  <div class="question-card">
+    <div class="question-header">
+      <div class="question-number">4b</div>
+      <div class="question-title">Application : Nombre d'identifiants valides entre 1 et 1000</div>
+    </div>
+    <div class="question-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Encadrement mathématique :</strong><br>
+          On cherche le nombre d'entiers $k \in \mathbb{Z}$ tels que :
+          $$1 \leq 23 + 35k \leq 1000$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Résolution de l'inéquation :</strong>
+          $$1 - 23 \leq 35k \leq 1000 - 23 \iff -22 \leq 35k \leq 977$$
+          Divisons par 35 :
+          $$-\frac{22}{35} \leq k \leq \frac{977}{35} \iff -0,63 \leq k \leq 27,91$$
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Dénombrement des valeurs de $k$ :</strong><br>
+          Les entiers $k$ admissibles sont les entiers compris dans l'intervalle $[0 \;; \; 27]$.<br>
+          Ce qui donne :
+          $$\text{Nombre d'identifiants} = 27 - 0 + 1 = 28$$
+        </div>
+      </div>
+      <div class="answer-box">
+        <span class="answer-icon">✅</span>
+        <div class="answer-text">
+          Il existe **28 identifiants valides** compris entre 1 et 1000 (correspondant aux valeurs de $k$ allant de 0 à 27).
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('animate-in'), i * 120);
+    });
+
+    const innerEls = document.querySelectorAll('.step, .calc-box, .answer-box');
+    innerEls.forEach((el, i) => {
+      setTimeout(() => el.classList.add('animate-in'), i * 55 + 200);
+    });
+  });
+</script>
+</body>
+</html>
